@@ -87,15 +87,19 @@
   font-size: 1.25rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #FFFFFF;
+  color: var(--color-white);
   display: inline-flex;
   align-items: center;
-  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: color var(--transition-base), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__brand-text {
+[data-theme='light'] .navbar__brand-text {
   color: var(--color-black);
+}
+
+[data-theme='dark'] .navbar__brand-text {
+  color: var(--color-white);
 }
 
 .navbar__brand-dot {
@@ -103,11 +107,16 @@
   transition: color var(--transition-base);
 }
 
+[data-theme='light'] .navbar__brand-dot {
+  color: var(--color-ocean-teal);
+}
+
 .navbar__brand-sup {
   font-size: 0.7rem;
   font-weight: 600;
   margin-left: 2px;
   opacity: 0.85;
+  color: inherit;
 }
 
 /* Splash Handoff Visibility States */
@@ -160,8 +169,12 @@
   transition: opacity var(--transition-fast), color var(--transition-fast);
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__links--center .navbar__link {
+[data-theme='light'] .navbar__links--center .navbar__link {
   color: var(--color-black);
+}
+
+[data-theme='dark'] .navbar__links--center .navbar__link {
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .navbar__links--center .navbar__link:hover {
@@ -169,7 +182,7 @@
   color: #FFFFFF;
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__links--center .navbar__link:hover {
+[data-theme='light'] .navbar__links--center .navbar__link:hover {
   color: var(--color-ocean-teal);
   opacity: 1;
 }
@@ -180,7 +193,7 @@
   opacity: 1;
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__links--center .navbar__link--active {
+[data-theme='light'] .navbar__links--center .navbar__link--active {
   color: var(--color-ocean-teal);
 }
 
@@ -221,10 +234,16 @@
   transition: all var(--transition-fast);
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__quick-theme-toggle {
+[data-theme='light'] .navbar__quick-theme-toggle {
   background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
   color: var(--color-black);
+}
+
+[data-theme='dark'] .navbar__quick-theme-toggle {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
 }
 
 .navbar__quick-theme-toggle:hover {
@@ -232,6 +251,12 @@
   transform: rotate(15deg);
   border-color: var(--color-warm-yellow);
   color: var(--color-warm-yellow);
+}
+
+[data-theme='light'] .navbar__quick-theme-toggle:hover {
+  background: rgba(60, 110, 113, 0.12);
+  border-color: var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
 }
 
 /* The Minimalist 2-line Hamburger Button */
@@ -267,8 +292,12 @@
               background-color 0.3s ease;
 }
 
-[data-theme='light'] .navbar--scrolled .navbar__minimal-line {
+[data-theme='light'] .navbar__minimal-line {
   background-color: var(--color-black);
+}
+
+[data-theme='dark'] .navbar__minimal-line {
+  background-color: var(--color-white);
 }
 
 .navbar__minimal-line--top {
