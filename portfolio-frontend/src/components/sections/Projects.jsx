@@ -12,8 +12,42 @@ import './Projects.css';
 function MacBookProjectCard({ project, index, onOpenModal }) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [iframeError, setIframeError] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const stageRef = useRef(null);
   const [dynamicScale, setDynamicScale] = useState(null);
+
+  // Detect touch / mobile / tablet devices (iOS Safari, iPadOS, Android)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const checkMobile = () => {
+      const isTouch = window.matchMedia('(pointer: coarse)').matches || 
+                      'ontouchstart' in window || 
+                      navigator.maxTouchPoints > 0;
+      const isNarrow = window.innerWidth <= 1024;
+      setIsMobileDevice(isTouch || isNarrow);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Set safety timeout for iframe loading (prevent endless black screen if cross-origin blocks)
+  useEffect(() => {
+    if (isMobileDevice || !project.hasLiveEmbed || !project.embedUrl) return;
+
+    const timeout = setTimeout(() => {
+      // If after 4.5 seconds iframe hasn't triggered onLoad, fallback to crisp high-res screenshot
+      setIframeLoaded((loaded) => {
+        if (!loaded) {
+          setIframeError(true);
+        }
+        return loaded;
+      });
+    }, 4500);
+
+    return () => clearTimeout(timeout);
+  }, [isMobileDevice, project.hasLiveEmbed, project.embedUrl]);
 
   // Dynamically calculate the perfect laptop scale based on the actual rendered column width
   useEffect(() => {
@@ -39,6 +73,11 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
     return () => observer.disconnect();
   }, []);
 
+  // Determine if we should attempt iframe or display high-res screenshot directly
+  // On mobile/tablets, always show the high-res screenshot to guarantee instant rendering,
+  // zero battery/memory consumption, and 100% reliability against cross-origin ITP/X-Frame-Options blocks.
+  const shouldRenderIframe = project.hasLiveEmbed && project.embedUrl && !isMobileDevice && !iframeError;
+
   return (
     <div
       className="project-showcase-item"
@@ -55,47 +94,37 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
             <div className="screen">
               {/* Active Screen Viewport */}
               <div className="macbook-screen-viewport">
-                {project.hasLiveEmbed && project.embedUrl ? (
+                {shouldRenderIframe ? (
                   <div
                     className="macbook-screen-frame"
                     onClick={() => onOpenModal(project)}
                     style={{ cursor: 'pointer' }}
                     title="Click to open interactive preview"
                   >
-                    {/* Live Scaled Desktop Iframe */}
+                    {/* High-res image is ALWAYS rendered as base layer so screen is NEVER black */}
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="macbook-preview-fallback"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                    />
+
+                    {/* Live Scaled Desktop Iframe fades in once loaded */}
                     <iframe
                       src={project.embedUrl}
                       title={`${project.title} Live Preview`}
-                      className="macbook-live-iframe"
+                      className={`macbook-live-iframe ${iframeLoaded ? 'macbook-live-iframe--loaded' : 'macbook-live-iframe--loading'}`}
                       loading={index === 0 ? 'eager' : 'lazy'}
                       onLoad={() => setIframeLoaded(true)}
                       onError={() => setIframeError(true)}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     />
 
-                    {/* Pre-load background / loading state */}
-                    {!iframeLoaded && !iframeError && (
-                      <div className="macbook-screen-loading">
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          className="macbook-preview-fallback"
-                        />
-                        <div className="macbook-loading-indicator">
-                          <span className="macbook-spinner" />
-                          <span>Connecting to live site...</span>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Error fallback */}
-                    {iframeError && (
-                      <div className="macbook-screen-fallback">
-                        <img
-                          src={project.image}
-                          alt={project.title}
-                          className="macbook-preview-fallback"
-                        />
+                    {/* Pre-load subtle indicator */}
+                    {!iframeLoaded && (
+                      <div className="macbook-loading-indicator">
+                        <span className="macbook-spinner" />
+                        <span>Connecting...</span>
                       </div>
                     )}
                   </div>
@@ -103,12 +132,14 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
                   <div
                     className="macbook-screen-frame"
                     onClick={() => project.hasLiveEmbed && onOpenModal(project)}
+                    style={{ cursor: project.hasLiveEmbed ? 'pointer' : 'default' }}
+                    title={project.hasLiveEmbed ? 'Click to open interactive preview' : project.title}
                   >
                     <img
                       src={project.image}
                       alt={project.title}
                       className="macbook-preview-fallback"
-                      loading="lazy"
+                      loading={index === 0 ? 'eager' : 'lazy'}
                     />
                   </div>
                 )}
