@@ -1,0 +1,364 @@
+/* ==========================================================================
+   PERMANENT GLOBAL DESIGN SYSTEM & COLOR PALETTE
+   Single Source of Truth (SSOT) for all current and future UI development
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+/* ---------- 1. CSS Custom Properties (Centralized Theme) ---------- */
+:root {
+  /* ========================================================================
+     OFFICIAL 6-COLOR FOUNDATION (IMMUTABLE PALETTE)
+     ======================================================================== */
+  --color-warm-yellow: #F4D35E;
+  --color-ocean-teal: #3C6E71;
+  --color-deep-steel-blue: #284B63;
+  --color-light-gray: #D9D9D9;
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+
+  /* RGB variants for transparent overlays / glassmorphism */
+  --color-warm-yellow-rgb: 244, 211, 94;
+  --color-ocean-teal-rgb: 60, 110, 113;
+  --color-deep-steel-blue-rgb: 40, 75, 99;
+  --color-light-gray-rgb: 217, 217, 217;
+  --color-black-rgb: 0, 0, 0;
+  --color-white-rgb: 255, 255, 255;
+
+  /* ========================================================================
+     SEMANTIC DESIGN TOKENS
+     ======================================================================== */
+  --color-primary: var(--color-deep-steel-blue);
+  --color-secondary: var(--color-ocean-teal);
+  --color-accent: var(--color-warm-yellow);
+  --color-background: var(--color-black);
+  --color-surface: rgba(var(--color-deep-steel-blue-rgb), 0.18);
+  --color-surface-hover: rgba(var(--color-ocean-teal-rgb), 0.22);
+  --color-text: var(--color-white);
+  --color-text-muted: var(--color-light-gray);
+  --color-border: rgba(var(--color-light-gray-rgb), 0.16);
+  --color-border-accent: rgba(var(--color-warm-yellow-rgb), 0.4);
+
+  /* ========================================================================
+     DARK MODE TOKENS (Default Theme)
+     ======================================================================== */
+  --bg-primary: var(--color-black);
+  --bg-secondary: rgba(var(--color-deep-steel-blue-rgb), 0.22);
+  --bg-tertiary: rgba(var(--color-deep-steel-blue-rgb), 0.35);
+  --bg-card: rgba(var(--color-deep-steel-blue-rgb), 0.14);
+  --bg-card-hover: rgba(var(--color-ocean-teal-rgb), 0.18);
+
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-light-gray);
+  --text-muted: rgba(var(--color-light-gray-rgb), 0.72);
+
+  /* Accents & Gradients */
+  --accent-1: var(--color-ocean-teal);
+  --accent-2: var(--color-warm-yellow);
+  --accent-3: var(--color-deep-steel-blue);
+  --gradient-accent: linear-gradient(135deg, var(--color-ocean-teal), var(--color-warm-yellow));
+  --gradient-accent-hover: linear-gradient(135deg, var(--color-deep-steel-blue), var(--color-ocean-teal));
+  --gradient-hero: linear-gradient(135deg, var(--color-warm-yellow), var(--color-ocean-teal), var(--color-deep-steel-blue));
+
+  /* Glassmorphism */
+  --glass-bg: rgba(var(--color-deep-steel-blue-rgb), 0.3);
+  --glass-border: rgba(var(--color-light-gray-rgb), 0.15);
+  --glass-blur: 20px;
+
+  /* Borders & Shadows */
+  --border-subtle: rgba(var(--color-light-gray-rgb), 0.14);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 28px rgba(var(--color-warm-yellow-rgb), 0.25);
+  --shadow-glow-accent: 0 0 35px rgba(var(--color-ocean-teal-rgb), 0.3);
+
+  /* Typography */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing */
+  --nav-height: 72px;
+  --section-padding: 100px;
+  --container-max: 1200px;
+  --container-padding: 24px;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+/* ==========================================================================
+   LIGHT MODE OVERRIDE (Strict adherence to the 6 official colors)
+   ========================================================================== */
+[data-theme='light'] {
+  --color-background: var(--color-white);
+  --color-surface: rgba(var(--color-light-gray-rgb), 0.45);
+  --color-text: var(--color-black);
+
+  --bg-primary: var(--color-white);
+  --bg-secondary: rgba(var(--color-light-gray-rgb), 0.3);
+  --bg-tertiary: rgba(var(--color-light-gray-rgb), 0.5);
+  --bg-card: rgba(var(--color-light-gray-rgb), 0.35);
+  --bg-card-hover: rgba(var(--color-ocean-teal-rgb), 0.08);
+
+  --text-primary: var(--color-black);
+  --text-secondary: var(--color-deep-steel-blue);
+  --text-muted: rgba(var(--color-deep-steel-blue-rgb), 0.78);
+
+  --accent-1: var(--color-ocean-teal);
+  --accent-2: var(--color-warm-yellow);
+  --accent-3: var(--color-deep-steel-blue);
+  --gradient-accent: linear-gradient(135deg, var(--color-deep-steel-blue), var(--color-ocean-teal));
+  --gradient-accent-hover: linear-gradient(135deg, var(--color-ocean-teal), var(--color-warm-yellow));
+  --gradient-hero: linear-gradient(135deg, var(--color-deep-steel-blue), var(--color-ocean-teal), var(--color-warm-yellow));
+
+  --glass-bg: rgba(var(--color-white-rgb), 0.88);
+  --glass-border: rgba(var(--color-deep-steel-blue-rgb), 0.16);
+
+  --border-subtle: rgba(var(--color-light-gray-rgb), 0.85);
+  --border-accent: rgba(var(--color-ocean-teal-rgb), 0.4);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.1);
+  --shadow-glow: 0 0 28px rgba(var(--color-ocean-teal-rgb), 0.2);
+  --shadow-glow-accent: 0 0 35px rgba(var(--color-warm-yellow-rgb), 0.25);
+}
+
+/* ---------- Reset & Base ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--nav-height);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+/* ---------- Utility Classes ---------- */
+.container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+  width: 100%;
+}
+
+.section {
+  padding: var(--section-padding) 0;
+  position: relative;
+}
+
+.gradient-text {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* ---------- Button System ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--color-ocean-teal);
+  color: var(--color-white);
+  box-shadow: 0 4px 18px rgba(var(--color-ocean-teal-rgb), 0.35);
+}
+
+.btn-primary:hover {
+  background: var(--color-deep-steel-blue);
+  color: var(--color-white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(var(--color-warm-yellow-rgb), 0.3);
+}
+
+.btn-outline {
+  border: 1.5px solid var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
+  background: transparent;
+}
+
+.btn-outline:hover {
+  background: rgba(var(--color-ocean-teal-rgb), 0.12);
+  border-color: var(--color-warm-yellow);
+  color: var(--color-warm-yellow);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  color: var(--text-secondary);
+  padding: 8px 16px;
+}
+
+.btn-ghost:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+/* ---------- Animations ---------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 10px rgba(var(--color-warm-yellow-rgb), 0.5);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(0.92);
+    box-shadow: 0 0 4px rgba(var(--color-warm-yellow-rgb), 0.2);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s var(--transition-base) forwards;
+  opacity: 0;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s var(--transition-base) forwards;
+  opacity: 0;
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-deep-steel-blue);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-ocean-teal);
+}
+
+/* ---------- Selection ---------- */
+::selection {
+  background: rgba(var(--color-warm-yellow-rgb), 0.35);
+  color: var(--color-white);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 64px;
+    --section-padding: 70px;
+  }
+}

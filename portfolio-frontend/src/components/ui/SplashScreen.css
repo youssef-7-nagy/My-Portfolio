@@ -1,0 +1,234 @@
+/* ==========================================================================
+   1. Viewport & Shared-Element Container (100vw x 100dvh)
+   ========================================================================== */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 99999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: all;
+  touch-action: none;
+}
+
+/* ==========================================================================
+   2. Solid White Backdrop Layer (Fades out independently during flight)
+   ========================================================================== */
+.splash-screen__backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  background-color: #ffffff;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, visibility;
+}
+
+.splash-screen__backdrop--fading {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   3. Fluid Responsive Logo Stage (FLIP Shared Element)
+   ========================================================================== */
+.splash-screen__stage {
+  position: relative;
+  z-index: 2;
+  width: clamp(260px, 48vmin, 540px);
+  max-width: 90vw;
+  max-height: 80dvh;
+  aspect-ratio: 444 / 316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Explicit center transform origin guarantees mathematical FLIP pixel alignment */
+  transform-origin: 50% 50% !important;
+  will-change: transform;
+}
+
+/* Flying Mode Transitions */
+.splash-screen__stage--flying {
+  pointer-events: none;
+}
+
+.splash-screen__stage--dark {
+  transition: filter 650ms ease;
+}
+
+.splash-screen__stage--flying.splash-screen__stage--dark {
+  filter: invert(1) drop-shadow(0 0 10px rgba(var(--color-warm-yellow-rgb), 0.4));
+}
+
+.splash-screen__stage--light {
+  transition: filter 650ms ease;
+}
+
+.splash-screen__stage--flying.splash-screen__stage--light {
+  filter: drop-shadow(0 2px 8px rgba(var(--color-ocean-teal-rgb), 0.25));
+}
+
+.splash-screen__svg,
+.splash-screen__original-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================================================
+   4. Stage 1: Architectural Stroke Drawing & Mask Sweep
+   ========================================================================== */
+.sketch-path {
+  stroke: var(--color-black);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: transparent;
+  stroke-dasharray: 640;
+  stroke-dashoffset: 640;
+  animation: drawContourSmooth 1.4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+}
+
+.sketch-path-1 {
+  animation-delay: 0.05s;
+}
+.sketch-path-2 {
+  animation-delay: 0.16s;
+}
+.sketch-path-3 {
+  animation-delay: 0.28s;
+}
+.sketch-path-4 {
+  animation-delay: 0.28s;
+}
+
+/* White mask strokes sweep along geometry to unveil original pixels */
+.mask-reveal-stroke {
+  stroke: #ffffff;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+.mask-stroke-1 {
+  stroke-width: 52;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: revealMaskSmooth1 0.95s cubic-bezier(0.25, 1, 0.5, 1) 0.38s forwards;
+}
+
+.mask-stroke-2 {
+  stroke-width: 54;
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: revealMaskSmooth2 1.15s cubic-bezier(0.25, 1, 0.5, 1) 0.46s forwards;
+}
+
+.mask-stroke-3,
+.mask-stroke-4 {
+  stroke-width: 38;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: revealMaskSmooth1 0.95s cubic-bezier(0.25, 1, 0.5, 1) 0.58s forwards;
+}
+
+/* ==========================================================================
+   5. Stage 2 & Stage 3: Silky Cross-Fade & Holding
+   ========================================================================== */
+.splash-screen__svg {
+  opacity: 1;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity;
+}
+
+.splash-screen__svg--hidden {
+  opacity: 0;
+}
+
+.splash-screen__original-logo {
+  opacity: 0;
+  transform: scale(0.985);
+  transition:
+    opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.splash-screen__original-logo--visible {
+  opacity: 1;
+}
+
+.splash-screen__original-logo--settled {
+  transform: scale(1);
+}
+
+/* ==========================================================================
+   6. Keyframes
+   ========================================================================== */
+@keyframes drawContourSmooth {
+  0% {
+    stroke-dashoffset: 640;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes revealMaskSmooth1 {
+  0% {
+    stroke-dashoffset: 160;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes revealMaskSmooth2 {
+  0% {
+    stroke-dashoffset: 320;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ==========================================================================
+   7. Accessibility: Prefers-Reduced-Motion Alternative
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .sketch-path,
+  .mask-reveal-stroke {
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+  }
+
+  .splash-screen__original-logo {
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 0.25s ease;
+  }
+
+  .splash-screen__backdrop {
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+  }
+}

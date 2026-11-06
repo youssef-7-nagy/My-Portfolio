@@ -1,0 +1,373 @@
+/* =======================================================
+   HERO PHOTO CARD — ULTRA-PREMIUM CYBERNETIC CIRCULAR FRAME
+   Features dual-orbiting gradient comet beams, neon sparks,
+   HUD tick marks, and atmospheric ambient core glow.
+   Official Design System:
+   - Warm Yellow:     #F4D35E
+   - Ocean Teal:      #3C6E71
+   - Deep Steel Blue: #284B63
+   - Light Gray:      #D9D9D9
+   - Black:           #000000
+   - White:           #FFFFFF
+   ======================================================= */
+
+.profile-frame-wrapper {
+  position: relative;
+  width: 380px;
+  height: 380px;
+  max-width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+/* ---------- 1. Atmospheric Ambient Core Glow ---------- */
+.profile-ambient-glow {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--color-ocean-teal-rgb), 0.22) 0%,
+    rgba(var(--color-warm-yellow-rgb), 0.16) 35%,
+    rgba(var(--color-light-gray-rgb), 0.1) 55%,
+    rgba(var(--color-deep-steel-blue-rgb), 0.12) 75%,
+    transparent 100%
+  );
+  filter: blur(32px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.85;
+  animation: glowBreathe 7s ease-in-out infinite alternate;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.profile-frame-wrapper:hover .profile-ambient-glow {
+  opacity: 1;
+  filter: blur(40px);
+}
+
+@keyframes glowBreathe {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(1.06);
+    opacity: 0.95;
+  }
+}
+
+/* ---------- 2. SVG Circular Frame & Rotations ---------- */
+.profile-frame-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  overflow: visible;
+}
+
+/* Primary Rotating Ring: Clockwise 12s */
+.svg-rotating-primary {
+  transform-origin: 200px 200px;
+  animation: svgSpinCw 12s linear infinite;
+  will-change: transform;
+}
+
+/* Secondary Rotating Ring: Counter-Clockwise 18s */
+.svg-rotating-secondary {
+  transform-origin: 200px 200px;
+  animation: svgSpinCcw 18s linear infinite;
+  will-change: transform;
+}
+
+/* Outer Subtle Dashed Orbit: Counter-Clockwise 36s */
+.svg-orbit-dashed {
+  transform-origin: 200px 200px;
+  animation: svgSpinCcw 36s linear infinite;
+  will-change: transform;
+}
+
+@keyframes svgSpinCw {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes svgSpinCcw {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+/* Light Mode Overrides for SVG */
+[data-theme='light'] .svg-base-track {
+  stroke: rgba(var(--color-deep-steel-blue-rgb), 0.15);
+}
+
+[data-theme='light'] .svg-orbit-dashed {
+  stroke: rgba(var(--color-deep-steel-blue-rgb), 0.2);
+}
+
+/* ---------- 3. Inner Profile Photo Disc ---------- */
+.profile-photo-inner {
+  position: absolute;
+  inset: 18px; /* Consistent uniform gap between animated rings and photo */
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1.5px solid rgba(var(--color-light-gray-rgb), 0.2);
+  box-shadow: 
+    0 16px 45px rgba(0, 0, 0, 0.6),
+    inset 0 0 25px rgba(0, 0, 0, 0.8);
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(var(--color-deep-steel-blue-rgb), 0.35) 0%,
+    rgba(var(--color-ocean-teal-rgb), 0.12) 35%,
+    var(--color-black) 85%
+  );
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+[data-theme='light'] .profile-photo-inner {
+  border-color: rgba(var(--color-deep-steel-blue-rgb), 0.2);
+  box-shadow: 
+    0 12px 35px rgba(var(--color-deep-steel-blue-rgb), 0.16),
+    inset 0 0 20px rgba(var(--color-white-rgb), 0.85);
+  background: radial-gradient(
+    circle at 50% 25%,
+    rgba(var(--color-ocean-teal-rgb), 0.18) 0%,
+    rgba(var(--color-warm-yellow-rgb), 0.12) 40%,
+    var(--color-white) 100%
+  );
+}
+
+.profile-frame-wrapper:hover .profile-photo-inner {
+  border-color: rgba(var(--color-warm-yellow-rgb), 0.55);
+  box-shadow: 
+    0 20px 55px rgba(0, 0, 0, 0.7),
+    0 0 28px rgba(var(--color-ocean-teal-rgb), 0.25),
+    inset 0 0 22px rgba(0, 0, 0, 0.8);
+}
+
+/* Subtle Cyber Grid Lines inside disc */
+.profile-backdrop-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(var(--color-light-gray-rgb), 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--color-light-gray-rgb), 0.05) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center center;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-theme='light'] .profile-backdrop-grid {
+  background-image: 
+    linear-gradient(rgba(var(--color-deep-steel-blue-rgb), 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--color-deep-steel-blue-rgb), 0.06) 1px, transparent 1px);
+}
+
+.profile-backdrop-glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--color-ocean-teal-rgb), 0.25) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ---------- 4. Profile Image Styling ---------- */
+.profile-photo-img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 14%;
+  transform: scale(1.03);
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.45));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.profile-frame-wrapper:hover .profile-photo-img {
+  transform: scale(1.055);
+  filter: drop-shadow(0 14px 26px rgba(0, 0, 0, 0.55));
+}
+
+/* Subtle Glass Sheen Overlay */
+.profile-photo-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.02) 35%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* ---------- 5. Docked Holographic Status Pill ---------- */
+.profile-status-pill {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(var(--color-black-rgb), 0.88);
+  border: 1px solid rgba(var(--color-ocean-teal-rgb), 0.35);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.6),
+    0 0 14px rgba(var(--color-ocean-teal-rgb), 0.2);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  white-space: nowrap;
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+[data-theme='light'] .profile-status-pill {
+  background: rgba(var(--color-white-rgb), 0.92);
+  border-color: rgba(var(--color-deep-steel-blue-rgb), 0.25);
+  box-shadow: 
+    0 8px 20px rgba(var(--color-deep-steel-blue-rgb), 0.12),
+    0 0 12px rgba(var(--color-ocean-teal-rgb), 0.2);
+}
+
+.profile-frame-wrapper:hover .profile-status-pill {
+  transform: translateX(-50%) translateY(-2px);
+  border-color: var(--color-warm-yellow);
+  box-shadow: 
+    0 10px 28px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(var(--color-warm-yellow-rgb), 0.35);
+}
+
+.status-pill-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-warm-yellow);
+  box-shadow: 0 0 8px var(--color-warm-yellow);
+  animation: pillPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pillPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.8);
+  }
+}
+
+.status-pill-text {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-white);
+  letter-spacing: 0.02em;
+}
+
+[data-theme='light'] .status-pill-text {
+  color: var(--color-black);
+}
+
+/* ---------- Reduced Motion Mode ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .svg-rotating-primary,
+  .svg-rotating-secondary,
+  .svg-orbit-dashed,
+  .profile-ambient-glow,
+  .status-pill-pulse {
+    animation: none;
+  }
+}
+
+/* ---------- Responsive Breakpoints ---------- */
+@media (max-width: 1200px) {
+  .profile-frame-wrapper {
+    width: 340px;
+    height: 340px;
+  }
+  .profile-photo-inner {
+    inset: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .profile-frame-wrapper {
+    width: 320px;
+    height: 320px;
+    margin: 1.5rem auto 0;
+  }
+  .profile-photo-inner {
+    inset: 15px;
+  }
+  .profile-status-pill {
+    bottom: -8px;
+    padding: 5px 12px;
+  }
+  .status-pill-text {
+    font-size: 0.68rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-frame-wrapper {
+    width: 290px;
+    height: 290px;
+  }
+  .profile-photo-inner {
+    inset: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-frame-wrapper {
+    width: 260px;
+    height: 260px;
+  }
+  .profile-photo-inner {
+    inset: 12px;
+  }
+  .profile-status-pill {
+    bottom: -6px;
+    padding: 4px 10px;
+  }
+  .status-pill-text {
+    font-size: 0.64rem;
+  }
+}

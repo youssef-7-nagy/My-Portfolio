@@ -1,0 +1,367 @@
+/* ==========================================================================
+   HeroIdentityScanner.css
+   Holographic Laser-Scan Typography Component
+   Adapted from user's scanline loader to represent Youssef Nagy's developer identity
+   ========================================================================== */
+
+.cyber-scanner-card {
+  position: relative;
+  width: 100%;
+  max-width: 620px;
+  margin: 18px 0 24px 0;
+  padding: 16px 20px;
+  background: rgba(var(--color-deep-steel-blue-rgb), 0.22);
+  border: 1px solid rgba(var(--color-ocean-teal-rgb), 0.35);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.6),
+    0 0 20px -5px rgba(var(--color-ocean-teal-rgb), 0.2),
+    inset 0 1px 1px rgba(var(--color-light-gray-rgb), 0.1);
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cyber-scanner-card:hover {
+  border-color: rgba(var(--color-warm-yellow-rgb), 0.5);
+  box-shadow: 
+    0 12px 35px -8px rgba(0, 0, 0, 0.7),
+    0 0 28px -4px rgba(var(--color-ocean-teal-rgb), 0.35),
+    inset 0 1px 1px rgba(var(--color-white-rgb), 0.15);
+}
+
+/* Futuristic HUD Corner Brackets */
+.cyber-scanner-card::before,
+.cyber-scanner-card::after {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.cyber-scanner-card::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid var(--color-ocean-teal);
+  border-left: 2px solid var(--color-ocean-teal);
+  border-top-left-radius: 4px;
+}
+
+.cyber-scanner-card::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid var(--color-warm-yellow);
+  border-right: 2px solid var(--color-warm-yellow);
+  border-bottom-right-radius: 4px;
+}
+
+/* Header Bar: Status & Interactive Pills */
+.cyber-scanner-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(var(--color-light-gray-rgb), 0.2);
+  margin-bottom: 12px;
+  font-family: "Courier New", Courier, monospace, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  color: var(--color-ocean-teal);
+  text-transform: uppercase;
+}
+
+.cyber-scanner-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cyber-scanner-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-warm-yellow);
+  box-shadow: 0 0 8px var(--color-warm-yellow);
+  animation: cyber-dot-blink 1.8s infinite ease-in-out;
+}
+
+@keyframes cyber-dot-blink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.8); }
+}
+
+/* Role Selector Pills */
+.cyber-role-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.cyber-role-pill {
+  background: rgba(var(--color-deep-steel-blue-rgb), 0.2);
+  border: 1px solid rgba(var(--color-light-gray-rgb), 0.2);
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-weight: 500;
+}
+
+.cyber-role-pill:hover {
+  color: var(--color-white);
+  border-color: rgba(var(--color-ocean-teal-rgb), 0.5);
+  background: rgba(var(--color-ocean-teal-rgb), 0.15);
+}
+
+.cyber-role-pill.active {
+  background: rgba(var(--color-ocean-teal-rgb), 0.25);
+  border-color: var(--color-warm-yellow);
+  color: var(--color-white);
+  box-shadow: 0 0 10px rgba(var(--color-warm-yellow-rgb), 0.35);
+}
+
+/* ==========================================================================
+   Core Hologram Laser Scanner Section
+   Matches the user's scanline mask and radial beam optics
+   ========================================================================== */
+
+.cyber-scanner-body {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  width: 100%;
+  padding: 8px 12px;
+  overflow: hidden;
+  user-select: none;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at center, rgba(var(--color-deep-steel-blue-rgb), 0.35) 0%, rgba(var(--color-black-rgb), 0.6) 80%);
+}
+
+.cyber-loader-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+
+  font-family: "Outfit", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(1.25rem, 2.8vw, 1.95rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-white);
+  white-space: nowrap;
+}
+
+/* The vertical scanline grating mask overlay */
+.cyber-scanner-grating {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background-color: transparent;
+
+  -webkit-mask: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 6px,
+    black 7px,
+    black 8px
+  );
+  mask: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent 6px,
+    black 7px,
+    black 8px
+  );
+}
+
+/* The sweeping multi-color radial chromatic beam */
+.cyber-scanner-grating::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background-image: 
+    radial-gradient(circle at 50% 50%, #F4D35E 0%, transparent 50%),
+    radial-gradient(circle at 45% 45%, #3C6E71 0%, transparent 45%),
+    radial-gradient(circle at 55% 55%, #284B63 0%, transparent 45%),
+    radial-gradient(circle at 45% 55%, #D9D9D9 0%, transparent 45%),
+    radial-gradient(circle at 55% 45%, #F4D35E 0%, transparent 45%);
+
+  -webkit-mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 10%,
+    black 25%
+  );
+  mask: radial-gradient(
+    circle at 50% 50%,
+    transparent 0%,
+    transparent 10%,
+    black 25%
+  );
+
+  animation:
+    cyber-transform-animation 2.2s infinite alternate,
+    cyber-opacity-animation 4.4s infinite;
+  animation-timing-function: cubic-bezier(0.6, 0.8, 0.5, 1);
+}
+
+@keyframes cyber-transform-animation {
+  0% {
+    transform: translate(-55%);
+  }
+  100% {
+    transform: translate(55%);
+  }
+}
+
+@keyframes cyber-opacity-animation {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  15% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.3;
+  }
+}
+
+/* Individual Holographic Letter */
+.cyber-letter {
+  display: inline-block;
+  opacity: 0.35;
+  color: var(--color-light-gray);
+  animation: cyber-letter-anim 4.4s infinite linear;
+  z-index: 3;
+  transition: color 0.2s ease;
+  transform-origin: center;
+}
+
+.cyber-letter.cyber-space {
+  width: 0.55em;
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes cyber-letter-anim {
+  0% {
+    opacity: 0.35;
+    transform: scale(1) translateY(0);
+    text-shadow: none;
+  }
+  5% {
+    opacity: 1;
+    color: var(--color-white);
+    text-shadow: 
+      0 0 6px var(--color-white),
+      0 0 14px var(--color-warm-yellow),
+      0 0 24px var(--color-ocean-teal),
+      0 0 40px var(--color-deep-steel-blue);
+    transform: scale(1.12) translateY(-2px);
+  }
+  20% {
+    opacity: 0.65;
+    text-shadow: 0 0 8px rgba(var(--color-ocean-teal-rgb), 0.5);
+    transform: scale(1) translateY(0);
+  }
+  60% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(1) translateY(0);
+    text-shadow: none;
+  }
+}
+
+/* Bottom Footer Bar: Tech Specialties */
+.cyber-scanner-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(var(--color-light-gray-rgb), 0.15);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-family: "Courier New", Courier, monospace, sans-serif;
+  letter-spacing: 0.06em;
+}
+
+.cyber-tagline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-light-gray);
+}
+
+.cyber-tagline-icon {
+  color: var(--color-warm-yellow);
+  font-size: 0.8rem;
+}
+
+.cyber-signature {
+  color: var(--color-ocean-teal);
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .cyber-scanner-card {
+    margin: 16px auto 22px auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .cyber-scanner-card {
+    padding: 12px 14px;
+    margin: 14px auto 20px auto;
+  }
+
+  .cyber-scanner-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .cyber-role-pills {
+    justify-content: flex-start;
+  }
+
+  .cyber-loader-wrapper {
+    font-size: clamp(1rem, 4.4vw, 1.35rem);
+    letter-spacing: 0.09em;
+  }
+
+  .cyber-scanner-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
