@@ -92,20 +92,464 @@
   }
 }
 
-.laptop-showcase-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.25rem, 2vw, 2.25rem);
-  align-items: start;
-}
-
-/* --- Project Showcase Item (No bulky card box) --- */
-.project-showcase-item {
+/* =======================================================
+   ALTERNATING ZIG-ZAG TIMELINE CONTAINER
+   With Central Vertical Tracking Spine & Generous Breathing Room
+   ======================================================= */
+.projects-zigzag-timeline {
+  position: relative;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  gap: clamp(4.5rem, 8vw, 8rem);
+  padding: 2.5rem 0 3rem;
+}
+
+/* Faint Elegant Vertical Tracking Spine down the center */
+.zigzag-center-spine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(var(--color-ocean-teal-rgb), 0.35) 15%,
+    rgba(var(--color-warm-yellow-rgb), 0.4) 50%,
+    rgba(var(--color-ocean-teal-rgb), 0.35) 85%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+[data-theme='light'] .zigzag-center-spine {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(0, 0, 0, 0.12) 15%,
+    rgba(var(--color-ocean-teal-rgb), 0.35) 50%,
+    rgba(0, 0, 0, 0.12) 85%,
+    transparent 100%
+  );
+}
+
+/* --- Alternating Project Row --- */
+.project-zigzag-row {
   position: relative;
-  min-width: 0; /* CRITICAL: prevents 620px scaler from stretching 1fr grid track */
+  display: grid;
+  grid-template-columns: 45% 55%;
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4.5rem);
   width: 100%;
+  z-index: 2;
+}
+
+/* Reverse layout for Row -- Laptop Left / Text Right (Odd rows) */
+.project-zigzag-row.row--laptop-left {
+  grid-template-columns: 55% 45%;
+}
+
+.project-zigzag-row.row--laptop-left .zigzag-col--text {
+  order: 2;
+}
+
+.project-zigzag-row.row--laptop-left .zigzag-col--media {
+  order: 1;
+}
+
+/* Central Tracking Node Indicator */
+.zigzag-track-node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.track-node-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--color-warm-yellow);
+  box-shadow: 0 0 14px var(--color-warm-yellow);
+  border: 2px solid var(--color-black);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme='light'] .track-node-dot {
+  background: var(--color-ocean-teal);
+  box-shadow: 0 0 14px rgba(var(--color-ocean-teal-rgb), 0.5);
+  border-color: var(--color-white);
+}
+
+.project-zigzag-row:hover .track-node-dot {
+  transform: scale(1.6);
+}
+
+/* Columns */
+.zigzag-col {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+
+/* =======================================================
+   CINEMATIC SCROLL-TRIGGERED ENTRY ANIMATIONS
+   GPU-Accelerated Easing Curves: cubic-bezier(0.22, 1, 0.36, 1)
+   ======================================================= */
+
+/* Default Initial Hidden States (Zero layout shift, 60fps) */
+.project-zigzag-row .zigzag-col--text,
+.project-zigzag-row .zigzag-col--media {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 1. Even Row (Laptop Right / Text Left):
+      Text slides in from the LEFT (-50px)
+      Laptop slides in from the RIGHT (+50px) with subtle 3D tilt settling */
+.project-zigzag-row.row--laptop-right .zigzag-col--text {
+  transform: translate3d(-50px, 0, 0);
+}
+
+.project-zigzag-row.row--laptop-right .zigzag-col--media {
+  transform: translate3d(50px, 0, 0) perspective(1200px) rotateY(-4deg);
+}
+
+/* 2. Odd Row (Laptop Left / Text Right):
+      Laptop slides in from the LEFT (-50px) with subtle 3D tilt settling
+      Text slides in from the RIGHT (+50px) */
+.project-zigzag-row.row--laptop-left .zigzag-col--media {
+  transform: translate3d(-50px, 0, 0) perspective(1200px) rotateY(4deg);
+}
+
+.project-zigzag-row.row--laptop-left .zigzag-col--text {
+  transform: translate3d(50px, 0, 0);
+}
+
+/* In-View Settled State: Smooth GPU slide & 3D snap into position */
+.project-zigzag-row.is-in-view .zigzag-col--text,
+.project-zigzag-row.is-in-view .zigzag-col--media {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) perspective(1200px) rotateY(0deg);
+}
+
+/* Staggered Timeline for Inner Text Elements */
+.project-zigzag-row .project-number-row,
+.project-zigzag-row .project-title-large,
+.project-zigzag-row .project-subtitle-lead,
+.project-zigzag-row .project-description-text,
+.project-zigzag-row .project-tech-badges,
+.project-zigzag-row .project-actions-row {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-zigzag-row.is-in-view .project-number-row {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.12s;
+}
+
+.project-zigzag-row.is-in-view .project-title-large {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.20s;
+}
+
+.project-zigzag-row.is-in-view .project-subtitle-lead {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.26s;
+}
+
+.project-zigzag-row.is-in-view .project-description-text {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.32s;
+}
+
+.project-zigzag-row.is-in-view .project-tech-badges {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.38s;
+}
+
+.project-zigzag-row.is-in-view .project-actions-row {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition-delay: 0.44s;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .project-zigzag-row .zigzag-col--text,
+  .project-zigzag-row .zigzag-col--media,
+  .project-zigzag-row .project-number-row,
+  .project-zigzag-row .project-title-large,
+  .project-zigzag-row .project-subtitle-lead,
+  .project-zigzag-row .project-description-text,
+  .project-zigzag-row .project-tech-badges,
+  .project-zigzag-row .project-actions-row {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* =======================================================
+   ENHANCED 3D MACBOOK DISPLAY (55% Width Immersion)
+   With Ambient Radial Glow Behind the Machine
+   ======================================================= */
+.project-laptop-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Ambient Color Halo Glow */
+.laptop-ambient-glow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72%;
+  height: 60%;
+  background: radial-gradient(
+    circle,
+    var(--project-accent, var(--color-ocean-teal)) 0%,
+    transparent 70%
+  );
+  opacity: 0.32;
+  filter: blur(55px);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+.project-zigzag-row:hover .laptop-ambient-glow {
+  opacity: 0.55;
+  filter: blur(65px);
+}
+
+/* =======================================================
+   PROJECT DETAILS CONTAINER (45% Width)
+   ======================================================= */
+.project-details-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 12px;
+  width: 100%;
+  position: relative;
+}
+
+/* 1. Project Number Row */
+.project-number-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+.project-number-ghost {
+  font-family: var(--font-heading);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--color-warm-yellow);
+  text-shadow: 0 0 24px rgba(var(--color-warm-yellow-rgb), 0.35);
+}
+
+[data-theme='light'] .project-number-ghost {
+  color: var(--color-ocean-teal);
+  text-shadow: 0 0 20px rgba(var(--color-ocean-teal-rgb), 0.25);
+}
+
+.project-number-badge {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-light-gray);
+  background: rgba(var(--color-deep-steel-blue-rgb), 0.22);
+  border: 1px solid rgba(var(--color-light-gray-rgb), 0.18);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+[data-theme='light'] .project-number-badge {
+  color: var(--color-deep-steel-blue);
+  background: rgba(var(--color-light-gray-rgb), 0.45);
+  border-color: rgba(var(--color-deep-steel-blue-rgb), 0.2);
+}
+
+.project-status-pill {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  margin-left: auto;
+}
+
+/* 2. Bold Project Title & Lead */
+.project-title-large {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.2vw, 2.65rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  margin: 0;
+  color: #000000; /* High-contrast Black requirement */
+}
+
+/* In Dark Mode, high-contrast crisp White ensures maximum legibility */
+[data-theme='dark'] .project-title-large {
+  color: #FFFFFF;
+}
+
+.project-subtitle-lead {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-warm-yellow);
+  line-height: 1.4;
+  margin: 0;
+}
+
+[data-theme='light'] .project-subtitle-lead {
+  color: var(--color-ocean-teal);
+}
+
+/* 3. Highly Readable Long Description */
+.project-description-text {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.68;
+  color: var(--text-secondary);
+  margin: 4px 0 6px;
+  max-width: 540px;
+}
+
+[data-theme='light'] .project-description-text {
+  color: #374151;
+}
+
+/* 4. Tech Stack Badges: Pure White (#FFFFFF) bg, Light Gray (#D9D9D9) border, Dark Text */
+.project-tech-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.tech-badge-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: #FFFFFF; /* Pure White Requirement */
+  border: 1px solid #D9D9D9; /* Light Gray Requirement */
+  color: #000000; /* Dark Text */
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: default;
+}
+
+.tech-badge-item:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
+  box-shadow: 0 4px 12px rgba(60, 110, 113, 0.18);
+}
+
+[data-theme='dark'] .tech-badge-item {
+  background: #FFFFFF;
+  border-color: #D9D9D9;
+  color: #000000;
+}
+
+[data-theme='dark'] .tech-badge-item:hover {
+  background: #FFFFFF;
+  border-color: var(--color-warm-yellow);
+  color: #000000;
+  box-shadow: 0 4px 14px rgba(244, 211, 94, 0.3);
+}
+
+/* 5. Bottom Action Buttons Row */
+.project-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.project-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-md);
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.project-action-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+  border-color: var(--project-accent, var(--accent-1));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.project-action-btn--primary {
+  color: var(--color-white);
+  background: var(--color-ocean-teal);
+  border-color: var(--color-ocean-teal);
+  box-shadow: 0 4px 14px rgba(var(--color-ocean-teal-rgb), 0.25);
+}
+
+.project-action-btn--primary:hover {
+  background: #2f5658;
+  border-color: #2f5658;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--color-ocean-teal-rgb), 0.4);
+}
+
+.project-action-btn--expand {
+  margin-left: auto;
 }
 
 /* =======================================================
@@ -725,21 +1169,59 @@
 }
 
 /* =======================================================
-   RESPONSIVE BREAKPOINTS
-   Desktop: 3 columns | Tablet: 2 columns | Mobile: 1 column
+   RESPONSIVE DESIGN RULES FOR ZIG-ZAG TIMELINE
+   Desktop: 45% / 55% Alternating Split with Generous Gap
+   Tablet & Mobile: Stacked Vertical (MacBook Top, Details Below)
    ======================================================= */
 
-@media (max-width: 1180px) {
-  .laptop-showcase-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2.25rem 1.75rem;
+@media (max-width: 1024px) {
+  .projects-zigzag-timeline {
+    gap: 4.5rem;
   }
 
-  .laptop-showcase-grid > .project-showcase-item:last-child {
-    grid-column: 1 / -1;
-    max-width: 540px;
-    margin: 0 auto;
+  /* Break alternating pattern on tablets and mobiles:
+     MacBook always appears on top, project details directly underneath */
+  .project-zigzag-row,
+  .project-zigzag-row.row--laptop-left,
+  .project-zigzag-row.row--laptop-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+
+  /* Hide center vertical spine on tablets and mobiles to eliminate clutter */
+  .zigzag-center-spine,
+  .zigzag-track-node {
+    display: none;
+  }
+
+  /* Force media column (MacBook) to render FIRST, details SECOND */
+  .project-zigzag-row .zigzag-col--media {
+    order: 1 !important;
     width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .project-zigzag-row .zigzag-col--text {
+    order: 2 !important;
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* Mobile/Tablet Safe Scroll-Entry: Slide up smoothly without any horizontal overflow */
+  .project-zigzag-row.row--laptop-right .zigzag-col--text,
+  .project-zigzag-row.row--laptop-right .zigzag-col--media,
+  .project-zigzag-row.row--laptop-left .zigzag-col--media,
+  .project-zigzag-row.row--laptop-left .zigzag-col--text {
+    transform: translate3d(0, 36px, 0) !important;
+  }
+
+  .project-zigzag-row.is-in-view .zigzag-col--text,
+  .project-zigzag-row.is-in-view .zigzag-col--media {
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) !important;
   }
 }
 
@@ -748,16 +1230,22 @@
     padding: calc(var(--section-padding) * 0.75) 0;
   }
 
-  .laptop-showcase-grid {
-    grid-template-columns: 1fr;
-    max-width: 520px;
-    margin-left: auto;
-    margin-right: auto;
-    gap: 2.5rem;
+  .projects-zigzag-timeline {
+    gap: 3.5rem;
+    padding: 1.5rem 0 2rem;
   }
 
-  .laptop-showcase-grid > .project-showcase-item:last-child {
-    max-width: 520px;
+  .project-title-large {
+    font-size: 1.75rem;
+  }
+
+  .project-subtitle-lead {
+    font-size: 0.98rem;
+  }
+
+  .project-description-text {
+    font-size: 0.92rem;
+    line-height: 1.6;
   }
 
   .modal-browser-chrome {

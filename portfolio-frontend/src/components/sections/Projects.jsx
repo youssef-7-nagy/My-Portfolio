@@ -5,16 +5,15 @@ import { FaGithub } from 'react-icons/fa';
 import './Projects.css';
 
 /**
- * MacBookProjectCard
- * Renders a large, realistic 3D open MacBook mockup with live embedded website or screenshot
- * and clean project details arranged underneath.
+ * MacBookDisplay
+ * Renders the 3D scaled MacBook mockup with live embedded website or screenshot
+ * and ambient color halo glow.
  */
-function MacBookProjectCard({ project, index, onOpenModal }) {
+function MacBookDisplay({ project, index, onOpenModal }) {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const stageRef = useRef(null);
   const [dynamicScale, setDynamicScale] = useState(null);
 
-  // Dynamically calculate the perfect laptop scale based on the actual rendered column width
   useEffect(() => {
     const el = stageRef.current;
     if (!el) return;
@@ -23,9 +22,8 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
       const entry = entries ? entries[0] : null;
       const width = entry ? entry.contentRect.width : el.offsetWidth;
       if (width > 40) {
-        // Fits the 620px hardware base within column with a safety margin (never overflows or overlaps)
-        // Capped at 0.82 for sharp high-res rendering on huge monitors
-        const calculatedScale = Math.min(0.82, Math.max(0.38, (width - 8) / 620));
+        // Fits the 620px hardware base within container width; scale up to 0.98 on wide screens
+        const calculatedScale = Math.min(0.98, Math.max(0.42, (width - 12) / 620));
         const rounded = Math.round(calculatedScale * 100) / 100;
         setDynamicScale((prev) => (prev !== rounded ? rounded : prev));
       }
@@ -42,12 +40,15 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
 
   return (
     <div
-      className="project-showcase-item"
+      className="project-laptop-wrapper"
       style={{
         '--project-accent': project.accent || 'var(--color-ocean-teal)',
         ...(dynamicScale ? { '--laptop-scale': dynamicScale } : {})
       }}
     >
+      {/* Ambient Radial Color Glow behind the MacBook */}
+      <div className="laptop-ambient-glow" aria-hidden="true" />
+
       {/* 3D Scaled Laptop Stage */}
       <div ref={stageRef} className="laptop-stage">
         <div className="laptop-scaler">
@@ -70,7 +71,7 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
                     loading={index === 0 ? 'eager' : 'lazy'}
                   />
 
-                  {/* Live Injected Iframe — actively injected on all devices & screen sizes */}
+                  {/* Live Injected Iframe */}
                   {hasEmbed && (
                     <iframe
                       src={project.embedUrl}
@@ -94,78 +95,151 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
         </div>
       </div>
 
-      {/* Desk Ambient Reflection & Glow */}
+      {/* Desk Ambient Reflection & Shadow */}
       <div className="laptop-desk-shadow" />
+    </div>
+  );
+}
 
-      {/* Clean Project Information Hierarchy Underneath Laptop */}
-      <div className="project-info-block">
-        {/* 1. Project Number & Title */}
-        <div className="project-info-header">
-          <span className="project-index-badge">0{index + 1}</span>
-          <h3 className="project-title">{project.title}</h3>
-        </div>
+/**
+ * ProjectDetailsCard
+ * Renders the prominent number, bold title, readable description,
+ * customized tech stack pills, and action button row with staggered delays.
+ */
+function ProjectDetailsCard({ project, index, onOpenModal }) {
+  const numStr = `0${index + 1}`;
 
-        {/* 2. Concise One-Line Description */}
-        <p className="project-one-liner">{project.subtitle}</p>
+  return (
+    <div className="project-details-card">
+      {/* 1. Prominent Project Index Number */}
+      <div className="project-number-row">
+        <span className="project-number-ghost">{numStr}</span>
+        <span className="project-number-badge">PROJECT {numStr}</span>
+        {project.status && (
+          <span className="project-status-pill">{project.status}</span>
+        )}
+      </div>
 
-        {/* 3. Relevant Technology Tags */}
-        <div className="project-tech-tags">
-          {project.tags.map((tag) => (
-            <span key={tag} className="tech-tag-pill">
-              {tag}
-            </span>
-          ))}
-        </div>
+      {/* 2. Bold High-Contrast Title & Subtitle */}
+      <h3 className="project-title-large">{project.title}</h3>
+      <p className="project-subtitle-lead">{project.subtitle}</p>
 
-        {/* 4. Subtle Row of Action Links */}
-        <div className="project-actions-row">
-          {project.hasLiveEmbed ? (
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-action-btn project-action-btn--primary"
-            >
-              <ExternalLink size={13} />
-              <span>Live Website</span>
-            </a>
-          ) : (
-            <a
-              href={project.liveUrl !== '#' ? project.liveUrl : project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-action-btn project-action-btn--primary"
-            >
-              <ExternalLink size={13} />
-              <span>Explore Demo</span>
-            </a>
-          )}
+      {/* 3. Highly Readable Long Description */}
+      <p className="project-description-text">{project.description}</p>
 
-          {project.githubUrl && (
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="project-action-btn"
-              title="View Source Code on GitHub"
-            >
-              <FaGithub size={14} />
-              <span>GitHub</span>
-            </a>
-          )}
+      {/* 4. Tech Stack Badges with pure White background & Light Gray border */}
+      <div className="project-tech-badges">
+        {project.tags.map((tag) => (
+          <span key={tag} className="tech-badge-item">
+            {tag}
+          </span>
+        ))}
+      </div>
 
-          {project.hasLiveEmbed && (
-            <button
-              type="button"
-              className="project-action-btn project-action-btn--expand"
-              onClick={() => onOpenModal(project)}
-              title="Open Fullscreen Interactive Viewer"
-            >
-              <Maximize2 size={13} />
-              <span>Expand</span>
-            </button>
-          )}
-        </div>
+      {/* 5. Bottom Action Buttons Row */}
+      <div className="project-actions-row">
+        {project.hasLiveEmbed ? (
+          <a
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-action-btn project-action-btn--primary"
+          >
+            <ExternalLink size={14} />
+            <span>Live Website</span>
+          </a>
+        ) : (
+          <a
+            href={project.liveUrl !== '#' ? project.liveUrl : project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-action-btn project-action-btn--primary"
+          >
+            <ExternalLink size={14} />
+            <span>Explore Demo</span>
+          </a>
+        )}
+
+        {project.githubUrl && (
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="project-action-btn"
+            title="View Source Code on GitHub"
+          >
+            <FaGithub size={15} />
+            <span>GitHub</span>
+          </a>
+        )}
+
+        {project.hasLiveEmbed && (
+          <button
+            type="button"
+            className="project-action-btn project-action-btn--expand"
+            onClick={() => onOpenModal(project)}
+            title="Open Fullscreen Interactive Viewer"
+          >
+            <Maximize2 size={14} />
+            <span>Expand</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/**
+ * AlternatingProjectRow
+ * Represents a single stacked full-width project row in the zig-zag layout.
+ * Even rows (index 0, 2...): Details on Left, MacBook on Right.
+ * Odd rows (index 1, 3...): MacBook on Left, Details on Right.
+ */
+function AlternatingProjectRow({ project, index, onOpenModal }) {
+  const rowRef = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  // Trigger GPU-accelerated scroll-entry animation as each individual row scrolls into view
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Zig-zag assignment: index 0 (even) => laptop right / text left
+  // index 1 (odd) => laptop left / text right
+  const isLaptopRight = index % 2 === 0;
+
+  return (
+    <div
+      ref={rowRef}
+      className={`project-zigzag-row ${isLaptopRight ? 'row--laptop-right' : 'row--laptop-left'} ${inView ? 'is-in-view' : ''}`}
+    >
+      {/* Central Tracking Line Node Dot */}
+      <div className="zigzag-track-node" aria-hidden="true">
+        <span className="track-node-dot" />
+      </div>
+
+      {/* Column 1: Details for even rows, MacBook for odd rows */}
+      <div className="zigzag-col zigzag-col--text">
+        <ProjectDetailsCard project={project} index={index} onOpenModal={onOpenModal} />
+      </div>
+
+      {/* Column 2: MacBook for even rows, Details for odd rows */}
+      <div className="zigzag-col zigzag-col--media">
+        <MacBookDisplay project={project} index={index} onOpenModal={onOpenModal} />
       </div>
     </div>
   );
@@ -230,11 +304,16 @@ export default function Projects() {
         </div>
 
         {/* =======================================================
-            3-COLUMN INTERACTIVE MACBOOK GRID (Permanently Open)
+            ALTERNATING ZIG-ZAG INTERACTIVE PROJECTS TIMELINE
+            With Central Vertical Tracking Spine & Cinematic Entrance
             ======================================================= */}
-        <div className="laptop-showcase-grid">
+        <div className="projects-zigzag-timeline">
+          {/* Faint elegant vertical tracking line down the center */}
+          <div className="zigzag-center-spine" aria-hidden="true" />
+
+          {/* Alternating Project Rows */}
           {projects.slice(0, 3).map((project, index) => (
-            <MacBookProjectCard
+            <AlternatingProjectRow
               key={project.id}
               project={project}
               index={index}
