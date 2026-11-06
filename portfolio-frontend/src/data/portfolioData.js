@@ -12,17 +12,17 @@ export const developer = {
   lastName: 'Nagy',
   title: 'Junior MERN Stack Developer',
   tagline: 'Building modern web experiences with MongoDB, Express, React & Node.js',
-  email: 'youssefnagy@example.com',
+  email: 'youssefn899@gmail.com',
   location: 'Egypt',
   status: 'Available for work',
   resumeUrl: '#',
 };
 
 export const socialLinks = [
-  { id: 'github', label: 'GitHub', url: 'https://github.com/', icon: 'FaGithub' },
+  { id: 'github', label: 'GitHub', url: 'https://github.com/youssef-7-nagy', icon: 'FaGithub' },
   { id: 'linkedin', label: 'LinkedIn', url: 'https://linkedin.com/', icon: 'FaLinkedin' },
   { id: 'twitter', label: 'Twitter / X', url: 'https://x.com/', icon: 'FaTwitter' },
-  { id: 'email', label: 'Email', url: 'mailto:youssefnagy@example.com', icon: 'FaEnvelope' },
+  { id: 'email', label: 'Email', url: 'mailto:youssefn899@gmail.com', icon: 'FaEnvelope' },
 ];
 
 export const services = [
