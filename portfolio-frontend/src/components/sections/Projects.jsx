@@ -79,7 +79,6 @@ function MacBookProjectCard({ project, index, onOpenModal }) {
                       loading={index === 0 ? 'eager' : 'lazy'}
                       onLoad={() => setIframeLoaded(true)}
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
                     />
                   )}
                 </div>
