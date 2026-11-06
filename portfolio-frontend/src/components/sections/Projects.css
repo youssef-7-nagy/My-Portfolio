@@ -297,8 +297,9 @@
   border: none;
   background-color: transparent;
   pointer-events: none; /* Safe by default so user can scroll portfolio freely */
-  transition: opacity 0.4s ease;
+  transition: opacity 0.5s ease;
   z-index: 5;
+  -webkit-overflow-scrolling: touch;
 }
 
 .macbook-live-iframe--loading {
@@ -323,6 +324,7 @@
   object-position: top center;
   display: block;
   z-index: 1;
+  background-color: #08080c;
 }
 
 .macbook-screen-loading {
