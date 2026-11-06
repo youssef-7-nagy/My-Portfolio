@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm --prefix portfolio-frontend run build",
+  "outputDirectory": "portfolio-frontend/dist",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
