@@ -7,7 +7,7 @@ import Footer from './components/layout/Footer';
 import SocialClock from './components/ui/SocialClock';
 import SplashScreen from './components/ui/SplashScreen';
 import Projects from './components/sections/Projects';
-import HeroPhotoCard from './components/ui/HeroPhotoCard';
+import HeroSection from './components/sections/HeroSection';
 import HeroIdentityScanner from './components/ui/HeroIdentityScanner';
 import { FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -37,51 +37,7 @@ function HomePage() {
   return (
     <>
       {/* Hero Section */}
-      <section id="home" className="section hero-section">
-        <div className="container hero-container">
-          {/* Left Column: Bio & Calls to Action */}
-          <div className="hero-text-col">
-            <div className="hero-badge animate-fade-in-up">
-              <span className="hero-badge__dot" />
-              Available for work
-            </div>
-            <h1 className="hero-title animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-              Hi, I&rsquo;m <span className="gradient-text">Youssef Nagy</span>
-            </h1>
-            <p className="hero-subtitle animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              Junior MERN Stack Developer
-            </p>
-            <p className="hero-description animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-              I build modern, responsive web applications with MongoDB, Express.js, React, and Node.js.
-              Passionate about clean code and user-centric design.
-            </p>
-            <div className="hero-actions animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <a href="#projects" className="btn btn-primary">
-                View My Work
-              </a>
-              <a href="#contact" className="btn btn-outline">
-                Get In Touch
-              </a>
-            </div>
-
-            {/* Floating tech badges */}
-            <div className="hero-tech-row animate-fade-in-up" style={{ animationDelay: '0.55s' }}>
-              {['MongoDB', 'Express', 'React', 'Node.js'].map((tech) => (
-                <span key={tech} className="hero-tech-badge">{tech}</span>
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column: Photo */}
-          <div className="hero-visual-col">
-            <HeroPhotoCard />
-          </div>
-        </div>
-
-        {/* Background ambient glow */}
-        <div className="hero-glow hero-glow--1" />
-        <div className="hero-glow hero-glow--2" />
-      </section>
+      <HeroSection />
 
       {/* Cyber Scanner Showcase Section */}
       <section id="identity-scanner" className="section cyber-showcase-section">

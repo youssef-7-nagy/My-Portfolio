@@ -73,3 +73,4 @@ Always consume semantic variables rather than hardcoding hex values:
    - Cards and containers elevate with borders using `var(--color-border-accent)` and shadows with `var(--shadow-glow)`.
 4. **Theme Compatibility**: All components must look pristine in both Dark mode (default) and Light mode (`[data-theme='light']`).
 5. **No Layout or Structural Regressions**: Preserving responsiveness (from 320px mobile to 4K ultrawide) and animations is mandatory.
+

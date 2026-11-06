@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { navLinks, developer } from '../../data/portfolioData';
-import { Moon, Sun, Menu, X } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import yLogo from '../../assets/logos/y.png';
 import './Navbar.css';
+
+const editorialNavLinks = [
+  { id: 'home', label: 'Home', href: '#home' },
+  { id: 'about', label: 'About', href: '#about' },
+  { id: 'services', label: 'Service', href: '#services' },
+  { id: 'contact', label: 'Contact', href: '#contact' },
+];
 
 export default function Navbar({ splashActive = false }) {
   const { theme, toggleTheme, activeSection, mobileMenuOpen, toggleMobileMenu, closeMobileMenu } = usePortfolio();
@@ -27,7 +34,7 @@ export default function Navbar({ splashActive = false }) {
   return (
     <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} id="navbar">
       <nav className="navbar__inner container">
-        {/* Brand */}
+        {/* Left: Brand title / logo */}
         <a href="#home" className="navbar__brand" onClick={(e) => handleNavClick(e, '#home')}>
           <img
             id="navbar-target-logo"
@@ -39,13 +46,13 @@ export default function Navbar({ splashActive = false }) {
             className={`navbar__logo-icon ${splashActive ? 'navbar__logo-icon--hidden' : 'navbar__logo-icon--visible'}`}
           />
           <span className={`navbar__brand-text ${splashActive ? 'navbar__brand-text--hidden' : 'navbar__brand-text--visible'}`}>
-            youssef<span className="navbar__brand-dot">.dev</span>
+            Portfoliob<span className="navbar__brand-dot">®</span>
           </span>
         </a>
 
-        {/* Desktop Links */}
-        <ul className="navbar__links">
-          {navLinks.map((link) => (
+        {/* Center: Navigation Links ("Home", "About", "Service", "Contact") */}
+        <ul className="navbar__links navbar__links--center">
+          {editorialNavLinks.map((link) => (
             <li key={link.id}>
               <a
                 href={link.href}
@@ -53,33 +60,23 @@ export default function Navbar({ splashActive = false }) {
                 onClick={(e) => handleNavClick(e, link.href)}
               >
                 {link.label}
-                <span className="navbar__link-indicator" />
               </a>
             </li>
           ))}
         </ul>
 
-        {/* Desktop Actions */}
-        <div className="navbar__actions">
+        {/* Right: Minimalist Hamburger Menu (Two Horizontal Lines) */}
+        <div className="navbar__right-actions">
           <button
-            className="navbar__theme-toggle"
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+            className="navbar__minimal-menu-btn"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle navigation menu"
+            title="Menu"
           >
-            <span className="navbar__theme-icon">
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </span>
+            <span className="navbar__minimal-line" />
+            <span className="navbar__minimal-line" />
           </button>
-          <a href="#contact" className="btn btn-primary navbar__cta" onClick={(e) => handleNavClick(e, '#contact')}>
-            Let&rsquo;s Talk
-          </a>
         </div>
-
-        {/* Mobile Toggle */}
-        <button className="navbar__mobile-toggle" onClick={toggleMobileMenu} aria-label="Toggle menu">
-          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
       </nav>
 
       {/* Mobile Menu */}
