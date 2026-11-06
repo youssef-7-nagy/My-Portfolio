@@ -46,7 +46,9 @@
 /* 2. Responsive Stage Container (FLIP Shared Element) */
 .splash-stage {
   position: relative;
-  width: clamp(140px, 24vmin, 290px);
+  width: clamp(260px, 46vmin, 520px);
+  max-width: 90vw;
+  max-height: 80dvh;
   aspect-ratio: 444 / 316;
   display: flex;
   align-items: center;
