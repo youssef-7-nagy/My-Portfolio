@@ -1,301 +1,248 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { usePortfolio } from "../../context/PortfolioContext";
+import { useEffect, useRef, useState } from "react";
 import "./SplashScreen.css";
 import logoSrc from "../../assets/logos/y.png";
 
 /**
- * Premium Splash-to-Navbar Transition
- * 
- * 1. 0.0s – 1.1s: Center architectural pen contour drawing & SVG mask reveal
- * 2. 1.1s – 1.6s: Solid logo forms and holds in screen center
- * 3. 1.6s – 2.4s: THE SPLASH ANIMATION FINISHES ->
- *                 - The portfolio OPENS (white backdrop fades out revealing Hero & Navbar)
- *                 - WHILE the logo FLIES and scales down into the navbar logo slot!
- * 4. 2.4s:        Landing handoff -> Navbar logo visible, brand text unfurls, splash unmounts
+ * Optimized SplashScreen
+ * Zero-Lag 60fps Animation & FLIP Shared-Element Transition to Navbar Logo
+ * - Zero React re-renders mid-flight (uses direct DOM refs and Web Animations API)
+ * - Logo texture pre-decoded before frame 1 to eliminate initial frame drop
+ * - CPU-heavy masks eliminated in favor of lightweight SVG pathLength="1" paths
+ * - Pure GPU compositor transform & scale translation to target navbar logo
  */
-export default function SplashScreen({
+const SplashScreen = ({
   onComplete,
-  onFinish,
-  oncePerSession = false,
-  storageKey = "youssef_portfolio_splash_seen",
-}) {
-  const { theme } = usePortfolio();
-  const isDarkTheme = theme === "dark";
-
-  const onCompleteRef = useRef(onComplete);
-  const onFinishRef = useRef(onFinish);
-  const stageRef = useRef(null);
-
-  const [stage, setStage] = useState(() => {
+  oncePerSession = true,
+  storageKey = "youssef_splash_played",
+}) => {
+  const [isRemoved, setIsRemoved] = useState(() => {
     if (typeof window !== "undefined" && oncePerSession) {
       try {
-        if (sessionStorage.getItem(storageKey) === "true") {
-          return "completed";
-        }
+        return sessionStorage.getItem(storageKey) === "true";
       } catch {
-        // Ignore storage errors in private browsing
+        return false;
       }
     }
-    return "drawing";
+    return false;
   });
 
-  const [isOpening, setIsOpening] = useState(false);
-  const isOpeningRef = useRef(false);
+  const overlayRef = useRef(null);
+  const stageRef = useRef(null);
+  const svgRef = useRef(null);
+  const imgRef = useRef(null);
 
-  const finish = useCallback(() => {
-    try {
-      if (oncePerSession && typeof window !== "undefined") {
-        sessionStorage.setItem(storageKey, "true");
-      }
-    } catch {
-      // Ignore storage errors
+  useEffect(() => {
+    if (isRemoved) {
+      onComplete?.();
+      return;
     }
-    document.documentElement.style.overflow = "";
-    document.body.style.overflow = "";
-    setStage("completed");
-    onCompleteRef.current?.();
-    onFinishRef.current?.();
-  }, [oncePerSession, storageKey]);
 
-  const finishRef = useRef(finish);
-  useEffect(() => {
-    finishRef.current = finish;
-  });
+    let isCancelled = false;
+    const timers = [];
 
-  useEffect(() => {
-    // Lock page scroll and ensure at top of page for pristine coordinate measurement
-    window.scrollTo(0, 0);
+    // 1. Lock scrolling during splash screen
     const prevHtmlOverflow = document.documentElement.style.overflow;
     const prevBodyOverflow = document.body.style.overflow;
     document.documentElement.style.overflow = "hidden";
     document.body.style.overflow = "hidden";
+    window.scrollTo(0, 0);
 
-    const prefersReducedMotion =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReducedMotion) {
-      // Gentle reduced-motion fallback
-      const tFade = setTimeout(() => {
-        setIsOpening(true);
-        isOpeningRef.current = true;
-      }, 600);
-      const tDone = setTimeout(() => finishRef.current?.(), 1000);
-      return () => {
-        clearTimeout(tFade);
-        clearTimeout(tDone);
-        document.documentElement.style.overflow = prevHtmlOverflow;
-        document.body.style.overflow = prevBodyOverflow;
-      };
+    // 2. Hide navbar logo temporarily to prepare for seamless arrival
+    const navbarLogo = document.querySelector("[data-navbar-logo]");
+    if (navbarLogo) {
+      navbarLogo.style.opacity = "0";
+      navbarLogo.style.transition = "opacity 0.2s ease";
     }
 
-    // --- Master Uninterrupted Sequence ---
+    const cleanupAndFinish = () => {
+      if (isCancelled) return;
+      if (navbarLogo) {
+        navbarLogo.style.opacity = "1";
+      }
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
 
-    // 1. Stage 1 -> 2: Form solid original logo
-    const tForming = setTimeout(() => {
-      setStage("forming");
-    }, 1100);
+      try {
+        if (oncePerSession) sessionStorage.setItem(storageKey, "true");
+      } catch {
+        // Ignore storage errors in private browsing
+      }
 
-    // 2. Stage 2 -> 3: Brief hold
-    const tHolding = setTimeout(() => {
-      setStage("holding");
-    }, 1500);
+      setIsRemoved(true);
+      onComplete?.();
+    };
 
-    // 3. Stage 3 -> 4: Splash animation finishes -> OPEN PORTFOLIO & FLY LOGO TO NAVBAR!
-    let rafId;
-    const tOpenAndFly = setTimeout(() => {
-      window.scrollTo(0, 0);
+    const startSequence = async () => {
+      // 3. Pre-decode logo texture directly into GPU VRAM before animation starts
+      try {
+        const preloadImg = new Image();
+        preloadImg.src = logoSrc;
+        if (preloadImg.decode) {
+          await Promise.race([
+            preloadImg.decode(),
+            new Promise((res) => setTimeout(res, 600)),
+          ]);
+        }
+      } catch {
+        // Continue even if pre-decode fails
+      }
 
-      // Trigger the opening of the portfolio (white backdrop dissolves)
-      setIsOpening(true);
-      isOpeningRef.current = true;
-      setStage("flying");
+      if (isCancelled) return;
 
-      const sourceEl = stageRef.current;
-      const targetEl =
-        document.getElementById("navbar-target-logo") ||
-        document.querySelector('[data-navbar-logo="true"]');
+      const prefersReducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
 
-      if (!sourceEl || !targetEl) {
-        finishRef.current?.();
+      if (prefersReducedMotion) {
+        if (imgRef.current) imgRef.current.classList.add("is-visible");
+        if (svgRef.current) svgRef.current.classList.add("is-hidden");
+        const t = setTimeout(() => {
+          if (overlayRef.current) overlayRef.current.classList.add("is-fading-out");
+          setTimeout(cleanupAndFinish, 350);
+        }, 400);
+        timers.push(t);
         return;
       }
 
-      // Exact coordinate measurement
-      const sourceRect = sourceEl.getBoundingClientRect();
-      const targetRect = targetEl.getBoundingClientRect();
+      // 4. Double requestAnimationFrame ensures complete paint before drawing begins
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          if (isCancelled || !stageRef.current) return;
 
-      const targetWidth = targetRect.width > 5 ? targetRect.width : 53.4;
-      const targetHeight = targetRect.height > 5 ? targetRect.height : 38;
+          // Stage 1: Begin hardware-accelerated drawing on GPU
+          stageRef.current.classList.add("start-drawing");
 
-      const sourceCenterX = sourceRect.left + sourceRect.width / 2;
-      const sourceCenterY = sourceRect.top + sourceRect.height / 2;
-      const targetCenterX = targetRect.left + targetWidth / 2;
-      const targetCenterY = targetRect.top + targetHeight / 2;
+          // Stage 2: Drawing finishes, smoothly reveal solid original PNG logo
+          const t1 = setTimeout(() => {
+            if (isCancelled) return;
+            if (imgRef.current) imgRef.current.classList.add("is-visible");
+            if (svgRef.current) svgRef.current.classList.add("is-hidden");
+          }, 1150);
 
-      const deltaX = targetCenterX - sourceCenterX;
-      const deltaY = targetCenterY - sourceCenterY;
-      const scale = targetWidth / sourceRect.width;
+          // Stage 3 & 4: GPU FLIP Flight directly into Navbar logo coordinates
+          const t2 = setTimeout(() => {
+            if (isCancelled || !stageRef.current || !overlayRef.current) return;
 
-      // Lock center transform origin and commit initial transform
-      sourceEl.style.transformOrigin = "50% 50%";
-      sourceEl.style.transform = "translate3d(0px, 0px, 0) scale(1)";
-      sourceEl.style.transition = "none";
+            const targetEl = document.querySelector("[data-navbar-logo]");
 
-      // Force synchronous reflow so browser commits starting state
-      void sourceEl.offsetWidth;
+            if (targetEl && stageRef.current.animate) {
+              const sourceRect = stageRef.current.getBoundingClientRect();
+              const targetRect = targetEl.getBoundingClientRect();
 
-      // Launch silky 60fps GPU flight directly onto the navbar logo
-      rafId = requestAnimationFrame(() => {
-        sourceEl.style.transition =
-          "transform 800ms cubic-bezier(0.22, 1, 0.36, 1)";
-        sourceEl.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) scale(${scale})`;
+              if (targetRect.width > 0 && sourceRect.width > 0) {
+                const sourceCenterX = sourceRect.left + sourceRect.width / 2;
+                const sourceCenterY = sourceRect.top + sourceRect.height / 2;
+                const targetCenterX = targetRect.left + targetRect.width / 2;
+                const targetCenterY = targetRect.top + targetRect.height / 2;
+
+                const deltaX = targetCenterX - sourceCenterX;
+                const deltaY = targetCenterY - sourceCenterY;
+                const scale = targetRect.width / sourceRect.width;
+
+                // Fade out white splash backdrop smoothly during flight
+                overlayRef.current.classList.add("bg-transparent");
+
+                // Execute FLIP flight strictly on the Compositor thread
+                const flight = stageRef.current.animate(
+                  [
+                    { transform: "translate3d(0px, 0px, 0px) scale(1)" },
+                    {
+                      transform: `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(${scale})`,
+                    },
+                  ],
+                  {
+                    duration: 750,
+                    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                    fill: "forwards",
+                  }
+                );
+
+                flight.onfinish = cleanupAndFinish;
+                return;
+              }
+            }
+
+            // Fallback: graceful fade-out if navbar logo element is absent
+            overlayRef.current.classList.add("is-fading-out");
+            const t3 = setTimeout(cleanupAndFinish, 550);
+            timers.push(t3);
+          }, 1600);
+
+          timers.push(t1, t2);
+        });
       });
-    }, 1750);
-
-    // 4. Logo lands in navbar -> Seamless handoff & unmount
-    const tLanding = setTimeout(() => {
-      finishRef.current?.();
-    }, 1750 + 820);
-
-    // Clean handoff if resized during flight
-    const handleResize = () => {
-      if (isOpeningRef.current) {
-        finishRef.current?.();
-      }
     };
-    window.addEventListener("resize", handleResize);
+
+    startSequence();
 
     return () => {
-      clearTimeout(tForming);
-      clearTimeout(tHolding);
-      clearTimeout(tOpenAndFly);
-      clearTimeout(tLanding);
-      if (rafId) cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleResize);
+      isCancelled = true;
+      timers.forEach(clearTimeout);
       document.documentElement.style.overflow = prevHtmlOverflow;
       document.body.style.overflow = prevBodyOverflow;
+      if (navbarLogo) navbarLogo.style.opacity = "1";
     };
-  }, []); // Run ONCE on mount
+  }, [isRemoved, oncePerSession, storageKey, onComplete]);
 
-  if (stage === "completed") return null;
-
-  const isFormed =
-    stage === "forming" || stage === "holding" || stage === "flying";
+  if (isRemoved) return null;
 
   return (
     <div
-      className="splash-screen"
+      ref={overlayRef}
+      className="splash-overlay"
       role="status"
       aria-label="Loading portfolio"
     >
-      {/* 
-        Backdrop Layer:
-        Fades out at ~1.7s when the splash animation finishes,
-        opening the portfolio underneath while the logo flies!
-      */}
-      <div
-        className={`splash-screen__backdrop ${
-          isOpening ? "splash-screen__backdrop--fading" : ""
-        }`}
-      />
-
-      {/* 
-        Flying Logo Stage:
-        Translates and scales down directly to the navbar logo slot
-      */}
-      <div
-        ref={stageRef}
-        className={`splash-screen__stage ${
-          isOpening ? "splash-screen__stage--flying" : ""
-        } ${isDarkTheme ? "splash-screen__stage--dark" : "splash-screen__stage--light"}`}
-      >
-        {/* Drawing & mask layer */}
+      <div ref={stageRef} className="splash-stage">
+        {/* Layer 1: Hardware-accelerated SVG contour paths (zero CPU masks) */}
         <svg
-          className={`splash-screen__svg ${
-            isFormed ? "splash-screen__svg--hidden" : ""
-          }`}
+          ref={svgRef}
+          className="splash-svg"
           viewBox="0 0 444 316"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
-          <defs>
-            <mask
-              id="logo-progressive-mask"
-              maskUnits="userSpaceOnUse"
-              x="0"
-              y="0"
-              width="444"
-              height="316"
-            >
-              <rect width="444" height="316" fill="black" />
-              <path
-                className="mask-reveal-stroke mask-stroke-1"
-                d="M 118 72 L 198 142"
-              />
-              <path
-                className="mask-reveal-stroke mask-stroke-2"
-                d="M 310 72 L 215 162 L 215 292"
-              />
-              <path
-                className="mask-reveal-stroke mask-stroke-3"
-                d="M 174 156 L 132 201 L 174 246"
-              />
-              <path
-                className="mask-reveal-stroke mask-stroke-4"
-                d="M 255 156 L 297 201 L 255 246"
-              />
-            </mask>
-          </defs>
-
-          {/* Masked Original PNG */}
-          <image
-            href={logoSrc}
-            width="444"
-            height="316"
-            preserveAspectRatio="xMidYMid meet"
-            mask="url(#logo-progressive-mask)"
+          {/* Top-left arm of Y */}
+          <path
+            pathLength="1"
+            className="logo-path path-1"
+            d="M 110 77 L 156 77 Q 163 77 168 82 L 208 122 L 185 152 L 110 77 Z"
           />
-
-          {/* Architectural pen-sketch outlines */}
-          <g className="sketch-contours">
-            <path
-              className="sketch-path sketch-path-1"
-              d="M 110 77 L 156 77 Q 163 77 168 82 L 208 122 L 185 152 L 110 77 Z"
-            />
-            <path
-              className="sketch-path sketch-path-2"
-              d="M 319 77 L 275 77 Q 268 77 262 83 L 201 148 Q 196 155 196 165 L 196 286 Q 196 292 203 285 L 234 252 L 234 172 Q 234 164 240 157 L 319 77 Z"
-            />
-            <path
-              className="sketch-path sketch-path-3"
-              d="M 171 151 L 122 201 L 171 251 L 171 224 L 149 201 L 171 178 Z"
-            />
-            <path
-              className="sketch-path sketch-path-4"
-              d="M 258 151 L 307 201 L 258 251 L 258 224 L 280 201 L 258 178 Z"
-            />
-          </g>
+          {/* Right arm and vertical stem of Y */}
+          <path
+            pathLength="1"
+            className="logo-path path-2"
+            d="M 319 77 L 275 77 Q 268 77 262 83 L 201 148 Q 196 155 196 165 L 196 286 Q 196 292 203 285 L 234 252 L 234 172 Q 234 164 240 157 L 319 77 Z"
+          />
+          {/* Code bracket left (<) */}
+          <path
+            pathLength="1"
+            className="logo-path path-3"
+            d="M 171 151 L 122 201 L 171 251 L 171 224 L 149 201 L 171 178 Z"
+          />
+          {/* Code bracket right (>) */}
+          <path
+            pathLength="1"
+            className="logo-path path-4"
+            d="M 258 151 L 307 201 L 258 251 L 258 224 L 280 201 L 258 178 Z"
+          />
         </svg>
 
-        {/* Solid original logo */}
+        {/* Layer 2: Original pixel-perfect logo */}
         <img
+          ref={imgRef}
           src={logoSrc}
-          alt="Logo"
+          alt="Youssef Logo"
           width="444"
           height="316"
-          decoding="sync"
+          decoding="async"
           fetchPriority="high"
-          className={`splash-screen__original-logo ${
-            isFormed ? "splash-screen__original-logo--visible" : ""
-          } ${
-            stage === "holding" || isOpening
-              ? "splash-screen__original-logo--settled"
-              : ""
-          }`}
+          className="splash-img"
         />
       </div>
     </div>
   );
-}
+};
+
+export default SplashScreen;
