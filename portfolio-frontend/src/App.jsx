@@ -8,6 +8,7 @@ import SocialClock from './components/ui/SocialClock';
 import SplashScreen from './components/ui/SplashScreen';
 import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
+import AboutSection from './components/sections/AboutSection';
 import HeroIdentityScanner from './components/ui/HeroIdentityScanner';
 import { FaEnvelope, FaWhatsapp } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -57,13 +58,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Placeholder sections – we'll flesh these out next */}
-      <section id="about" className="section">
-        <div className="container">
-          <h2 className="section-title">About <span className="gradient-text">Me</span></h2>
-          <p className="section-subtitle">Coming soon — my journey into MERN stack development.</p>
-        </div>
-      </section>
+      {/* Modern High-Converting About Me Section */}
+      <AboutSection />
 
       <section id="skills" className="section">
         <div className="container">

@@ -1,0 +1,536 @@
+/* ==========================================================================
+   ABOUT SECTION STYLES
+   Bento Grid Architecture adhering strictly to the 6 Official Colors:
+   Warm Yellow (#F4D35E), Ocean Teal (#3C6E71), Deep Steel Blue (#284B63),
+   Light Gray (#D9D9D9), Black (#000000), White (#FFFFFF).
+   ========================================================================== */
+
+.about-section {
+  position: relative;
+  background-color: var(--bg-primary);
+  padding: var(--section-padding) 0;
+  overflow: hidden;
+}
+
+.about-container {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.5rem, 5vw, 4.5rem);
+  position: relative;
+  z-index: 2;
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* ==========================================================================
+   1. Interactive 4-Card Bento Highlights / Stats Grid
+   ========================================================================== */
+.about-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1rem, 2vw, 1.5rem);
+  width: 100%;
+}
+
+.about-stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.25rem, 2.2vw, 1.75rem);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.35s ease,
+              box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+.about-stat-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--card-accent, var(--color-ocean-teal));
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45);
+}
+
+[data-theme='light'] .about-stat-card {
+  background: var(--color-white);
+  border-color: var(--color-light-gray);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='light'] .about-stat-card:hover {
+  box-shadow: 0 14px 32px rgba(40, 75, 99, 0.1);
+}
+
+.about-stat-card__glow {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--card-accent, var(--color-ocean-teal)) 0%, transparent 70%);
+  opacity: 0.12;
+  filter: blur(25px);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.about-stat-card:hover .about-stat-card__glow {
+  opacity: 0.28;
+}
+
+.about-stat-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.about-stat-card__icon-box {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  background: rgba(var(--color-ocean-teal-rgb), 0.14);
+  color: var(--card-accent, var(--color-ocean-teal));
+  border: 1px solid rgba(var(--color-ocean-teal-rgb), 0.25);
+  flex-shrink: 0;
+}
+
+.about-stat-card__label {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.about-stat-card__title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  line-height: 1.35;
+}
+
+.about-stat-card__highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--color-warm-yellow);
+  background: rgba(var(--color-warm-yellow-rgb), 0.12);
+  border: 1px solid rgba(var(--color-warm-yellow-rgb), 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: 10px;
+  align-self: flex-start;
+}
+
+[data-theme='light'] .about-stat-card__highlight {
+  color: var(--color-ocean-teal);
+  background: rgba(var(--color-ocean-teal-rgb), 0.1);
+  border-color: rgba(var(--color-ocean-teal-rgb), 0.28);
+}
+
+.about-stat-sparkle {
+  flex-shrink: 0;
+}
+
+.about-stat-card__desc {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ==========================================================================
+   2. Main Narrative & Skills Bento Two-Column Layout
+   ========================================================================== */
+.about-main-grid {
+  display: grid;
+  grid-template-columns: 1.08fr 0.92fr;
+  gap: clamp(1.5rem, 3vw, 2.25rem);
+  width: 100%;
+  align-items: stretch;
+}
+
+/* Common Card Styling */
+.about-bio-card,
+.about-skills-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: clamp(1.75rem, 3.5vw, 2.75rem);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+[data-theme='light'] .about-bio-card,
+[data-theme='light'] .about-skills-card {
+  background: var(--color-white);
+  border-color: var(--color-light-gray);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+}
+
+.about-card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: monospace;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-ocean-teal);
+  background: rgba(var(--color-ocean-teal-rgb), 0.12);
+  border: 1px solid rgba(var(--color-ocean-teal-rgb), 0.25);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 20px;
+  align-self: flex-start;
+}
+
+.badge-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-ocean-teal);
+}
+
+.badge-bullet--yellow {
+  background: var(--color-warm-yellow);
+}
+
+/* Bio Paragraphs */
+.about-bio-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.about-bio-p {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.72;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.about-bio-p strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.about-bio-p em {
+  font-style: normal;
+  color: var(--color-warm-yellow);
+  font-weight: 600;
+}
+
+[data-theme='light'] .about-bio-p em {
+  color: var(--color-ocean-teal);
+}
+
+.about-bio-p--lead {
+  font-size: 1.02rem;
+  color: var(--text-primary);
+}
+
+/* Call to Action Row */
+.about-bio-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.about-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.about-btn--primary {
+  background: var(--color-ocean-teal);
+  color: var(--color-white);
+  border: 1px solid var(--color-ocean-teal);
+  box-shadow: 0 4px 14px rgba(var(--color-ocean-teal-rgb), 0.3);
+}
+
+.about-btn--primary:hover {
+  background: #2e5658;
+  border-color: #2e5658;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(var(--color-ocean-teal-rgb), 0.45);
+}
+
+.about-btn--outline {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+}
+
+.about-btn--outline:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--color-warm-yellow);
+  color: var(--color-warm-yellow);
+  transform: translateY(-2px);
+}
+
+[data-theme='light'] .about-btn--outline:hover {
+  border-color: var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
+}
+
+.about-btn-arrow {
+  transition: transform var(--transition-fast);
+}
+
+.about-btn--outline:hover .about-btn-arrow {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   Right Column: Skills & Categorized Competencies
+   ========================================================================== */
+.about-skills-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.2vw, 1.7rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.about-skills-sub {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 24px;
+}
+
+.about-competency-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+
+.competency-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.competency-group__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.competency-group__indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.competency-group__title {
+  font-family: var(--font-heading);
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.competency-badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Pill Badges: Pure White (#FFFFFF) bg, Light Gray (#D9D9D9) border, Dark Text */
+.competency-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  border: 1px solid var(--color-light-gray);
+  color: var(--color-black);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: default;
+}
+
+.competency-check {
+  color: var(--color-ocean-teal);
+  flex-shrink: 0;
+}
+
+.competency-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
+  box-shadow: 0 4px 12px rgba(60, 110, 113, 0.2);
+}
+
+[data-theme='dark'] .competency-pill {
+  background: #FFFFFF;
+  border-color: #D9D9D9;
+  color: #000000;
+}
+
+[data-theme='dark'] .competency-pill:hover {
+  border-color: var(--color-warm-yellow);
+  color: #000000;
+  box-shadow: 0 4px 14px rgba(244, 211, 94, 0.35);
+}
+
+/* Language Proficiency Bar */
+.about-languages-card {
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  background: rgba(var(--color-deep-steel-blue-rgb), 0.18);
+  border: 1px solid var(--border-subtle);
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+[data-theme='light'] .about-languages-card {
+  background: rgba(var(--color-light-gray-rgb), 0.3);
+  border-color: rgba(var(--color-deep-steel-blue-rgb), 0.15);
+}
+
+.about-languages-title {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.about-languages-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lang-tag {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.lang-tag strong {
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   3. Cinematic Scroll-Triggered Entry Animation
+   ========================================================================== */
+.about-section .about-stat-card,
+.about-section .about-bio-card,
+.about-section .about-skills-card {
+  opacity: 0;
+  transform: translate3d(0, 32px, 0);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.about-section.is-visible .about-stat-card,
+.about-section.is-visible .about-bio-card,
+.about-section.is-visible .about-skills-card {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+.about-section.is-visible .about-bio-card {
+  transition-delay: 0.15s;
+}
+
+.about-section.is-visible .about-skills-card {
+  transition-delay: 0.25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-section .about-stat-card,
+  .about-section .about-bio-card,
+  .about-section .about-skills-card {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ==========================================================================
+   4. Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .about-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .about-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .about-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-bio-card,
+  .about-skills-card {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .about-bio-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .about-btn {
+    justify-content: center;
+  }
+}
