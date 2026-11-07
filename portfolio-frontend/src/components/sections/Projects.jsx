@@ -288,6 +288,38 @@ export default function Projects() {
       ref={sectionRef}
       className={`section projects-section ${isVisible ? 'is-visible' : ''}`}
     >
+      {/* 1. Architectural Dashed Grid with Delicate (+) Intersections — matching Hero */}
+      <div className="projects-editorial__grid" aria-hidden="true">
+        <div className="projects-grid-line projects-grid-line--v1" />
+        <div className="projects-grid-line projects-grid-line--v2" />
+        <div className="projects-grid-line projects-grid-line--v3" />
+        <div className="projects-grid-line projects-grid-line--v4" />
+
+        <div className="projects-grid-line projects-grid-line--h1" />
+        <div className="projects-grid-line projects-grid-line--h2" />
+        <div className="projects-grid-line projects-grid-line--h3" />
+
+        <span className="projects-grid-plus" style={{ left: '12%', top: '8%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '38%', top: '8%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '62%', top: '8%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '88%', top: '8%' }}>+</span>
+
+        <span className="projects-grid-plus" style={{ left: '12%', top: '48%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '38%', top: '48%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '62%', top: '48%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '88%', top: '48%' }}>+</span>
+
+        <span className="projects-grid-plus" style={{ left: '12%', top: '88%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '38%', top: '88%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '62%', top: '88%' }}>+</span>
+        <span className="projects-grid-plus" style={{ left: '88%', top: '88%' }}>+</span>
+      </div>
+
+      {/* 2. Giant Architectural Watermark Typography — matching Hero */}
+      <div className="projects-editorial__bg-text" aria-hidden="true">
+        PROJECTS
+      </div>
+
       <div className="container projects-container">
         {/* Section Header */}
         <div className="projects-header">

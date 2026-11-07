@@ -1,19 +1,129 @@
 /* =======================================================
    FEATURED PROJECTS SECTION — 3D OPEN MACBOOK SHOWCASE
-   Ultra-realistic hardware mockups, live website embed,
-   clean information hierarchy, fully responsive fluid layout
+   Architectural Editorial Layout matching Hero Theme
+   Warm terracotta gradient, delicate grid lines, and high-contrast styling
    ======================================================= */
 
 .projects-section {
   position: relative;
   overflow: hidden;
-  padding: var(--section-padding) 0;
+  padding: clamp(80px, 10vw, 130px) 0;
+
+  /* Warm Monochromatic Terracotta Gradient Backdrop matching Hero Section */
+  background: radial-gradient(circle at 50% 30%, #DF6334 0%, #D05125 35%, #B74219 70%, #95310F 100%);
+  box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.35);
+  color: #FFFFFF;
+}
+
+/* =======================================================
+   1. Architectural Dashed Grid with Delicate (+) Intersections
+   ======================================================= */
+.projects-editorial__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.projects-grid-line {
+  position: absolute;
+}
+
+/* Vertical dashed lines matching Hero 12%, 38%, 62%, 88% */
+.projects-grid-line--v1 {
+  left: 12%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.projects-grid-line--v2 {
+  left: 38%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.projects-grid-line--v3 {
+  left: 62%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.projects-grid-line--v4 {
+  left: 88%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+/* Horizontal dashed lines */
+.projects-grid-line--h1 {
+  top: 8%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.projects-grid-line--h2 {
+  top: 48%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.projects-grid-line--h3 {
+  top: 88%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+/* Intersection Plus Signs (+) */
+.projects-grid-plus {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+  line-height: 1;
+}
+
+/* =======================================================
+   2. Massive Faint Architectural Watermark Typography
+   ======================================================= */
+.projects-editorial__bg-text {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: clamp(4.5rem, 16vw, 15rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.06);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  user-select: none;
 }
 
 .projects-container {
   max-width: min(100% - 2rem, 1580px);
   margin: 0 auto;
   padding: 0 1rem;
+  position: relative;
+  z-index: 2;
 }
 
 .projects-header {
@@ -21,14 +131,43 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 2;
+}
+
+.projects-header .hero-badge {
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+}
+
+.projects-header .hero-badge__dot {
+  background: var(--color-warm-yellow);
+  box-shadow: 0 0 10px var(--color-warm-yellow);
+}
+
+.projects-header .section-title {
+  color: #FFFFFF;
+  font-size: clamp(2.4rem, 5.5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.projects-header .section-title .gradient-text {
+  background: linear-gradient(135deg, #FFFFFF 30%, var(--color-warm-yellow) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .projects-header .section-subtitle {
   max-width: 680px;
   margin-top: 0.75rem;
   font-size: 1.05rem;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
 }
 
@@ -354,9 +493,15 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 8px 12px;
+  padding: 18px 24px;
   width: 100%;
   position: relative;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.4);
 }
 
 /* 1. Project Number Row */
@@ -374,12 +519,7 @@
   line-height: 0.9;
   letter-spacing: -0.04em;
   color: var(--color-warm-yellow);
-  text-shadow: 0 0 24px rgba(var(--color-warm-yellow-rgb), 0.35);
-}
-
-[data-theme='light'] .project-number-ghost {
-  color: var(--color-ocean-teal);
-  text-shadow: 0 0 20px rgba(var(--color-ocean-teal-rgb), 0.25);
+  text-shadow: 0 0 24px rgba(var(--color-warm-yellow-rgb), 0.5);
 }
 
 .project-number-badge {
@@ -387,25 +527,19 @@
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.08em;
-  color: var(--color-light-gray);
-  background: rgba(var(--color-deep-steel-blue-rgb), 0.22);
-  border: 1px solid rgba(var(--color-light-gray-rgb), 0.18);
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   padding: 4px 10px;
   border-radius: var(--radius-full);
-}
-
-[data-theme='light'] .project-number-badge {
-  color: var(--color-deep-steel-blue);
-  background: rgba(var(--color-light-gray-rgb), 0.45);
-  border-color: rgba(var(--color-deep-steel-blue-rgb), 0.2);
 }
 
 .project-status-pill {
   font-size: 0.7rem;
   font-weight: 600;
   color: #10b981;
-  background: rgba(16, 185, 129, 0.12);
-  border: 1px solid rgba(16, 185, 129, 0.25);
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
   padding: 3px 9px;
   border-radius: var(--radius-full);
   margin-left: auto;
@@ -414,17 +548,13 @@
 /* 2. Bold Project Title & Lead */
 .project-title-large {
   font-family: var(--font-heading);
-  font-size: clamp(1.85rem, 3.2vw, 2.65rem);
-  font-weight: 800;
+  font-size: clamp(2rem, 3.4vw, 2.85rem);
+  font-weight: 900;
   letter-spacing: -0.03em;
-  line-height: 1.12;
+  line-height: 1.1;
   margin: 0;
-  color: #000000; /* High-contrast Black requirement */
-}
-
-/* In Dark Mode, high-contrast crisp White ensures maximum legibility */
-[data-theme='dark'] .project-title-large {
-  color: #FFFFFF;
+  color: #FFFFFF; /* Solid heavy white typography matching Hero bottom text */
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
 }
 
 .project-subtitle-lead {
@@ -434,10 +564,7 @@
   color: var(--color-warm-yellow);
   line-height: 1.4;
   margin: 0;
-}
-
-[data-theme='light'] .project-subtitle-lead {
-  color: var(--color-ocean-teal);
+  text-shadow: 0 0 12px rgba(var(--color-warm-yellow-rgb), 0.3);
 }
 
 /* 3. Highly Readable Long Description */
@@ -445,16 +572,12 @@
   font-family: var(--font-body);
   font-size: 0.96rem;
   line-height: 1.68;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.88);
   margin: 4px 0 6px;
   max-width: 540px;
 }
 
-[data-theme='light'] .project-description-text {
-  color: #374151;
-}
-
-/* 4. Tech Stack Badges: Pure White (#FFFFFF) bg, Light Gray (#D9D9D9) border, Dark Text */
+/* 4. Tech Stack Badges: Floating Minimalist Card Frame matching Hero #ZENTIX style */
 .project-tech-badges {
   display: flex;
   flex-wrap: wrap;
@@ -466,47 +589,34 @@
   display: inline-flex;
   align-items: center;
   padding: 5px 12px;
-  border-radius: var(--radius-full);
-  background: #FFFFFF; /* Pure White Requirement */
-  border: 1px solid #D9D9D9; /* Light Gray Requirement */
-  color: #000000; /* Dark Text */
+  border-radius: var(--radius-sm);
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #000000;
   font-family: var(--font-body);
-  font-size: 0.76rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
   cursor: default;
 }
 
 .tech-badge-item:hover {
   transform: translateY(-2px);
-  border-color: var(--color-ocean-teal);
-  color: var(--color-ocean-teal);
-  box-shadow: 0 4px 12px rgba(60, 110, 113, 0.18);
-}
-
-[data-theme='dark'] .tech-badge-item {
-  background: #FFFFFF;
-  border-color: #D9D9D9;
-  color: #000000;
-}
-
-[data-theme='dark'] .tech-badge-item:hover {
-  background: #FFFFFF;
   border-color: var(--color-warm-yellow);
   color: #000000;
-  box-shadow: 0 4px 14px rgba(244, 211, 94, 0.3);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
 }
 
-/* 5. Bottom Action Buttons Row */
+/* 5. Bottom Action Buttons Row — Dark/Floating Micro-Cards matching Hero Let's Talk */
 .project-actions-row {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 8px;
   padding-top: 14px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
   flex-wrap: wrap;
 }
 
@@ -518,34 +628,35 @@
   border-radius: var(--radius-md);
   font-size: 0.84rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(15, 16, 20, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   transition: all var(--transition-fast);
   cursor: pointer;
   text-decoration: none;
+  backdrop-filter: blur(10px);
 }
 
 .project-action-btn:hover {
-  color: var(--text-primary);
-  background: var(--bg-card-hover);
-  border-color: var(--project-accent, var(--accent-1));
+  color: #FFFFFF;
+  background: rgba(20, 22, 28, 0.95);
+  border-color: var(--color-warm-yellow);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .project-action-btn--primary {
-  color: var(--color-white);
-  background: var(--color-ocean-teal);
-  border-color: var(--color-ocean-teal);
-  box-shadow: 0 4px 14px rgba(var(--color-ocean-teal-rgb), 0.25);
+  color: #FFFFFF;
+  background: rgba(60, 110, 113, 0.85);
+  border-color: rgba(60, 110, 113, 0.95);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 .project-action-btn--primary:hover {
-  background: #2f5658;
-  border-color: #2f5658;
+  background: var(--color-ocean-teal);
+  border-color: var(--color-warm-yellow);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(var(--color-ocean-teal-rgb), 0.4);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
 
 .project-action-btn--expand {
