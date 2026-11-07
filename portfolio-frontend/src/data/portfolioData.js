@@ -13,16 +13,19 @@ export const developer = {
   title: 'Junior MERN Stack Developer',
   tagline: 'Building modern web experiences with MongoDB, Express, React & Node.js',
   email: 'youssefn899@gmail.com',
-  location: 'Egypt',
+  phone: '01275675022',
+  whatsappUrl: 'https://wa.me/201275675022',
+  location: 'Cairo, Egypt',
   status: 'Available for work',
   resumeUrl: '#',
 };
 
 export const socialLinks = [
-  { id: 'github', label: 'GitHub', url: 'https://github.com/youssef-7-nagy', icon: 'FaGithub' },
-  { id: 'linkedin', label: 'LinkedIn', url: 'https://linkedin.com/', icon: 'FaLinkedin' },
-  { id: 'twitter', label: 'Twitter / X', url: 'https://x.com/', icon: 'FaTwitter' },
-  { id: 'email', label: 'Email', url: 'mailto:youssefn899@gmail.com', icon: 'FaEnvelope' },
+  { id: 'whatsapp', label: 'WhatsApp', url: 'https://wa.me/201275675022', icon: 'FaWhatsapp', handle: '01275675022' },
+  { id: 'linkedin', label: 'LinkedIn', url: 'https://linkedin.com/in/youssef-nagy7', icon: 'FaLinkedin', handle: 'linkedin.com/in/youssef-nagy7' },
+  { id: 'instagram', label: 'Instagram', url: 'https://instagram.com/youssef.nagy7', icon: 'FaInstagram', handle: 'youssef.nagy7' },
+  { id: 'facebook', label: 'Facebook', url: 'https://facebook.com/youssefnagy935@yahoo.com', icon: 'FaFacebook', handle: 'youssefnagy935@yahoo.com' },
+  { id: 'github', label: 'GitHub', url: 'https://github.com/youssef-7-nagy', icon: 'FaGithub', handle: 'youssef-7-nagy' },
 ];
 
 export const services = [

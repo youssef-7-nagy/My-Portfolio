@@ -3,7 +3,7 @@
 /**********/
 
 .social-clock {
-  --count-buttons: 7;
+  --count-buttons: 5;
   --size-button: clamp(3.2rem, 8vw, 4rem);
   --size-clock: clamp(13.5rem, 38vw, 16rem);
   --size-padding: 0.5rem;

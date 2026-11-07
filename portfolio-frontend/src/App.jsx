@@ -105,13 +105,13 @@ function HomePage() {
                   </div>
                 </a>
 
-                <a href="https://wa.me/" target="_blank" rel="noopener noreferrer" className="contact-card">
+                <a href="https://wa.me/201275675022" target="_blank" rel="noopener noreferrer" className="contact-card">
                   <div className="contact-card__icon" style={{ background: 'rgba(var(--color-ocean-teal-rgb), 0.15)', color: 'var(--color-ocean-teal)' }}>
                     <FaWhatsapp />
                   </div>
                   <div className="contact-card__details">
                     <span className="contact-card__label">WhatsApp</span>
-                    <span className="contact-card__value">Chat on WhatsApp</span>
+                    <span className="contact-card__value">01275675022</span>
                   </div>
                 </a>
 
