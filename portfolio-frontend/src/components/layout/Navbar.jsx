@@ -9,7 +9,9 @@ import './Navbar.css';
 const editorialNavLinks = [
   { id: 'home', label: 'Home', href: '#home' },
   { id: 'about', label: 'About', href: '#about' },
-  { id: 'services', label: 'Service', href: '#services' },
+  { id: 'skills', label: 'Skills', href: '#skills' },
+  { id: 'services', label: 'Services', href: '#services' },
+  { id: 'projects', label: 'Projects', href: '#projects' },
   { id: 'contact', label: 'Contact', href: '#contact' },
 ];
 
@@ -67,20 +69,34 @@ export default function Navbar({ splashActive = false }) {
             </span>
           </a>
 
-          {/* Center: Minimalist Navigation Links */}
+          {/* Center: Developer Code-Bracket Navigation Links */}
           <ul className="navbar__links navbar__links--center" role="menubar">
             {editorialNavLinks.map((link) => {
               const isActive = activeSection === link.id;
               return (
-                <li key={link.id} role="none">
+                <li key={link.id} role="none" className="navbar__item">
                   <a
                     href={link.href}
                     role="menuitem"
                     className={`navbar__link ${isActive ? 'navbar__link--active' : ''}`}
                     onClick={(e) => handleNavClick(e, link.href)}
+                    aria-current={isActive ? 'page' : undefined}
                   >
-                    {link.label}
-                    {isActive && <span className="navbar__active-dot" />}
+                    {/* Opening Code Bracket: < */}
+                    <span className="navbar__bracket navbar__bracket--open" aria-hidden="true">
+                      &lt;
+                    </span>
+
+                    {/* Section Label */}
+                    <span className="navbar__link-label">{link.label}</span>
+
+                    {/* Closing Code Bracket: /> */}
+                    <span className="navbar__bracket navbar__bracket--close" aria-hidden="true">
+                      /&gt;
+                    </span>
+
+                    {/* Subtle Active Indicator Dot */}
+                    {isActive && <span className="navbar__active-dot" aria-hidden="true" />}
                   </a>
                 </li>
               );

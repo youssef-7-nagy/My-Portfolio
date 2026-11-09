@@ -141,7 +141,7 @@
 }
 
 /* ==========================================================================
-   2. Center Minimalist Navigation Links
+   2. Center Developer Code-Bracket Navigation Links
    ========================================================================== */
 .navbar__links--center {
   position: absolute;
@@ -149,24 +149,35 @@
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: clamp(10px, 1.6vw, 22px);
   list-style: none;
   margin: 0;
   padding: 0;
   z-index: 2;
 }
 
+.navbar__links--center .navbar__item {
+  display: flex;
+  align-items: center;
+}
+
 .navbar__links--center .navbar__link {
   position: relative;
-  color: rgba(255, 255, 255, 0.9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* Reserved horizontal padding ensures zero layout shift when brackets appear */
+  padding: 6px 14px;
+  background: transparent;
+  text-decoration: none;
   font-family: var(--font-body);
   font-size: 0.92rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  padding: 6px 4px;
-  background: transparent;
-  text-decoration: none;
-  transition: opacity var(--transition-fast), color var(--transition-fast);
+  color: rgba(255, 255, 255, 0.9);
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+  cursor: pointer;
+  user-select: none;
 }
 
 [data-theme='light'] .navbar__links--center .navbar__link {
@@ -177,24 +188,84 @@
   color: rgba(255, 255, 255, 0.9);
 }
 
-.navbar__links--center .navbar__link:hover {
-  opacity: 0.72;
-  color: #FFFFFF;
+/* Section Text Label */
+.navbar__link-label {
+  display: inline-block;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+  z-index: 1;
 }
 
-[data-theme='light'] .navbar__links--center .navbar__link:hover {
+/* Code Brackets: < and /> */
+.navbar__bracket {
+  position: absolute;
+  font-family: 'SF Mono', 'Fira Code', 'Roboto Mono', Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  font-weight: 700;
+  line-height: 1;
   color: var(--color-ocean-teal);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              color var(--transition-fast);
+  will-change: opacity, transform;
+}
+
+[data-theme='dark'] .navbar__bracket {
+  color: var(--color-warm-yellow);
+}
+
+/* Left bracket (<) slides in from -4px to 0 */
+.navbar__bracket--open {
+  left: 2px;
+  transform: translateX(-4px);
+}
+
+/* Right bracket (/>) slides in from +4px to 0 */
+.navbar__bracket--close {
+  right: 0px;
+  transform: translateX(4px);
+  letter-spacing: -0.04em;
+}
+
+/* Hover & Active States — reveal brackets */
+.navbar__links--center .navbar__link:hover .navbar__bracket--open,
+.navbar__links--center .navbar__link--active .navbar__bracket--open {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.navbar__links--center .navbar__link:hover .navbar__bracket--close,
+.navbar__links--center .navbar__link--active .navbar__bracket--close {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.navbar__links--center .navbar__link:hover {
   opacity: 1;
 }
 
+.navbar__links--center .navbar__link:hover .navbar__link-label {
+  color: #FFFFFF;
+}
+
+[data-theme='light'] .navbar__links--center .navbar__link:hover .navbar__link-label {
+  color: #000000;
+}
+
+/* Active State Persistence */
 .navbar__links--center .navbar__link--active {
+  opacity: 1;
+}
+
+.navbar__links--center .navbar__link--active .navbar__link-label {
   color: #FFFFFF;
   font-weight: 600;
-  opacity: 1;
 }
 
-[data-theme='light'] .navbar__links--center .navbar__link--active {
-  color: var(--color-ocean-teal);
+[data-theme='light'] .navbar__links--center .navbar__link--active .navbar__link-label {
+  color: #000000;
+  font-weight: 600;
 }
 
 .navbar__active-dot {
@@ -207,6 +278,11 @@
   border-radius: 50%;
   background: var(--color-warm-yellow);
   box-shadow: 0 0 6px var(--color-warm-yellow);
+}
+
+[data-theme='light'] .navbar__active-dot {
+  background: var(--color-ocean-teal);
+  box-shadow: 0 0 6px rgba(var(--color-ocean-teal-rgb), 0.5);
 }
 
 /* ==========================================================================
