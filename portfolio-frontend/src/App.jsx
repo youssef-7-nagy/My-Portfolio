@@ -12,25 +12,50 @@ import ContactSection from './components/sections/ContactSection';
 import './App.css';
 
 function HomePage() {
-  const { setActiveSection } = usePortfolio();
+  const { setActiveSection, isNavigatingRef } = usePortfolio();
 
-  // Intersection Observer to track active section
+  // Robust scroll tracker for active navbar section
   useEffect(() => {
-    const sections = document.querySelectorAll('section[id]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' }
-    );
+    const validNavIds = ['home', 'about', 'skills', 'services', 'projects', 'contact'];
 
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, [setActiveSection]);
+    const handleScroll = () => {
+      // Don't override activeSection while smooth-scrolling from click
+      if (isNavigatingRef && isNavigatingRef.current) return;
+
+      // Scrolled near the top of the page
+      if (window.scrollY < 140) {
+        setActiveSection('home');
+        return;
+      }
+
+      // Scrolled to bottom of the page
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 90) {
+        setActiveSection('contact');
+        return;
+      }
+
+      const navEl = document.getElementById('navbar');
+      const navHeight = navEl ? navEl.offsetHeight : 70;
+      const scanLine = window.scrollY + navHeight + 140;
+
+      let currentSection = 'home';
+      for (const id of validNavIds) {
+        const el = document.getElementById(id);
+        if (el) {
+          const top = el.offsetTop;
+          if (scanLine >= top) {
+            currentSection = id;
+          }
+        }
+      }
+
+      setActiveSection(currentSection);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [setActiveSection, isNavigatingRef]);
 
   return (
     <>

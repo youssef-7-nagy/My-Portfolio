@@ -13,7 +13,7 @@ import {
   Briefcase,
   ArrowUpRight
 } from 'lucide-react';
-import { FaWhatsapp, FaEnvelope } from 'react-icons/fa';
+import { FaWhatsapp, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
 import './ContactSection.css';
 
@@ -507,6 +507,48 @@ export default function ContactSection() {
                   <div className="direct-card-info">
                     <span className="direct-card-tag">WhatsApp</span>
                     <span className="direct-card-link">01275675022</span>
+                  </div>
+                </div>
+                <div className="direct-card-arrow">
+                  <ArrowUpRight size={17} />
+                </div>
+              </a>
+
+              {/* LinkedIn Card */}
+              <a
+                href="https://linkedin.com/in/youssef-nagy7"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="direct-contact-card direct-contact-card--interactive"
+              >
+                <div className="direct-card-main">
+                  <div className="direct-card-icon direct-card-icon--linkedin">
+                    <FaLinkedin size={19} />
+                  </div>
+                  <div className="direct-card-info">
+                    <span className="direct-card-tag">LinkedIn Network</span>
+                    <span className="direct-card-link">linkedin.com/in/youssef-nagy7</span>
+                  </div>
+                </div>
+                <div className="direct-card-arrow">
+                  <ArrowUpRight size={17} />
+                </div>
+              </a>
+
+              {/* GitHub Card */}
+              <a
+                href="https://github.com/youssef-7-nagy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="direct-contact-card direct-contact-card--interactive"
+              >
+                <div className="direct-card-main">
+                  <div className="direct-card-icon direct-card-icon--github">
+                    <FaGithub size={19} />
+                  </div>
+                  <div className="direct-card-info">
+                    <span className="direct-card-tag">Open Source Code</span>
+                    <span className="direct-card-link">github.com/youssef-7-nagy</span>
                   </div>
                 </div>
                 <div className="direct-card-arrow">

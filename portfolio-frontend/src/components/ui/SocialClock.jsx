@@ -1,10 +1,8 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import './SocialClock.css';
 
 export default function SocialClock() {
-  // Open by default so the 5 social nodes are immediately visible as shown in the radar screenshot
-  const [isOpen, setIsOpen] = useState(true);
-  const [activeTooltip, setActiveTooltip] = useState('Connect with Youssef');
+  const [isOpen, setIsOpen] = useState(false);
   const clockRef = useRef(null);
 
   // Toggle on click for mobile / touch devices
@@ -12,6 +10,17 @@ export default function SocialClock() {
     e.stopPropagation();
     setIsOpen((prev) => !prev);
   };
+
+  // Close when clicked outside
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (clockRef.current && !clockRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('click', handleOutsideClick);
+    return () => document.removeEventListener('click', handleOutsideClick);
+  }, []);
 
   const openSocial = (url) => {
     window.open(url, '_blank', 'noopener,noreferrer');
@@ -27,15 +36,15 @@ export default function SocialClock() {
       <div
         ref={clockRef}
         className={`social-clock ${isOpen ? 'is-open' : ''}`}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
       >
         <div className="social-clock__list">
-          {/* 1. WhatsApp: 01275675022 (Top / 12 o'clock) */}
+          {/* 1. WhatsApp: 01275675022 */}
           <button
             type="button"
             className="social-clock__button whatsapp"
             onClick={() => openSocial('https://wa.me/201275675022')}
-            onMouseEnter={() => setActiveTooltip('WhatsApp: 01275675022')}
-            onMouseLeave={() => setActiveTooltip('Connect with Youssef')}
             title="WhatsApp: 01275675022"
             aria-label="WhatsApp 01275675022"
           >
@@ -44,13 +53,11 @@ export default function SocialClock() {
             </svg>
           </button>
 
-          {/* 2. LinkedIn: linkedin.com/in/youssef-nagy7 (Top-Right / 72 deg) */}
+          {/* 2. LinkedIn: linkedin.com/in/youssef-nagy7 */}
           <button
             type="button"
             className="social-clock__button linkedin"
             onClick={() => openSocial('https://linkedin.com/in/youssef-nagy7')}
-            onMouseEnter={() => setActiveTooltip('LinkedIn: youssef-nagy7')}
-            onMouseLeave={() => setActiveTooltip('Connect with Youssef')}
             title="LinkedIn: linkedin.com/in/youssef-nagy7"
             aria-label="LinkedIn Profile"
           >
@@ -59,13 +66,11 @@ export default function SocialClock() {
             </svg>
           </button>
 
-          {/* 3. Instagram: youssef.nagy7 (Bottom-Right / 144 deg) */}
+          {/* 3. Instagram: youssef.nagy7 */}
           <button
             type="button"
             className="social-clock__button instagram"
             onClick={() => openSocial('https://instagram.com/youssef.nagy7')}
-            onMouseEnter={() => setActiveTooltip('Instagram: @youssef.nagy7')}
-            onMouseLeave={() => setActiveTooltip('Connect with Youssef')}
             title="Instagram: youssef.nagy7"
             aria-label="Instagram youssef.nagy7"
           >
@@ -74,13 +79,11 @@ export default function SocialClock() {
             </svg>
           </button>
 
-          {/* 4. Facebook: youssefnagy935@yahoo.com (Bottom-Left / 216 deg) */}
+          {/* 4. Facebook: youssefnagy935@yahoo.com */}
           <button
             type="button"
             className="social-clock__button facebook"
             onClick={() => openSocial('https://facebook.com/search/top?q=youssefnagy935%40yahoo.com')}
-            onMouseEnter={() => setActiveTooltip('Facebook: youssefnagy935@yahoo.com')}
-            onMouseLeave={() => setActiveTooltip('Connect with Youssef')}
             title="Facebook: youssefnagy935@yahoo.com"
             aria-label="Facebook youssefnagy935@yahoo.com"
           >
@@ -89,13 +92,11 @@ export default function SocialClock() {
             </svg>
           </button>
 
-          {/* 5. GitHub: youssef-7-nagy (Left / 288 deg) */}
+          {/* 5. GitHub: youssef-7-nagy */}
           <button
             type="button"
             className="social-clock__button github"
             onClick={() => openSocial('https://github.com/youssef-7-nagy')}
-            onMouseEnter={() => setActiveTooltip('GitHub: @youssef-7-nagy')}
-            onMouseLeave={() => setActiveTooltip('Connect with Youssef')}
             title="GitHub: youssef-7-nagy"
             aria-label="GitHub youssef-7-nagy"
           >
@@ -105,13 +106,12 @@ export default function SocialClock() {
           </button>
         </div>
 
-        {/* Center Trigger with Warm Yellow Ring and Glow */}
         <button
           type="button"
           className="social-clock__trigger"
           onClick={handleTriggerClick}
-          aria-label={isOpen ? "Collapse Social Radar" : "Expand Social Radar"}
-          title={isOpen ? "Radar Active - Click to Toggle" : "Click to Expand Radar"}
+          aria-label="Toggle Social Clock"
+          title="Connect on Socials"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
             <path d="M352 224c53 0 96-43 96-96s-43-96-96-96s-96 43-96 96c0 4 .2 8 .7 11.9l-94.1 47C145.4 170.2 121.9 160 96 160c-53 0-96 43-96 96s43 96 96 96c25.9 0 49.4-10.2 66.6-26.9l94.1 47c-.5 3.9-.7 7.8-.7 11.9c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-25.9 0-49.4 10.2-66.6 26.9l-94.1-47c.5-3.9 .7-7.8 .7-11.9s-.2-8-.7-11.9l94.1-47C302.6 213.8 326.1 224 352 224z" />
@@ -120,7 +120,7 @@ export default function SocialClock() {
       </div>
 
       <p className="social-clock-hint">
-        <span>{activeTooltip}</span>
+        Hover or tap <span>center node</span> to expand radar
       </p>
     </div>
   );

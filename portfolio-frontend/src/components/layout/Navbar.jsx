@@ -16,8 +16,17 @@ const editorialNavLinks = [
 ];
 
 export default function Navbar({ splashActive = false }) {
-  const { theme, toggleTheme, activeSection, mobileMenuOpen, toggleMobileMenu, closeMobileMenu } = usePortfolio();
+  const {
+    theme,
+    toggleTheme,
+    activeSection,
+    navigateToSection,
+    mobileMenuOpen,
+    toggleMobileMenu,
+    closeMobileMenu
+  } = usePortfolio();
   const [scrolled, setScrolled] = useState(false);
+  const [clickedSection, setClickedSection] = useState(null);
 
   // Track scroll position to adjust background and dimensions
   useEffect(() => {
@@ -39,12 +48,25 @@ export default function Navbar({ splashActive = false }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [mobileMenuOpen, closeMobileMenu]);
 
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
+  const handleNavClick = (e, link) => {
+    if (e) e.preventDefault();
     closeMobileMenu();
-    const target = document.querySelector(href);
+    navigateToSection(link.id);
+    setClickedSection(link.id);
+    setTimeout(() => {
+      setClickedSection((curr) => (curr === link.id ? null : curr));
+    }, 450);
+
+    const target = document.querySelector(link.href);
     if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
+      const navEl = document.getElementById('navbar');
+      const offset = navEl ? navEl.offsetHeight : 70;
+      const elementTop = target.getBoundingClientRect().top + window.scrollY;
+      const targetPosition = link.id === 'home' ? 0 : Math.max(0, elementTop - offset + 8);
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -53,7 +75,11 @@ export default function Navbar({ splashActive = false }) {
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} id="navbar">
         <nav className="navbar__inner container">
           {/* Left: Brand & Logo */}
-          <a href="#home" className="navbar__brand" onClick={(e) => handleNavClick(e, '#home')}>
+          <a
+            href="#home"
+            className="navbar__brand"
+            onClick={(e) => handleNavClick(e, { id: 'home', href: '#home' })}
+          >
             <img
               id="navbar-target-logo"
               data-navbar-logo="true"
@@ -73,13 +99,14 @@ export default function Navbar({ splashActive = false }) {
           <ul className="navbar__links navbar__links--center" role="menubar">
             {editorialNavLinks.map((link) => {
               const isActive = activeSection === link.id;
+              const isClicked = clickedSection === link.id;
               return (
                 <li key={link.id} role="none" className="navbar__item">
                   <a
                     href={link.href}
                     role="menuitem"
-                    className={`navbar__link ${isActive ? 'navbar__link--active' : ''}`}
-                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`navbar__link ${isActive ? 'navbar__link--active' : ''} ${isClicked ? 'navbar__link--clicked' : ''}`}
+                    onClick={(e) => handleNavClick(e, link)}
                     aria-current={isActive ? 'page' : undefined}
                   >
                     {/* Opening Code Bracket: < */}
@@ -95,8 +122,8 @@ export default function Navbar({ splashActive = false }) {
                       /&gt;
                     </span>
 
-                    {/* Subtle Active Indicator Dot */}
-                    {isActive && <span className="navbar__active-dot" aria-hidden="true" />}
+                    {/* Animated Neon Underline Indicator */}
+                    {isActive && <span className="navbar__active-indicator" aria-hidden="true" />}
                   </a>
                 </li>
               );
@@ -172,10 +199,12 @@ export default function Navbar({ splashActive = false }) {
                       <a
                         href={link.href}
                         className={`navbar-drawer__link ${isActive ? 'navbar-drawer__link--active' : ''}`}
-                        onClick={(e) => handleNavClick(e, link.href)}
+                        onClick={(e) => handleNavClick(e, link)}
                       >
                         <span className="navbar-drawer__label">{link.label}</span>
-                        <span className="navbar-drawer__plus" aria-hidden="true">+</span>
+                        <span className="navbar-drawer__plus" aria-hidden="true">
+                          {isActive ? '•' : '+'}
+                        </span>
                       </a>
                     </li>
                   );

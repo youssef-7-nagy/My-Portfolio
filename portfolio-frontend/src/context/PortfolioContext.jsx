@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 
 const PortfolioContext = createContext(null);
 
@@ -9,6 +9,19 @@ export function PortfolioProvider({ children }) {
   });
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Ref to prevent IntersectionObserver / scroll listener from overriding activeSection during smooth-scroll
+  const isNavigatingRef = useRef(false);
+  const navTimerRef = useRef(null);
+
+  const navigateToSection = useCallback((sectionId) => {
+    setActiveSection(sectionId);
+    isNavigatingRef.current = true;
+    if (navTimerRef.current) clearTimeout(navTimerRef.current);
+    navTimerRef.current = setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 900);
+  }, []);
 
   // Sync theme attribute to <html>
   useEffect(() => {
@@ -48,6 +61,8 @@ export function PortfolioProvider({ children }) {
     toggleTheme,
     activeSection,
     setActiveSection,
+    navigateToSection,
+    isNavigatingRef,
     mobileMenuOpen,
     toggleMobileMenu,
     closeMobileMenu,

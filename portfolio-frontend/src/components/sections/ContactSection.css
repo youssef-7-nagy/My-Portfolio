@@ -703,15 +703,20 @@
 
 /* Social Radar Box */
 .contact-radar-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: 1.5rem 1rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
 }
 
 [data-theme='light'] .contact-radar-container {
-  background: transparent;
-  border-color: transparent;
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(var(--color-light-gray-rgb), 0.65);
 }
 
 /* =======================================================
