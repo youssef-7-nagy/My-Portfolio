@@ -51,7 +51,7 @@
 .navbar__brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   text-decoration: none;
   cursor: pointer;
   z-index: 2;
