@@ -57,8 +57,8 @@ export default function Navbar({ splashActive = false }) {
               data-navbar-logo="true"
               src={yLogo}
               alt={`${developer.firstName} ${developer.lastName} Logo`}
-              width="53"
-              height="38"
+              width="65"
+              height="46"
               className={`navbar__logo-icon ${splashActive ? 'navbar__logo-icon--hidden' : 'navbar__logo-icon--visible'}`}
             />
             <span className={`navbar__brand-text ${splashActive ? 'navbar__brand-text--hidden' : 'navbar__brand-text--visible'}`}>

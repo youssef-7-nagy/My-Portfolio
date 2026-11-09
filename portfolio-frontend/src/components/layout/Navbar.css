@@ -60,8 +60,8 @@
 
 /* Target Logo Icon for the FLIP transition from SplashScreen */
 .navbar__logo-icon {
-  height: 38px;
-  width: 53.4px;
+  height: 46px;
+  width: 64.6px;
   aspect-ratio: 444 / 316;
   object-fit: contain;
   display: block;
@@ -672,6 +672,11 @@
 
   .navbar--scrolled {
     height: 60px;
+  }
+
+  .navbar__logo-icon {
+    height: 40px;
+    width: 56.2px;
   }
 
   .navbar-drawer__panel {
