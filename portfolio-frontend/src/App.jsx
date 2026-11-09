@@ -7,7 +7,6 @@ import SplashScreen from './components/ui/SplashScreen';
 import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
-import HeroIdentityScanner from './components/ui/HeroIdentityScanner';
 import ContactSection from './components/sections/ContactSection';
 import './App.css';
 
@@ -61,24 +60,6 @@ function HomePage() {
     <>
       {/* Hero Section */}
       <HeroSection />
-
-      {/* Cyber Scanner Showcase Section */}
-      <section id="identity-scanner" className="section cyber-showcase-section">
-        <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div className="hero-badge animate-fade-in-up" style={{ marginBottom: '16px' }}>
-            <span className="hero-badge__dot" />
-            Holographic Terminal
-          </div>
-          <h2 className="section-title">
-            Developer <span className="gradient-text">Identity Matrix</span>
-          </h2>
-          <p className="section-subtitle">
-            Laser-synthesized scanline readout showcasing active disciplines, specialties, and architecture stack.
-          </p>
-
-          <HeroIdentityScanner />
-        </div>
-      </section>
 
       {/* Modern High-Converting About Me Section */}
       <AboutSection />
