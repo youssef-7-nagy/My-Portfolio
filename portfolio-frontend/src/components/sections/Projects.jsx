@@ -282,44 +282,32 @@ export default function Projects() {
     setIframeKey((prev) => prev + 1);
   };
 
+  // Prevent background page scrolling while modal is open & listen for Escape key
+  useEffect(() => {
+    if (!liveModalProject) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        closeLiveModal();
+      }
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [liveModalProject]);
+
   return (
     <section
       id="projects"
       ref={sectionRef}
       className={`section projects-section ${isVisible ? 'is-visible' : ''}`}
     >
-      {/* 1. Architectural Dashed Grid with Delicate (+) Intersections — matching Hero */}
-      <div className="projects-editorial__grid" aria-hidden="true">
-        <div className="projects-grid-line projects-grid-line--v1" />
-        <div className="projects-grid-line projects-grid-line--v2" />
-        <div className="projects-grid-line projects-grid-line--v3" />
-        <div className="projects-grid-line projects-grid-line--v4" />
-
-        <div className="projects-grid-line projects-grid-line--h1" />
-        <div className="projects-grid-line projects-grid-line--h2" />
-        <div className="projects-grid-line projects-grid-line--h3" />
-
-        <span className="projects-grid-plus" style={{ left: '12%', top: '8%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '38%', top: '8%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '62%', top: '8%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '88%', top: '8%' }}>+</span>
-
-        <span className="projects-grid-plus" style={{ left: '12%', top: '48%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '38%', top: '48%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '62%', top: '48%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '88%', top: '48%' }}>+</span>
-
-        <span className="projects-grid-plus" style={{ left: '12%', top: '88%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '38%', top: '88%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '62%', top: '88%' }}>+</span>
-        <span className="projects-grid-plus" style={{ left: '88%', top: '88%' }}>+</span>
-      </div>
-
-      {/* 2. Giant Architectural Watermark Typography — matching Hero */}
-      <div className="projects-editorial__bg-text" aria-hidden="true">
-        PROJECTS
-      </div>
-
       <div className="container projects-container">
         {/* Section Header */}
         <div className="projects-header">
@@ -356,76 +344,126 @@ export default function Projects() {
       </div>
 
       {/* =======================================================
-          FULLSCREEN MACBOOK INTERACTIVE MODAL VIEWER
+          ULTRA-REALISTIC MACBOOK PRO HARDWARE INTERACTIVE MODAL VIEWER
           ======================================================= */}
       {liveModalProject && (
-        <div className="live-modal-backdrop" onClick={closeLiveModal}>
-          <div className="live-modal-window" onClick={(e) => e.stopPropagation()}>
-            {/* Modal Browser Chrome Header */}
-            <div className="modal-browser-chrome">
-              <div className="modal-chrome-dots">
-                <button
-                  type="button"
-                  className="modal-dot dot-red"
-                  onClick={closeLiveModal}
-                  title="Close Preview"
-                >
-                  <X size={10} />
-                </button>
-                <span className="modal-dot dot-yellow" />
-                <span className="modal-dot dot-green" />
+        <div
+          className="live-modal-backdrop"
+          onClick={closeLiveModal}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${liveModalProject.title} Interactive MacBook Pro Preview`}
+        >
+          {/* Ambient Brand Halo Glow behind the MacBook */}
+          <div
+            className="modal-macbook-glow"
+            style={{
+              '--modal-accent': liveModalProject.accent || 'var(--color-ocean-teal)'
+            }}
+            aria-hidden="true"
+          />
+
+          {/* Ultra-realistic MacBook Pro Device Shell */}
+          <div
+            className="modal-macbook-device"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Upper Lid: Aluminum Bezel & Screen Assembly */}
+            <div className="modal-macbook-lid">
+              {/* FaceTime Camera Sensor Cutout */}
+              <div className="modal-macbook-camera" aria-hidden="true">
+                <span className="modal-macbook-camera__lens" />
               </div>
 
-              <div className="modal-address-bar">
-                <Lock size={12} style={{ color: 'var(--accent-1)' }} />
-                <span className="modal-url-text">{liveModalProject.domain}</span>
-                <span className="modal-live-badge">
-                  <span className="hero-badge__dot" style={{ width: 6, height: 6 }} />
-                  Live Production Site
-                </span>
-              </div>
+              {/* Display Bezel & Active Screen Canvas */}
+              <div className="modal-macbook-screen">
+                {/* macOS Browser Chrome Header Bar */}
+                <div className="modal-browser-chrome">
+                  {/* Traffic Light Window Controls */}
+                  <div className="modal-chrome-dots">
+                    <button
+                      type="button"
+                      className="modal-dot dot-red"
+                      onClick={closeLiveModal}
+                      title="Close Preview (Esc)"
+                      aria-label="Close Preview"
+                    >
+                      <X size={8} />
+                    </button>
+                    <span className="modal-dot dot-yellow" title="Minimize" />
+                    <span className="modal-dot dot-green" title="Zoom" />
+                  </div>
 
-              <div className="modal-actions">
-                <button
-                  type="button"
-                  className="browser-action-btn"
-                  onClick={reloadModalIframe}
-                  title="Reload frame"
-                >
-                  <RotateCw size={13} />
-                  <span>Reload</span>
-                </button>
-                <a
-                  href={liveModalProject.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="browser-action-btn"
-                  title="Open in new tab"
-                >
-                  <ExternalLink size={13} />
-                  <span>Open Site</span>
-                </a>
-                <button
-                  type="button"
-                  className="modal-close-btn"
-                  onClick={closeLiveModal}
-                  aria-label="Close modal"
-                >
-                  <X size={18} />
-                </button>
+                  {/* Dark Pill URL Address Bar */}
+                  <div className="modal-address-bar">
+                    <Lock size={12} className="modal-address-lock" />
+                    <span className="modal-url-text">{liveModalProject.domain}</span>
+                    <span className="modal-live-badge">
+                      <span className="hero-badge__dot" style={{ width: 6, height: 6 }} />
+                      Live Production
+                    </span>
+                  </div>
+
+                  {/* Right Action Buttons */}
+                  <div className="modal-actions">
+                    <button
+                      type="button"
+                      className="browser-action-btn"
+                      onClick={reloadModalIframe}
+                      title="Reload preview frame"
+                    >
+                      <RotateCw size={13} />
+                      <span className="btn-label-desktop">Reload</span>
+                    </button>
+                    <a
+                      href={liveModalProject.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="browser-action-btn browser-action-btn--primary"
+                      title="Open live website in new tab"
+                    >
+                      <ExternalLink size={13} />
+                      <span className="btn-label-desktop">Open Site</span>
+                    </a>
+                    <button
+                      type="button"
+                      className="modal-close-btn"
+                      onClick={closeLiveModal}
+                      aria-label="Close modal"
+                      title="Close"
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Live Interactive Iframe Viewport */}
+                <div className="modal-iframe-viewport">
+                  {/* Underlying High-res Screenshot fallback while iframe loads */}
+                  <img
+                    src={liveModalProject.image}
+                    alt={liveModalProject.title}
+                    className="modal-preview-fallback"
+                  />
+
+                  <iframe
+                    key={iframeKey}
+                    src={liveModalProject.liveUrl}
+                    title={`${liveModalProject.title} Live Preview`}
+                    className="modal-iframe"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  />
+
+                  {/* Ultra-subtle Retina Glass Sheen Reflection */}
+                  <div className="modal-macbook-glare" aria-hidden="true" />
+                </div>
               </div>
             </div>
 
-            {/* Live Interactive Iframe Viewport */}
-            <div className="modal-iframe-viewport">
-              <iframe
-                key={iframeKey}
-                src={liveModalProject.liveUrl}
-                title={`${liveModalProject.title} Live Preview`}
-                className="modal-iframe"
-                loading="lazy"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              />
+            {/* Bottom Metallic Base Chassis & Signature Thumb Opening Notch */}
+            <div className="modal-macbook-base" aria-hidden="true">
+              <div className="modal-macbook-notch" />
             </div>
           </div>
         </div>
