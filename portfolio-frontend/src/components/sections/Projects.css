@@ -1374,6 +1374,169 @@
 }
 
 /* =======================================================
+   LIGHT MODE: SILVER MACBOOK PRO & MACOS LIGHT SAFARI
+   ======================================================= */
+[data-theme='light'] .live-modal-backdrop {
+  background: rgba(40, 75, 99, 0.4);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+[data-theme='light'] .modal-macbook-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(var(--color-ocean-teal-rgb), 0.2) 0%,
+    rgba(var(--color-warm-yellow-rgb), 0.15) 45%,
+    transparent 70%
+  );
+  opacity: 0.95;
+}
+
+/* Silver Anodized Aluminum Display Lid */
+[data-theme='light'] .modal-macbook-lid {
+  background: linear-gradient(180deg, #EAECEF 0%, #D8DCE2 45%, #C2C7D0 100%);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow:
+    0 40px 90px -15px rgba(40, 75, 99, 0.4),
+    0 20px 45px -10px rgba(0, 0, 0, 0.22),
+    0 0 0 1px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .modal-macbook-camera {
+  background: #18191c;
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+[data-theme='light'] .modal-macbook-camera__lens {
+  background: #2b5665;
+  box-shadow: 0 0 2px rgba(60, 110, 113, 0.9);
+}
+
+/* Black Retina Bezel framing the screen */
+[data-theme='light'] .modal-macbook-screen {
+  background: #000000;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+/* macOS Light Safari Window Titlebar */
+[data-theme='light'] .modal-browser-chrome {
+  background: #ECEEF1;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* Traffic lights in Light Mode */
+[data-theme='light'] .modal-dot.dot-red {
+  background: #ff5f56;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+}
+[data-theme='light'] .modal-dot.dot-yellow {
+  background: #ffbd2e;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+}
+[data-theme='light'] .modal-dot.dot-green {
+  background: #27c93f;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+}
+[data-theme='light'] .modal-chrome-dots:hover .modal-dot.dot-red {
+  color: rgba(90, 0, 0, 0.85);
+}
+
+/* Clean White Pill URL Address Bar */
+[data-theme='light'] .modal-address-bar {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), inset 0 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+[data-theme='light'] .modal-address-lock {
+  color: var(--color-ocean-teal);
+}
+
+[data-theme='light'] .modal-url-text {
+  color: #111827;
+  font-weight: 600;
+}
+
+[data-theme='light'] .modal-live-badge {
+  color: var(--color-ocean-teal);
+  background: rgba(var(--color-ocean-teal-rgb), 0.12);
+  border-color: rgba(var(--color-ocean-teal-rgb), 0.35);
+}
+
+/* Action Buttons in Light Mode */
+[data-theme='light'] .browser-action-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  color: #1F2937;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .browser-action-btn:hover {
+  background: #F3F4F6;
+  border-color: var(--color-ocean-teal);
+  color: var(--color-ocean-teal);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(60, 110, 113, 0.15);
+}
+
+[data-theme='light'] .browser-action-btn--primary {
+  background: var(--color-ocean-teal);
+  border-color: var(--color-ocean-teal);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(var(--color-ocean-teal-rgb), 0.3);
+}
+
+[data-theme='light'] .browser-action-btn--primary:hover {
+  background: #2F5658;
+  border-color: #2F5658;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(var(--color-ocean-teal-rgb), 0.4);
+}
+
+[data-theme='light'] .modal-close-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  color: #374151;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='light'] .modal-close-btn:hover {
+  background: rgba(var(--color-warm-yellow-rgb), 0.25);
+  border-color: var(--color-warm-yellow);
+  color: #000000;
+}
+
+/* Silver Bottom Base Chassis & Opening Notch */
+[data-theme='light'] .modal-macbook-base {
+  background: linear-gradient(180deg, #E2E5EA 0%, #D0D4DB 50%, #B8BDC6 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 12px 28px -6px rgba(40, 75, 99, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+[data-theme='light'] .modal-macbook-notch {
+  background: #9FA4AF;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-top: none;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.35),
+    0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+[data-theme='light'] .modal-macbook-glare {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 28%,
+    transparent 45%
+  );
+}
+
+/* =======================================================
    RESPONSIVE DESIGN RULES FOR ZIG-ZAG TIMELINE
    Desktop: 45% / 55% Alternating Split with Generous Gap
    Tablet & Mobile: Stacked Vertical (MacBook Top, Details Below)
