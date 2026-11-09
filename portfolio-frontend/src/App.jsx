@@ -1,17 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { usePortfolio } from './context/PortfolioContext';
-import { developer } from './data/portfolioData';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import SocialClock from './components/ui/SocialClock';
 import SplashScreen from './components/ui/SplashScreen';
 import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
 import HeroIdentityScanner from './components/ui/HeroIdentityScanner';
-import { FaEnvelope, FaWhatsapp } from 'react-icons/fa';
-import { FaLocationDot } from 'react-icons/fa6';
+import ContactSection from './components/sections/ContactSection';
 import './App.css';
 
 function HomePage() {
@@ -75,74 +72,11 @@ function HomePage() {
         </div>
       </section>
 
+      {/* Projects Section */}
       <Projects />
 
-      <section id="contact" className="section contact-section">
-        <div className="container">
-          <h2 className="section-title">Get In <span className="gradient-text">Touch</span></h2>
-          <p className="section-subtitle">
-            Have an opportunity, question, or want to collaborate? Connect with me directly or use the interactive social radar below.
-          </p>
-
-          <div className="contact-grid">
-            {/* Left Column: Direct channels & bio */}
-            <div className="contact-info">
-              <h3 className="contact-heading">
-                Let&rsquo;s build something <span className="gradient-text">great together</span>.
-              </h3>
-              <p className="contact-desc">
-                I&rsquo;m currently open to Junior MERN Stack roles, freelance projects, and exciting collaborations. Feel free to reach out via your favorite platform!
-              </p>
-
-              <div className="contact-channels">
-                <a href={`mailto:${developer.email}`} className="contact-card">
-                  <div className="contact-card__icon">
-                    <FaEnvelope />
-                  </div>
-                  <div className="contact-card__details">
-                    <span className="contact-card__label">Direct Email</span>
-                    <span className="contact-card__value">{developer.email}</span>
-                  </div>
-                </a>
-
-                <a href="https://wa.me/201275675022" target="_blank" rel="noopener noreferrer" className="contact-card">
-                  <div className="contact-card__icon" style={{ background: 'rgba(var(--color-ocean-teal-rgb), 0.15)', color: 'var(--color-ocean-teal)' }}>
-                    <FaWhatsapp />
-                  </div>
-                  <div className="contact-card__details">
-                    <span className="contact-card__label">WhatsApp</span>
-                    <span className="contact-card__value">01275675022</span>
-                  </div>
-                </a>
-
-                <div className="contact-card" style={{ cursor: 'default' }}>
-                  <div className="contact-card__icon" style={{ background: 'rgba(var(--color-deep-steel-blue-rgb), 0.15)', color: 'var(--color-warm-yellow)' }}>
-                    <FaLocationDot />
-                  </div>
-                  <div className="contact-card__details">
-                    <span className="contact-card__label">Location</span>
-                    <span className="contact-card__value">{developer.location} &bull; Open to Remote Worldwide</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="contact-cta-row">
-                <a href={`mailto:${developer.email}`} className="btn btn-primary">
-                  Send Me An Email
-                </a>
-                <a href="#home" className="btn btn-outline">
-                  Back To Top
-                </a>
-              </div>
-            </div>
-
-            {/* Right Column: Social Clock interactive radial button */}
-            <div className="contact-clock-col">
-              <SocialClock />
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Modern High-Converting Contact Hub */}
+      <ContactSection />
     </>
   );
 }
