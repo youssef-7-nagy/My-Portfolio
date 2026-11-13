@@ -126,7 +126,7 @@ export default function AboutSection() {
           </p>
         </div>
 
-        {/* 1. Interactive 4-Card Bento Stats / Highlights Grid */}
+        {/* 1. Interactive 4-Card Highlights Grid (Styled with 3px Accent Border & Rounded Pill Aesthetics) */}
         <div className="about-stats-grid">
           {statsData.map((stat, idx) => {
             const Icon = stat.icon;
@@ -139,12 +139,10 @@ export default function AboutSection() {
                   animationDelay: `${0.1 + idx * 0.08}s` 
                 }}
               >
-                <div className="about-stat-card__header">
-                  <div className="about-stat-card__icon-box">
-                    <Icon size={20} />
-                  </div>
-                  <span className="about-stat-card__label">{stat.label}</span>
+                <div className="about-stat-card__icon-box">
+                  <Icon size={26} />
                 </div>
+                <span className="about-stat-card__label">{stat.label}</span>
                 <h3 className="about-stat-card__title">{stat.title}</h3>
                 <div className="about-stat-card__highlight">
                   <Sparkles size={13} className="about-stat-sparkle" />
