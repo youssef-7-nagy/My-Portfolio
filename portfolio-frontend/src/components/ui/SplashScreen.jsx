@@ -11,6 +11,7 @@ import logoSrc from "../../assets/logos/y.png";
  * - Pure GPU compositor transform & scale translation to target navbar logo
  */
 const SplashScreen = ({
+  onDock,
   onComplete,
   oncePerSession = true,
   storageKey = "youssef_splash_played",
@@ -33,6 +34,7 @@ const SplashScreen = ({
 
   useEffect(() => {
     if (isRemoved) {
+      onDock?.();
       onComplete?.();
       return;
     }
@@ -50,14 +52,17 @@ const SplashScreen = ({
     // 2. Hide navbar logo temporarily to prepare for seamless arrival
     const navbarLogo = document.querySelector("[data-navbar-logo]");
     if (navbarLogo) {
-      navbarLogo.style.opacity = "0";
-      navbarLogo.style.transition = "opacity 0.2s ease";
+      navbarLogo.classList.add("navbar__logo-icon--hidden");
+      navbarLogo.classList.remove("navbar__logo-icon--visible");
+      navbarLogo.style.setProperty("opacity", "0", "important");
     }
 
     const cleanupAndFinish = () => {
       if (isCancelled) return;
       if (navbarLogo) {
-        navbarLogo.style.opacity = "1";
+        navbarLogo.classList.remove("navbar__logo-icon--hidden");
+        navbarLogo.classList.add("navbar__logo-icon--visible");
+        navbarLogo.style.removeProperty("opacity");
       }
       document.documentElement.style.overflow = prevHtmlOverflow;
       document.body.style.overflow = prevBodyOverflow;
@@ -98,8 +103,9 @@ const SplashScreen = ({
         if (svgRef.current) svgRef.current.classList.add("is-hidden");
         const t = setTimeout(() => {
           if (overlayRef.current) overlayRef.current.classList.add("is-fading-out");
-          setTimeout(cleanupAndFinish, 350);
-        }, 400);
+          onDock?.();
+          setTimeout(cleanupAndFinish, 300);
+        }, 350);
         timers.push(t);
         return;
       }
@@ -137,7 +143,8 @@ const SplashScreen = ({
 
                 const deltaX = targetCenterX - sourceCenterX;
                 const deltaY = targetCenterY - sourceCenterY;
-                const scale = targetRect.width / sourceRect.width;
+                const scaleX = targetRect.width / sourceRect.width;
+                const scaleY = targetRect.height / sourceRect.height;
 
                 // Fade out white splash backdrop smoothly during flight
                 overlayRef.current.classList.add("bg-transparent");
@@ -145,9 +152,9 @@ const SplashScreen = ({
                 // Execute FLIP flight strictly on the Compositor thread
                 const flight = stageRef.current.animate(
                   [
-                    { transform: "translate3d(0px, 0px, 0px) scale(1)" },
+                    { transform: "translate3d(0px, 0px, 0px) scale(1, 1)" },
                     {
-                      transform: `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(${scale})`,
+                      transform: `translate3d(${deltaX}px, ${deltaY}px, 0px) scale(${scaleX}, ${scaleY})`,
                     },
                   ],
                   {
@@ -157,14 +164,37 @@ const SplashScreen = ({
                   }
                 );
 
-                flight.onfinish = cleanupAndFinish;
+                flight.onfinish = () => {
+                  if (isCancelled) return;
+
+                  // 1. Immediately reveal the Navbar logo with NO delay or transition:
+                  if (targetEl) {
+                    targetEl.classList.remove("navbar__logo-icon--hidden");
+                    targetEl.classList.add("navbar__logo-icon--visible");
+                    targetEl.style.setProperty("opacity", "1", "important");
+                  }
+
+                  // 2. Trigger Navbar docked state (revealing youssef.dev):
+                  onDock?.();
+
+                  // 3. Keep the flight logo visible in place while compositor paints targetEl:
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                      if (isCancelled) return;
+                      cleanupAndFinish();
+                    });
+                  });
+                };
                 return;
               }
             }
 
             // Fallback: graceful fade-out if navbar logo element is absent
             overlayRef.current.classList.add("is-fading-out");
-            const t3 = setTimeout(cleanupAndFinish, 550);
+            const t3 = setTimeout(() => {
+              onDock?.();
+              cleanupAndFinish();
+            }, 500);
             timers.push(t3);
           }, 1600);
 
@@ -180,9 +210,13 @@ const SplashScreen = ({
       timers.forEach(clearTimeout);
       document.documentElement.style.overflow = prevHtmlOverflow;
       document.body.style.overflow = prevBodyOverflow;
-      if (navbarLogo) navbarLogo.style.opacity = "1";
+      if (navbarLogo) {
+        navbarLogo.classList.remove("navbar__logo-icon--hidden");
+        navbarLogo.classList.add("navbar__logo-icon--visible");
+        navbarLogo.style.removeProperty("opacity");
+      }
     };
-  }, [isRemoved, oncePerSession, storageKey, onComplete]);
+  }, [isRemoved, oncePerSession, storageKey, onDock, onComplete]);
 
   if (isRemoved) return null;
 

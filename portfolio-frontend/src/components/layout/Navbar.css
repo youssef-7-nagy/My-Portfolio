@@ -51,7 +51,7 @@
 .navbar__brand {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   text-decoration: none;
   cursor: pointer;
   z-index: 2;
@@ -66,8 +66,8 @@
   object-fit: contain;
   display: block;
   flex-shrink: 0;
-  transition: transform var(--transition-spring), filter var(--transition-base), opacity 0.2s ease;
-  will-change: transform, filter, opacity;
+  transition: transform var(--transition-spring), filter var(--transition-base);
+  will-change: transform, filter;
 }
 
 [data-theme='dark'] .navbar__logo-icon {
@@ -90,7 +90,7 @@
   color: var(--color-white);
   display: inline-flex;
   align-items: center;
-  transition: color var(--transition-base), opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
   will-change: opacity, transform;
 }
 
@@ -126,18 +126,33 @@
 }
 
 .navbar__logo-icon--visible {
-  opacity: 1;
+  opacity: 1 !important;
+  pointer-events: auto;
 }
 
 .navbar__brand-text--hidden {
   opacity: 0 !important;
   transform: translateX(-10px);
   pointer-events: none;
+  visibility: hidden;
 }
 
 .navbar__brand-text--visible {
-  opacity: 1;
-  transform: translateX(0);
+  opacity: 1 !important;
+  transform: translateX(0) !important;
+  pointer-events: auto;
+  visibility: visible;
+  transition:
+    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
+    color var(--transition-base);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar__brand-text--visible {
+    transition: opacity 0.2s ease !important;
+    transform: none !important;
+  }
 }
 
 /* ==========================================================================

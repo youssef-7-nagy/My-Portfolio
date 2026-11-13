@@ -15,7 +15,14 @@ const editorialNavLinks = [
   { id: 'contact', label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar({ splashActive = false }) {
+export default function Navbar({ splashState, splashActive = false }) {
+  const isLogoVisible = splashState
+    ? (splashState === 'docked' || splashState === 'complete')
+    : !splashActive;
+  const isTextVisible = splashState
+    ? (splashState === 'docked' || splashState === 'complete')
+    : !splashActive;
+
   const {
     theme,
     toggleTheme,
@@ -87,9 +94,11 @@ export default function Navbar({ splashActive = false }) {
               alt={`${developer.firstName} ${developer.lastName} Logo`}
               width="65"
               height="46"
-              className={`navbar__logo-icon ${splashActive ? 'navbar__logo-icon--hidden' : 'navbar__logo-icon--visible'}`}
+              className={`navbar__logo-icon ${isLogoVisible ? 'navbar__logo-icon--visible' : 'navbar__logo-icon--hidden'}`}
             />
-            <span className={`navbar__brand-text ${splashActive ? 'navbar__brand-text--hidden' : 'navbar__brand-text--visible'}`}>
+            <span
+              className={`navbar__brand-text ${isTextVisible ? 'navbar__brand-text--visible' : 'navbar__brand-text--hidden'}`}
+            >
               youssef<span className="navbar__brand-dot">.dev</span>
               <span className="navbar__brand-sup">®</span>
             </span>

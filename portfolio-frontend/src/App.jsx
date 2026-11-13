@@ -8,7 +8,14 @@ import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
 import ContactSection from './components/sections/ContactSection';
+import yLogo from './assets/logos/y.png';
 import './App.css';
+
+// Preload the brand logo in memory for instant decoding
+if (typeof window !== 'undefined') {
+  const preloadedLogo = new Image();
+  preloadedLogo.src = yLogo;
+}
 
 function HomePage() {
   const { setActiveSection, isNavigatingRef } = usePortfolio();
@@ -106,18 +113,20 @@ function NotFound() {
 }
 
 export default function App() {
-  const [showSplash, setShowSplash] = useState(true);
+  // Splash phases: 'active' (drawing/flying) | 'docked' (logo landed, text reveals) | 'complete' (unmounted)
+  const [splashState, setSplashState] = useState('active');
 
   return (
     <>
-      {showSplash && (
+      {splashState !== 'complete' && (
         <SplashScreen
           oncePerSession={false}
-          onComplete={() => setShowSplash(false)}
+          onDock={() => setSplashState('docked')}
+          onComplete={() => setSplashState('complete')}
         />
       )}
       <div className="app">
-        <Navbar splashActive={showSplash} />
+        <Navbar splashState={splashState} splashActive={splashState === 'active'} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
