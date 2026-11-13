@@ -21,7 +21,7 @@ const statsData = [
     title: 'B.Com in BIS — Helwan University',
     highlight: 'GPA: 3.5 / Excellent',
     desc: 'Business Information Systems major bridging system architecture with deep business analytics.',
-    accent: 'var(--color-ocean-teal)'
+    accent: '#DC5F31'
   },
   {
     id: 'specialization',
@@ -30,7 +30,7 @@ const statsData = [
     title: 'MERN Stack Engineering',
     highlight: 'React • Node • Express • MongoDB',
     desc: 'Production-ready full-stack architectures, Next.js, and real-time Socket.IO communication.',
-    accent: 'var(--color-warm-yellow)'
+    accent: '#DC5F31'
   },
   {
     id: 'practical-proof',
@@ -39,7 +39,7 @@ const statsData = [
     title: '2+ Full-Stack Platforms',
     highlight: 'RBAC • JWT • Socket.IO',
     desc: 'Engineered Maghsaltak (mobile car wash app) & Velmora Bliss with full multi-role admin panels.',
-    accent: 'var(--color-deep-steel-blue)'
+    accent: '#DC5F31'
   },
   {
     id: 'industry-training',
@@ -48,7 +48,7 @@ const statsData = [
     title: 'QNB Bank & AMIT Diploma',
     highlight: 'Oracle SQL & Node.js Diploma',
     desc: 'Extracted core banking system data for variance analysis at QNB; intensive AMIT software diploma.',
-    accent: 'var(--color-ocean-teal)'
+    accent: '#DC5F31'
   }
 ];
 
