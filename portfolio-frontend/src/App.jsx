@@ -8,14 +8,8 @@ import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
 import ContactSection from './components/sections/ContactSection';
-import yLogo from './assets/logos/y.png';
+import VisualGlimpses from './components/sections/VisualGlimpses';
 import './App.css';
-
-// Preload the brand logo in memory for instant decoding
-if (typeof window !== 'undefined') {
-  const preloadedLogo = new Image();
-  preloadedLogo.src = yLogo;
-}
 
 function HomePage() {
   const { setActiveSection, isNavigatingRef } = usePortfolio();
@@ -88,6 +82,9 @@ function HomePage() {
       {/* Projects Section */}
       <Projects />
 
+      {/* Visual Glimpses / UI Showcase Masonry Bento Gallery */}
+      <VisualGlimpses />
+
       {/* Modern High-Converting Contact Hub */}
       <ContactSection />
     </>
@@ -113,20 +110,18 @@ function NotFound() {
 }
 
 export default function App() {
-  // Splash phases: 'active' (drawing/flying) | 'docked' (logo landed, text reveals) | 'complete' (unmounted)
-  const [splashState, setSplashState] = useState('active');
+  const [showSplash, setShowSplash] = useState(true);
 
   return (
     <>
-      {splashState !== 'complete' && (
+      {showSplash && (
         <SplashScreen
           oncePerSession={false}
-          onDock={() => setSplashState('docked')}
-          onComplete={() => setSplashState('complete')}
+          onComplete={() => setShowSplash(false)}
         />
       )}
       <div className="app">
-        <Navbar splashState={splashState} splashActive={splashState === 'active'} />
+        <Navbar splashActive={showSplash} />
         <main className="main-content">
           <Routes>
             <Route path="/" element={<HomePage />} />
