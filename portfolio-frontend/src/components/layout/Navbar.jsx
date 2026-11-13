@@ -15,14 +15,7 @@ const editorialNavLinks = [
   { id: 'contact', label: 'Contact', href: '#contact' },
 ];
 
-export default function Navbar({ splashState, splashActive = false }) {
-  const isLogoVisible = splashState
-    ? (splashState === 'docked' || splashState === 'complete')
-    : !splashActive;
-  const isTextVisible = splashState
-    ? (splashState === 'docked' || splashState === 'complete')
-    : !splashActive;
-
+export default function Navbar({ splashActive = false }) {
   const {
     theme,
     toggleTheme,
@@ -87,6 +80,12 @@ export default function Navbar({ splashState, splashActive = false }) {
             className="navbar__brand"
             onClick={(e) => handleNavClick(e, { id: 'home', href: '#home' })}
           >
+            {/*
+              The logo class controls CSS visibility (not opacity).
+              The SplashScreen JS also sets inline visibility:hidden during the
+              flight so getBoundingClientRect() returns accurate measurements
+              without the logo ever being visually painted over the splash.
+            */}
             <img
               id="navbar-target-logo"
               data-navbar-logo="true"
@@ -94,10 +93,11 @@ export default function Navbar({ splashState, splashActive = false }) {
               alt={`${developer.firstName} ${developer.lastName} Logo`}
               width="65"
               height="46"
-              className={`navbar__logo-icon ${isLogoVisible ? 'navbar__logo-icon--visible' : 'navbar__logo-icon--hidden'}`}
+              className={`navbar__logo-icon ${splashActive ? 'navbar__logo-icon--hidden' : 'navbar__logo-icon--visible'}`}
             />
+            {/* Brand text: hidden with no transition during splash, then slides in */}
             <span
-              className={`navbar__brand-text ${isTextVisible ? 'navbar__brand-text--visible' : 'navbar__brand-text--hidden'}`}
+              className={`navbar__brand-text ${splashActive ? 'navbar__brand-text--hidden' : 'navbar__brand-text--visible'}`}
             >
               youssef<span className="navbar__brand-dot">.dev</span>
               <span className="navbar__brand-sup">®</span>

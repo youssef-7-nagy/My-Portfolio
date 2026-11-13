@@ -51,14 +51,17 @@
 .navbar__brand {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   text-decoration: none;
   cursor: pointer;
   z-index: 2;
   user-select: none;
 }
 
-/* Target Logo Icon for the FLIP transition from SplashScreen */
+/* Target Logo Icon for the FLIP transition from SplashScreen.
+   NOTE: During splash, the SplashScreen JS sets visibility:hidden inline
+   (not opacity) so the element keeps its layout box for getBoundingClientRect()
+   without ever being painted, eliminating the flicker window. */
 .navbar__logo-icon {
   height: 46px;
   width: 64.6px;
@@ -66,6 +69,7 @@
   object-fit: contain;
   display: block;
   flex-shrink: 0;
+  /* No opacity transition — visibility is toggled instantly by JS */
   transition: transform var(--transition-spring), filter var(--transition-base);
   will-change: transform, filter;
 }
@@ -82,6 +86,7 @@
   transform: scale(1.06) translateY(-1px);
 }
 
+/* Brand Text — hidden during splash, then revealed with a slide-fade */
 .navbar__brand-text {
   font-family: var(--font-heading);
   font-size: 1.25rem;
@@ -90,7 +95,6 @@
   color: var(--color-white);
   display: inline-flex;
   align-items: center;
-  user-select: none;
   will-change: opacity, transform;
 }
 
@@ -119,32 +123,34 @@
   color: inherit;
 }
 
-/* Splash Handoff Visibility States */
+/* ── Splash Handoff: logo uses visibility (not opacity) so layout is preserved ── */
 .navbar__logo-icon--hidden {
-  opacity: 0 !important;
+  /* visibility keeps the box in the flow but prevents painting.
+     JS also sets inline visibility:hidden for certainty. */
+  visibility: hidden;
   pointer-events: none;
 }
 
 .navbar__logo-icon--visible {
-  opacity: 1 !important;
+  visibility: visible;
   pointer-events: auto;
 }
 
+/* Brand text: hidden during splash, revealed with a smooth slide-fade */
 .navbar__brand-text--hidden {
-  opacity: 0 !important;
-  transform: translateX(-10px);
+  opacity: 0;
+  transform: translateX(-8px);
   pointer-events: none;
-  visibility: hidden;
+  transition: none; /* no transition while hidden */
 }
 
 .navbar__brand-text--visible {
-  opacity: 1 !important;
-  transform: translateX(0) !important;
+  opacity: 1;
+  transform: translateX(0);
   pointer-events: auto;
-  visibility: visible;
   transition:
-    opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
-    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.06s,
+    opacity  0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.08s,
+    transform 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.08s,
     color var(--transition-base);
 }
 
