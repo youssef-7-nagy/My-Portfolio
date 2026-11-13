@@ -75,7 +75,7 @@
 }
 
 [data-theme='dark'] .navbar__logo-icon {
-  filter: invert(1) drop-shadow(0 0 10px rgba(var(--color-warm-yellow-rgb), 0.4));
+  filter: drop-shadow(0 0 10px rgba(var(--color-warm-yellow-rgb), 0.4));
 }
 
 [data-theme='light'] .navbar__logo-icon {

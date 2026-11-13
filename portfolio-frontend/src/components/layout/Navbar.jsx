@@ -3,7 +3,8 @@ import { usePortfolio } from '../../context/PortfolioContext';
 import { navLinks, developer } from '../../data/portfolioData';
 import { Moon, Sun, X } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
-import yLogo from '../../assets/logos/y.png';
+import yLogoBlack from '../../assets/logos/y.png';
+import yLogoWhite from '../../assets/logos/y-white.png';
 import './Navbar.css';
 
 const editorialNavLinks = [
@@ -70,6 +71,9 @@ export default function Navbar({ splashActive = false }) {
     }
   };
 
+  // Automatic theme-based logo source: White for dark mode, Black for light mode
+  const currentLogo = theme === 'dark' ? yLogoWhite : yLogoBlack;
+
   return (
     <>
       <header className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`} id="navbar">
@@ -89,7 +93,7 @@ export default function Navbar({ splashActive = false }) {
             <img
               id="navbar-target-logo"
               data-navbar-logo="true"
-              src={yLogo}
+              src={currentLogo}
               alt={`${developer.firstName} ${developer.lastName} Logo`}
               width="65"
               height="46"

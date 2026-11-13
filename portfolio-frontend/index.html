@@ -6,9 +6,18 @@
     <link rel="apple-touch-icon" href="/to.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Youssef Nagy | Portfolio</title>
-    <!-- Preload the brand logo so it is decoded before the splash screen starts.
-         This eliminates any decode-flash on the very first animation frame. -->
+    <!-- Instant theme initialization to prevent any theme-switch flash on initial load -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('portfolio-theme') || 'dark';
+          document.documentElement.setAttribute('data-theme', saved);
+        } catch (e) {}
+      })();
+    </script>
+    <!-- Preload brand logos so they are decoded before splash screen and navbar render -->
     <link rel="preload" as="image" href="/src/assets/logos/y.png" />
+    <link rel="preload" as="image" href="/src/assets/logos/y-white.png" />
   </head>
   <body>
     <div id="root"></div>
