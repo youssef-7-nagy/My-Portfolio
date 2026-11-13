@@ -106,21 +106,10 @@ function MacBookDisplay({ project, index, onOpenModal }) {
  * Renders the prominent number, bold title, readable description,
  * customized tech stack pills, and action button row with staggered delays.
  */
-function ProjectDetailsCard({ project, index, onOpenModal }) {
-  const numStr = `0${index + 1}`;
-
+function ProjectDetailsCard({ project, onOpenModal }) {
   return (
     <div className="project-details-card">
-      {/* 1. Prominent Project Index Number */}
-      <div className="project-number-row">
-        <span className="project-number-ghost">{numStr}</span>
-        <span className="project-number-badge">PROJECT {numStr}</span>
-        {project.status && (
-          <span className="project-status-pill">{project.status}</span>
-        )}
-      </div>
-
-      {/* 2. Bold High-Contrast Title & Subtitle */}
+      {/* 1. Bold High-Contrast Title & Subtitle */}
       <h3 className="project-title-large">{project.title}</h3>
       <p className="project-subtitle-lead">{project.subtitle}</p>
 
@@ -234,7 +223,7 @@ function AlternatingProjectRow({ project, index, onOpenModal }) {
 
       {/* Column 1: Details for even rows, MacBook for odd rows */}
       <div className="zigzag-col zigzag-col--text">
-        <ProjectDetailsCard project={project} index={index} onOpenModal={onOpenModal} />
+        <ProjectDetailsCard project={project} onOpenModal={onOpenModal} />
       </div>
 
       {/* Column 2: MacBook for even rows, Details for odd rows */}
