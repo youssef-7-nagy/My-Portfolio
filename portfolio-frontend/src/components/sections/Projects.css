@@ -61,22 +61,27 @@
 }
 
 @media (max-width: 1180px) {
-  /* Tablet 2 columns: each column gets ~480px width */
   :root {
-    --laptop-scale: 0.74;
+    --laptop-scale: 0.60;
+  }
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --laptop-scale: 0.56;
   }
 }
 
 @media (max-width: 900px) {
   :root {
-    --laptop-scale: 0.62;
+    --laptop-scale: 0.54;
   }
 }
 
 @media (max-width: 768px) {
   /* Mobile 1 column */
   :root {
-    --laptop-scale: 0.74;
+    --laptop-scale: 0.68;
   }
 }
 
@@ -140,7 +145,7 @@
 .project-zigzag-row {
   position: relative;
   display: grid;
-  grid-template-columns: 45% 55%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: clamp(2rem, 4vw, 4.5rem);
   width: 100%;
@@ -149,7 +154,7 @@
 
 /* Reverse layout for Row -- Laptop Left / Text Right (Odd rows) */
 .project-zigzag-row.row--laptop-left {
-  grid-template-columns: 55% 45%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
 .project-zigzag-row.row--laptop-left .zigzag-col--text {
@@ -158,6 +163,14 @@
 
 .project-zigzag-row.row--laptop-left .zigzag-col--media {
   order: 1;
+}
+
+.project-zigzag-row.row--laptop-right .zigzag-col--text {
+  order: 1;
+}
+
+.project-zigzag-row.row--laptop-right .zigzag-col--media {
+  order: 2;
 }
 
 /* Central Tracking Node Indicator */
@@ -182,7 +195,10 @@
   background: var(--color-warm-yellow);
   box-shadow: 0 0 14px var(--color-warm-yellow);
   border: 2px solid var(--color-black);
-  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 0;
+  transform: scale(0.3);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+              opacity 0.5s ease 0.1s;
 }
 
 [data-theme='light'] .track-node-dot {
@@ -191,7 +207,12 @@
   border-color: var(--color-white);
 }
 
-.project-zigzag-row:hover .track-node-dot {
+.project-zigzag-row.is-in-view .track-node-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.project-zigzag-row.is-in-view:hover .track-node-dot {
   transform: scale(1.6);
 }
 
@@ -203,89 +224,95 @@
 }
 
 /* =======================================================
-   CINEMATIC SCROLL-TRIGGERED ENTRY ANIMATIONS
-   GPU-Accelerated Easing Curves: cubic-bezier(0.22, 1, 0.36, 1)
+   CINEMATIC DIRECTIONAL SCROLL-TRIGGERED ENTRY ANIMATIONS
+   GPU-Accelerated Easing: cubic-bezier(0.22, 1, 0.36, 1)
+   Duration: 0.65s | Stagger Delay: 0.18s
    ======================================================= */
 
-/* Default Initial Hidden States (Zero layout shift, 60fps) */
+/* Default Initial Hidden States (Zero layout shift, 60fps GPU acceleration) */
 .project-zigzag-row .zigzag-col--text,
 .project-zigzag-row .zigzag-col--media {
   opacity: 0;
   will-change: transform, opacity;
-  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* 1. Even Row (Laptop Right / Text Left):
-      Text slides in from the LEFT (-50px)
-      Laptop slides in from the RIGHT (+50px) with subtle 3D tilt settling */
-.project-zigzag-row.row--laptop-right .zigzag-col--text {
-  transform: translate3d(-50px, 0, 0);
-}
-
+/* 1. Odd Rows (Row 1 - Ariadne, Row 3 - TaskFlow, etc. - Laptop Right / Text Left) */
+/* Laptop Mockup (Right): Slides in Right to Left (x: 80px -> 0) */
 .project-zigzag-row.row--laptop-right .zigzag-col--media {
-  transform: translate3d(50px, 0, 0) perspective(1200px) rotateY(-4deg);
+  transform: translate3d(80px, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.65s ease;
 }
 
-/* 2. Odd Row (Laptop Left / Text Right):
-      Laptop slides in from the LEFT (-50px) with subtle 3D tilt settling
-      Text slides in from the RIGHT (+50px) */
+/* Text Content (Left): Slides in Left to Right (x: -80px -> 0) with stagger delay 0.18s */
+.project-zigzag-row.row--laptop-right .zigzag-col--text {
+  transform: translate3d(-80px, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
+              opacity 0.65s ease 0.18s;
+}
+
+/* 2. Even Rows (Row 2 - Velmora Bliss, etc. - Laptop Left / Text Right) */
+/* Laptop Mockup (Left): Slides in Left to Right (x: -80px -> 0) */
 .project-zigzag-row.row--laptop-left .zigzag-col--media {
-  transform: translate3d(-50px, 0, 0) perspective(1200px) rotateY(4deg);
+  transform: translate3d(-80px, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.65s ease;
 }
 
+/* Text Content (Right): Slides in Right to Left (x: 80px -> 0) with stagger delay 0.18s */
 .project-zigzag-row.row--laptop-left .zigzag-col--text {
-  transform: translate3d(50px, 0, 0);
+  transform: translate3d(80px, 0, 0);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
+              opacity 0.65s ease 0.18s;
 }
 
-/* In-View Settled State: Smooth GPU slide & 3D snap into position */
+/* In-View Settled State: Smooth GPU slide snap into position */
 .project-zigzag-row.is-in-view .zigzag-col--text,
 .project-zigzag-row.is-in-view .zigzag-col--media {
   opacity: 1;
-  transform: translate3d(0, 0, 0) perspective(1200px) rotateY(0deg);
+  transform: translate3d(0, 0, 0);
 }
 
 /* Staggered Timeline for Inner Text Elements */
-.project-zigzag-row .project-number-row,
 .project-zigzag-row .project-title-large,
 .project-zigzag-row .project-subtitle-lead,
 .project-zigzag-row .project-description-text,
 .project-zigzag-row .project-tech-badges,
 .project-zigzag-row .project-actions-row {
   opacity: 0;
-  transform: translate3d(0, 16px, 0);
-  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate3d(0, 10px, 0);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-zigzag-row.is-in-view .project-title-large {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition-delay: 0.12s;
+  transition-delay: 0.22s;
 }
 
 .project-zigzag-row.is-in-view .project-subtitle-lead {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition-delay: 0.18s;
+  transition-delay: 0.26s;
 }
 
 .project-zigzag-row.is-in-view .project-description-text {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition-delay: 0.24s;
+  transition-delay: 0.30s;
 }
 
 .project-zigzag-row.is-in-view .project-tech-badges {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition-delay: 0.30s;
+  transition-delay: 0.34s;
 }
 
 .project-zigzag-row.is-in-view .project-actions-row {
   opacity: 1;
   transform: translate3d(0, 0, 0);
-  transition-delay: 0.36s;
+  transition-delay: 0.38s;
 }
 
 /* Reduced motion preference */
@@ -1547,52 +1574,180 @@
 
 /* =======================================================
    RESPONSIVE DESIGN RULES FOR ZIG-ZAG TIMELINE
-   Desktop: 45% / 55% Alternating Split with Generous Gap
-   Tablet & Mobile: Stacked Vertical (MacBook Top, Details Below)
+   Desktop: 50% / 50% Alternating Split with Generous Gap
+   Tablet (768px - 1024px): 50% / 50% Alternating Split Scaled Cleanly
+   Mobile (< 768px): Stacked Vertical (MacBook Top, Details Below)
    ======================================================= */
 
-@media (max-width: 1024px) {
+/* --- TABLET / IPAD VIEWPORT (768px to 1024px) --- */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .projects-section {
+    overflow-x: hidden;
+  }
+
+  .projects-container {
+    padding: 0 clamp(1rem, 2.5vw, 1.5rem);
+  }
+
   .projects-zigzag-timeline {
-    gap: 4.5rem;
+    gap: clamp(3rem, 5.5vw, 4.25rem);
+    padding: 1.5rem 0 2.5rem;
   }
 
-  /* Break alternating pattern on tablets and mobiles:
-     MacBook always appears on top, project details directly underneath */
-  .project-zigzag-row,
-  .project-zigzag-row.row--laptop-left,
-  .project-zigzag-row.row--laptop-right {
+  /* Maintain desktop alternating split layout and central timeline spine */
+  .zigzag-center-spine {
+    display: block;
+  }
+
+  .zigzag-track-node {
     display: flex;
-    flex-direction: column;
-    gap: 2.25rem;
   }
 
-  /* Hide center vertical spine on tablets and mobiles to eliminate clutter */
+  .project-zigzag-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(1.5rem, 2.5vw, 2rem); /* gap-6 to gap-8 */
+    width: 100%;
+  }
+
+  .project-zigzag-row.row--laptop-left {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .project-zigzag-row.row--laptop-left .zigzag-col--media {
+    order: 1;
+  }
+
+  .project-zigzag-row.row--laptop-left .zigzag-col--text {
+    order: 2;
+  }
+
+  .project-zigzag-row.row--laptop-right .zigzag-col--text {
+    order: 1;
+  }
+
+  .project-zigzag-row.row--laptop-right .zigzag-col--media {
+    order: 2;
+  }
+
+  /* Constrain laptop mockup width on tablet */
+  .project-zigzag-row .zigzag-col--media {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .project-zigzag-row .project-laptop-wrapper {
+    max-width: clamp(340px, 42vw, 380px);
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Tablet typography scale */
+  .project-zigzag-row .project-details-card {
+    padding: 4px 6px;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .project-zigzag-row .project-title-large {
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem); /* text-2xl */
+    line-height: 1.2;
+  }
+
+  .project-zigzag-row .project-subtitle-lead {
+    font-size: 0.875rem; /* text-sm */
+    line-height: 1.4;
+  }
+
+  .project-zigzag-row .project-description-text {
+    font-size: 0.85rem; /* text-sm */
+    line-height: 1.55;
+    margin: 2px 0 4px;
+    max-width: 100%;
+  }
+
+  /* Compact tech stack pills */
+  .project-zigzag-row .project-tech-badges {
+    gap: 6px;
+    margin: 2px 0;
+  }
+
+  .project-zigzag-row .tech-badge-item {
+    padding: 3px 8px;
+    font-size: 0.72rem; /* text-xs */
+  }
+
+  /* Compact action buttons */
+  .project-zigzag-row .project-actions-row {
+    gap: 6px;
+    margin-top: 6px;
+    padding-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .project-zigzag-row .project-action-btn {
+    padding: 6px 12px;
+    font-size: 0.78rem; /* text-xs */
+    gap: 6px;
+  }
+
+  .project-zigzag-row .project-action-btn--expand {
+    margin-left: 0;
+  }
+}
+
+/* --- MOBILE VIEWPORT (< 768px) --- */
+@media (max-width: 767px) {
+  .projects-section {
+    padding: calc(var(--section-padding) * 0.75) 0;
+    overflow-x: hidden;
+  }
+
+  .projects-zigzag-timeline {
+    gap: 3.25rem;
+    padding: 1.25rem 0 2rem;
+  }
+
+  /* Hide center vertical spine and node dot on phones */
   .zigzag-center-spine,
   .zigzag-track-node {
     display: none;
   }
 
-  /* Force media column (MacBook) to render FIRST, details SECOND */
+  /* Stack MacBook on top, details underneath */
+  .project-zigzag-row,
+  .project-zigzag-row.row--laptop-left,
+  .project-zigzag-row.row--laptop-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
   .project-zigzag-row .zigzag-col--media {
     order: 1 !important;
     width: 100%;
-    max-width: 580px;
+    max-width: 440px;
     margin: 0 auto;
   }
 
   .project-zigzag-row .zigzag-col--text {
     order: 2 !important;
     width: 100%;
-    max-width: 580px;
+    max-width: 440px;
     margin: 0 auto;
   }
 
-  /* Mobile/Tablet Safe Scroll-Entry: Slide up smoothly without any horizontal overflow */
+  /* Mobile Safe Scroll-Entry: Slide up smoothly without any horizontal overflow */
   .project-zigzag-row.row--laptop-right .zigzag-col--text,
   .project-zigzag-row.row--laptop-right .zigzag-col--media,
   .project-zigzag-row.row--laptop-left .zigzag-col--media,
   .project-zigzag-row.row--laptop-left .zigzag-col--text {
-    transform: translate3d(0, 36px, 0) !important;
+    transform: translate3d(0, 24px, 0) !important;
+    transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                opacity 0.55s ease !important;
   }
 
   .project-zigzag-row.is-in-view .zigzag-col--text,
@@ -1600,29 +1755,22 @@
     opacity: 1 !important;
     transform: translate3d(0, 0, 0) !important;
   }
-}
-
-@media (max-width: 768px) {
-  .projects-section {
-    padding: calc(var(--section-padding) * 0.75) 0;
-  }
-
-  .projects-zigzag-timeline {
-    gap: 3.5rem;
-    padding: 1.5rem 0 2rem;
-  }
 
   .project-title-large {
-    font-size: 1.75rem;
+    font-size: 1.55rem;
   }
 
   .project-subtitle-lead {
-    font-size: 0.98rem;
+    font-size: 0.92rem;
   }
 
   .project-description-text {
-    font-size: 0.92rem;
-    line-height: 1.6;
+    font-size: 0.88rem;
+    line-height: 1.58;
+  }
+
+  .project-action-btn--expand {
+    margin-left: 0;
   }
 
   .btn-label-desktop {
