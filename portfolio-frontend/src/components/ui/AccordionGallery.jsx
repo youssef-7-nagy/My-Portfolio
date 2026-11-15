@@ -37,6 +37,7 @@ const AccordionGallery = ({
   const rootRef = useRef(null);
   const panelRefs = useRef([]);
   const mediaRefs = useRef([]);
+  const labelRefs = useRef([]);
   const barRefs = useRef([]);
   const textRefs = useRef([]);
   const tlRef = useRef(null);
@@ -69,6 +70,7 @@ const AccordionGallery = ({
         if (!panel) return;
         const isActive = i === active;
         const media = mediaRefs.current[i];
+        const label = labelRefs.current[i];
         const bar = barRefs.current[i];
         const text = textRefs.current[i];
 
@@ -107,11 +109,36 @@ const AccordionGallery = ({
           );
         }
 
-        if (showLabels && bar && text) {
+        if (showLabels && label) {
           if (isActive) {
-            tl.to([bar, text], { opacity: 1, x: 0, duration: dur, ease, stagger: prefersReduced ? 0 : stagger }, 0);
+            tl.to(
+              label,
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: dur,
+                ease,
+                delay: prefersReduced ? 0 : 0.08
+              },
+              0
+            );
+            if (bar && text) {
+              tl.to([bar, text], { opacity: 1, x: 0, duration: dur, ease, stagger: prefersReduced ? 0 : stagger }, 0.1);
+            }
           } else {
-            tl.to([bar, text], { opacity: 0, x: -14, duration: dur * 0.6, ease }, 0);
+            tl.to(
+              label,
+              {
+                autoAlpha: 0,
+                y: 8,
+                duration: dur * 0.4,
+                ease
+              },
+              0
+            );
+            if (bar && text) {
+              tl.to([bar, text], { opacity: 0, x: -14, duration: dur * 0.4, ease }, 0);
+            }
           }
         }
       });
@@ -232,7 +259,11 @@ const AccordionGallery = ({
               <span className="ag-panel__overlay" aria-hidden="true" />
             </span>
             {showLabels && (
-              <span className="ag-panel__label" aria-hidden="true">
+              <span
+                className="ag-panel__label"
+                ref={el => (labelRefs.current[i] = el)}
+                aria-hidden="true"
+              >
                 <span className="ag-panel__bar" ref={el => (barRefs.current[i] = el)} />
                 <span className="ag-panel__text" ref={el => (textRefs.current[i] = el)}>
                   {item.label}

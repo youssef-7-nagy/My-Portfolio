@@ -141,6 +141,16 @@
   pointer-events: none;
   z-index: 2;
   max-width: calc(100% - 24px);
+  opacity: 0;
+  visibility: hidden;
+  will-change: opacity, transform, visibility;
+}
+
+/* Ensure collapsed panels NEVER show the cylinder pill */
+.ag-panel:not(.ag-panel--active) .ag-panel__label {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
 .ag-panel__bar {
