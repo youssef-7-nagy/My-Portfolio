@@ -40,15 +40,15 @@ export default function HeroSection() {
         <div className="hero-grid-line hero-grid-line--h2" />
 
         {/* Intersection Plus (+) Indicators */}
-        <span className="hero-grid-plus" style={{ left: '12%', top: '18%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '38%', top: '18%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '62%', top: '18%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '88%', top: '18%' }}>+</span>
+        <span className="hero-grid-plus hero-grid-plus--v1-h1">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v2-h1">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v3-h1">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v4-h1">+</span>
 
-        <span className="hero-grid-plus" style={{ left: '12%', top: '66%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '38%', top: '66%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '62%', top: '66%' }}>+</span>
-        <span className="hero-grid-plus" style={{ left: '88%', top: '66%' }}>+</span>
+        <span className="hero-grid-plus hero-grid-plus--v1-h2">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v2-h2">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v3-h2">+</span>
+        <span className="hero-grid-plus hero-grid-plus--v4-h2">+</span>
       </div>
 
       {/* 2. Massive Faint Background Typography (Layer 1 - Behind Portrait) */}

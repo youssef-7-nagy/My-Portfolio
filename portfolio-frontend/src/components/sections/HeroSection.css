@@ -1,6 +1,7 @@
 /* ==========================================================================
    HERO EDITORIAL SECTION
-   Precise architectural recreation of the high-contrast editorial reference design
+   Masterfully crafted, fully responsive architectural editorial hero section
+   Adaptive across 320px mobile to 4K / Ultrawide displays
    ========================================================================== */
 
 .hero-editorial {
@@ -8,6 +9,7 @@
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -23,8 +25,18 @@
    1. Architectural Dashed Grid with Delicate (+) Intersections
    ========================================================================== */
 .hero-editorial__grid {
+  --grid-v1: 12%;
+  --grid-v2: 38%;
+  --grid-v3: 62%;
+  --grid-v4: 88%;
+  --grid-h1: 18%;
+  --grid-h2: 66%;
+
   position: absolute;
   inset: 0;
+  width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
   pointer-events: none;
   z-index: 1;
 }
@@ -35,7 +47,7 @@
 }
 
 .hero-grid-line--v1 {
-  left: 12%;
+  left: var(--grid-v1);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -43,7 +55,7 @@
 }
 
 .hero-grid-line--v2 {
-  left: 38%;
+  left: var(--grid-v2);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -51,7 +63,7 @@
 }
 
 .hero-grid-line--v3 {
-  left: 62%;
+  left: var(--grid-v3);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -59,7 +71,7 @@
 }
 
 .hero-grid-line--v4 {
-  left: 88%;
+  left: var(--grid-v4);
   top: 0;
   bottom: 0;
   width: 1px;
@@ -68,7 +80,7 @@
 
 /* Horizontal dashed lines */
 .hero-grid-line--h1 {
-  top: 18%;
+  top: var(--grid-h1);
   left: 0;
   right: 0;
   height: 1px;
@@ -76,7 +88,7 @@
 }
 
 .hero-grid-line--h2 {
-  top: 66%;
+  top: var(--grid-h2);
   left: 0;
   right: 0;
   height: 1px;
@@ -93,18 +105,29 @@
   font-weight: 300;
   line-height: 1;
   pointer-events: none;
+  transition: left 0.3s ease, top 0.3s ease;
 }
+
+.hero-grid-plus--v1-h1 { left: var(--grid-v1); top: var(--grid-h1); }
+.hero-grid-plus--v2-h1 { left: var(--grid-v2); top: var(--grid-h1); }
+.hero-grid-plus--v3-h1 { left: var(--grid-v3); top: var(--grid-h1); }
+.hero-grid-plus--v4-h1 { left: var(--grid-v4); top: var(--grid-h1); }
+
+.hero-grid-plus--v1-h2 { left: var(--grid-v1); top: var(--grid-h2); }
+.hero-grid-plus--v2-h2 { left: var(--grid-v2); top: var(--grid-h2); }
+.hero-grid-plus--v3-h2 { left: var(--grid-v3); top: var(--grid-h2); }
+.hero-grid-plus--v4-h2 { left: var(--grid-v4); top: var(--grid-h2); }
 
 /* ==========================================================================
    2. Massive Faint Background Typography (Layer 1)
    ========================================================================== */
 .hero-editorial__bg-name {
   position: absolute;
-  top: 12%;
+  top: clamp(60px, 11vh, 120px);
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-heading);
-  font-size: clamp(5.5rem, 16vw, 15.5rem);
+  font-size: clamp(3.2rem, 15vw, 15.5rem);
   font-weight: 900;
   color: rgba(255, 255, 255, 0.13);
   text-transform: uppercase;
@@ -134,12 +157,14 @@
 }
 
 .hero-editorial__portrait-img {
-  height: clamp(480px, 78vh, 760px);
-  max-width: 90vw;
+  height: clamp(300px, 76svh, 780px);
+  max-width: min(90vw, 920px);
   object-fit: contain;
   object-position: bottom center;
   display: block;
   filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.35));
+  will-change: height, transform;
+  transition: height 0.3s ease;
 }
 
 /* ==========================================================================
@@ -148,6 +173,8 @@
 .hero-editorial__foreground {
   position: relative;
   width: 100%;
+  max-width: 1680px;
+  margin: 0 auto;
   height: 100%;
   min-height: 100vh;
   min-height: 100svh;
@@ -159,20 +186,22 @@
 .hero-editorial__statement {
   position: absolute;
   left: max(24px, 7.5vw);
-  top: 38%;
-  max-width: 260px;
+  top: clamp(34%, 38vh, 42%);
+  max-width: clamp(200px, 19vw, 270px);
   pointer-events: auto;
+  transition: top 0.3s ease, left 0.3s ease, max-width 0.3s ease;
 }
 
 .hero-editorial__statement p {
   font-family: var(--font-body);
-  font-size: clamp(0.78rem, 1.15vw, 0.92rem);
+  font-size: clamp(0.72rem, 1.05vw, 0.92rem);
   font-weight: 700;
-  line-height: 1.35;
+  line-height: 1.38;
   letter-spacing: 0.04em;
   color: #FFFFFF;
   text-transform: uppercase;
   margin: 0;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Bottom-Left Year & Massive Name */
@@ -181,27 +210,30 @@
   left: max(24px, 7.5vw);
   bottom: max(24px, 6vh);
   pointer-events: auto;
+  transition: bottom 0.3s ease, left 0.3s ease;
 }
 
 .hero-editorial__year {
   display: block;
   font-family: var(--font-body);
-  font-size: clamp(0.9rem, 1.25vw, 1.1rem);
+  font-size: clamp(0.82rem, 1.15vw, 1.1rem);
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: 0.03em;
-  margin-bottom: 6px;
+  margin-bottom: clamp(2px, 0.6vh, 6px);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
 }
 
 .hero-editorial__fg-name {
   font-family: var(--font-heading);
-  font-size: clamp(3.5rem, 9.8vw, 8.5rem);
+  font-size: clamp(3.2rem, 9.5vw, 8.5rem);
   font-weight: 900;
   color: #FFFFFF;
   text-transform: uppercase;
   letter-spacing: -0.03em;
   line-height: 0.88;
   margin: 0;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
 }
 
 /* ==========================================================================
@@ -212,29 +244,40 @@
 .hero-floating-card--top {
   position: absolute;
   right: max(24px, 8.5vw);
-  top: 30%;
-  width: clamp(165px, 15vw, 195px);
+  top: clamp(26%, 30vh, 34%);
+  width: clamp(145px, 14vw, 195px);
   background: #FFFFFF;
-  border-radius: 4px;
-  padding: 10px 10px 8px 10px;
+  border-radius: 6px;
+  padding: clamp(7px, 0.75vw, 10px);
   box-shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
   pointer-events: auto;
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  animation: hero-float-card 6s ease-in-out infinite;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              top 0.3s ease,
+              right 0.3s ease,
+              width 0.3s ease;
 }
 
 .hero-floating-card--top:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+  animation-play-state: paused;
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 26px 52px rgba(0, 0, 0, 0.38);
+}
+
+.hero-floating-card--top:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 3px;
 }
 
 .hero-floating-card__thumb-box {
   width: 100%;
   aspect-ratio: 1 / 1;
-  border-radius: 2px;
+  border-radius: 3px;
   overflow: hidden;
   background: #f3f4f6;
-  margin-bottom: 8px;
+  margin-bottom: clamp(5px, 0.6vw, 8px);
 }
 
 .hero-floating-card__img {
@@ -258,7 +301,7 @@
 
 .hero-floating-card__tag {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: clamp(0.64rem, 0.75vw, 0.74rem);
   font-weight: 800;
   color: #111827;
   text-transform: uppercase;
@@ -267,7 +310,7 @@
 
 .hero-floating-card__category {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: clamp(0.64rem, 0.75vw, 0.74rem);
   font-weight: 600;
   color: #6b7280;
 }
@@ -277,52 +320,58 @@
   position: absolute;
   right: max(24px, 8.5vw);
   bottom: max(24px, 7vh);
-  width: clamp(235px, 22vw, 275px);
+  width: clamp(225px, 20vw, 275px);
   background: #0f1013;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 8px;
-  padding: 10px 14px 12px 14px;
+  padding: clamp(8px, 0.85vw, 12px) clamp(10px, 1.1vw, 16px);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   pointer-events: auto;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: hero-float-badge 6.5s ease-in-out infinite 0.75s;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              bottom 0.3s ease,
+              right 0.3s ease,
+              width 0.3s ease;
 }
 
 .hero-floating-badge--bottom:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.25);
+  animation-play-state: paused;
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.28);
 }
 
 .hero-floating-badge__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: clamp(5px, 0.6vw, 8px);
 }
 
 .hero-floating-badge__label {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: clamp(0.66rem, 0.75vw, 0.74rem);
   font-weight: 600;
   color: #9ca3af;
   letter-spacing: 0.02em;
 }
 
 .hero-floating-badge__sparkle {
-  color: #9ca3af;
-  opacity: 0.75;
+  color: #F4D35E;
+  opacity: 0.85;
 }
 
 .hero-floating-badge__body {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: clamp(8px, 0.9vw, 12px);
 }
 
 .hero-floating-badge__avatar {
-  width: 44px;
-  height: 44px;
+  width: clamp(38px, 3.2vw, 44px);
+  height: clamp(38px, 3.2vw, 44px);
   border-radius: 6px;
   object-fit: cover;
   object-position: center 15%;
@@ -337,10 +386,10 @@
 
 .hero-floating-badge__name {
   font-family: var(--font-heading);
-  font-size: 0.95rem;
+  font-size: clamp(0.88rem, 1.05vw, 0.98rem);
   font-weight: 700;
   color: #FFFFFF;
-  line-height: 1.1;
+  line-height: 1.15;
   margin: 0 0 2px 0;
   white-space: nowrap;
   overflow: hidden;
@@ -349,7 +398,7 @@
 
 .hero-floating-badge__role {
   font-family: var(--font-body);
-  font-size: 0.72rem;
+  font-size: clamp(0.66rem, 0.75vw, 0.74rem);
   color: #9ca3af;
   font-weight: 500;
   margin: 0;
@@ -359,11 +408,11 @@
 }
 
 .hero-floating-badge__btn {
-  width: 34px;
-  height: 34px;
+  width: clamp(34px, 2.8vw, 38px);
+  height: clamp(34px, 2.8vw, 38px);
   background: #FFFFFF;
   color: #000000;
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -379,97 +428,205 @@
   color: #000000;
 }
 
-/* ==========================================================================
-   6. Responsive Layout Breakpoints
-   ========================================================================== */
+.hero-floating-badge__btn:focus-visible {
+  outline: 2px solid #FFFFFF;
+  outline-offset: 2px;
+}
 
-/* Tablets / Medium Desktops (max-width: 1024px) */
-@media (max-width: 1024px) {
-  .hero-editorial__statement {
-    top: 32%;
-    max-width: 220px;
+/* Subtle Ambient Keyframe Floating Animations */
+@keyframes hero-float-card {
+  0%, 100% {
+    transform: translateY(0);
   }
-
-  .hero-floating-card--top {
-    top: 26%;
-    width: 160px;
-  }
-
-  .hero-floating-badge--bottom {
-    bottom: 5vh;
-    width: 240px;
-  }
-
-  .hero-editorial__portrait-img {
-    height: clamp(420px, 68vh, 600px);
+  50% {
+    transform: translateY(-6px);
   }
 }
 
-/* Mobile Devices (max-width: 768px) */
-@media (max-width: 768px) {
-  .hero-editorial {
-    min-height: 100svh;
-    height: auto;
-    padding-bottom: 24px;
+@keyframes hero-float-badge {
+  0%, 100% {
+    transform: translateY(0);
   }
-
-  .hero-editorial__foreground {
-    min-height: 100svh;
+  50% {
+    transform: translateY(-4px);
   }
+}
 
-  /* Grid adjustment */
-  .hero-grid-line--v1 { left: 8%; }
-  .hero-grid-line--v2 { left: 32%; }
-  .hero-grid-line--v3 { left: 68%; }
-  .hero-grid-line--v4 { left: 92%; }
+/* ==========================================================================
+   6. Comprehensive Responsive Viewports
+   ========================================================================== */
 
-  .hero-editorial__bg-name {
-    top: 14%;
-    font-size: clamp(3.8rem, 18vw, 6.5rem);
-  }
-
-  .hero-editorial__portrait-img {
-    height: clamp(340px, 52vh, 480px);
-    max-width: 88vw;
-  }
-
+/* Laptops / Compact Desktops (Height <= 820px and Width >= 1025px) */
+@media (max-height: 820px) and (min-width: 1025px) {
   .hero-editorial__statement {
-    top: 22%;
-    left: 8%;
-    max-width: 210px;
-  }
-
-  .hero-editorial__statement p {
-    font-size: 0.74rem;
-    line-height: 1.3;
-  }
-
-  .hero-editorial__bottom-brand {
-    bottom: 24px;
-    left: 8%;
-  }
-
-  .hero-editorial__fg-name {
-    font-size: clamp(2.8rem, 13vw, 4.8rem);
+    top: 32%;
   }
 
   .hero-floating-card--top {
-    top: 20%;
-    right: 6%;
-    width: 130px;
+    top: 24%;
+  }
+
+  .hero-editorial__portrait-img {
+    height: clamp(400px, 74svh, 600px);
+  }
+
+  .hero-editorial__bottom-brand {
+    bottom: max(18px, 4.5vh);
+  }
+
+  .hero-floating-badge--bottom {
+    bottom: max(18px, 5vh);
+  }
+}
+
+/* Tablets / Medium Screens (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .hero-editorial__grid {
+    --grid-v1: 10%;
+    --grid-v2: 36%;
+    --grid-v3: 64%;
+    --grid-v4: 90%;
+    --grid-h1: 17%;
+    --grid-h2: 67%;
+  }
+
+  .hero-editorial__bg-name {
+    top: clamp(68px, 12vh, 100px);
+    font-size: clamp(4.5rem, 15vw, 10.5rem);
+  }
+
+  .hero-editorial__statement {
+    top: clamp(30%, 33vh, 38%);
+    left: clamp(24px, 4.5vw, 42px);
+    max-width: clamp(190px, 24vw, 240px);
+  }
+
+  .hero-floating-card--top {
+    top: clamp(22%, 26vh, 30%);
+    right: clamp(24px, 4.5vw, 42px);
+    width: clamp(140px, 17vw, 170px);
+  }
+
+  .hero-editorial__portrait-img {
+    height: clamp(420px, 66svh, 600px);
+    max-width: 88vw;
+  }
+
+  .hero-editorial__bottom-brand {
+    left: clamp(24px, 4.5vw, 42px);
+    bottom: clamp(20px, 4.5vh, 38px);
+  }
+
+  .hero-editorial__fg-name {
+    font-size: clamp(3.4rem, 8.5vw, 5.8rem);
+  }
+
+  .hero-floating-badge--bottom {
+    right: clamp(24px, 4.5vw, 42px);
+    bottom: clamp(20px, 4.5vh, 38px);
+    width: clamp(215px, 26vw, 250px);
+  }
+}
+
+/* Tablet Portrait & Large Phones (max-width: 820px) */
+@media (max-width: 820px) {
+  .hero-editorial__statement {
+    top: clamp(26%, 30vh, 34%);
+    max-width: clamp(170px, 26vw, 210px);
+  }
+
+  .hero-floating-card--top {
+    top: clamp(20%, 24vh, 28%);
+    width: clamp(130px, 18vw, 155px);
+  }
+
+  .hero-editorial__portrait-img {
+    height: clamp(380px, 60svh, 520px);
+  }
+
+  .hero-editorial__fg-name {
+    font-size: clamp(3rem, 9vw, 4.6rem);
+  }
+
+  .hero-floating-badge--bottom {
+    width: clamp(210px, 28vw, 240px);
+  }
+}
+
+/* Mobile Devices (max-width: 680px) */
+@media (max-width: 680px) {
+  .hero-editorial {
+    min-height: 100svh;
+    height: 100svh;
+  }
+
+  .hero-editorial__grid {
+    --grid-v1: 7%;
+    --grid-v2: 32%;
+    --grid-v3: 68%;
+    --grid-v4: 93%;
+    --grid-h1: 15%;
+    --grid-h2: 68%;
+  }
+
+  .hero-editorial__bg-name {
+    top: clamp(65px, 12vh, 88px);
+    font-size: clamp(3.2rem, 16vw, 5.8rem);
+  }
+
+  .hero-editorial__portrait-img {
+    height: clamp(320px, 56svh, 460px);
+    max-width: 88vw;
+  }
+
+  /* Mid-Left Statement */
+  .hero-editorial__statement {
+    top: clamp(86px, 14vh, 115px);
+    left: clamp(16px, 4.5vw, 24px);
+    max-width: clamp(150px, 42vw, 195px);
+  }
+
+  .hero-editorial__statement p {
+    font-size: clamp(0.68rem, 2.3vw, 0.78rem);
+    line-height: 1.34;
+  }
+
+  /* Top-Right Floating Project Card - preserved elegantly */
+  .hero-floating-card--top {
+    display: block;
+    top: clamp(86px, 14vh, 115px);
+    right: clamp(16px, 4.5vw, 24px);
+    width: clamp(110px, 28vw, 135px);
     padding: 6px 6px 5px 6px;
+    border-radius: 5px;
   }
 
   .hero-floating-card__tag,
   .hero-floating-card__category {
-    font-size: 0.62rem;
+    font-size: clamp(0.58rem, 1.8vw, 0.66rem);
   }
 
+  /* Bottom Brand */
+  .hero-editorial__bottom-brand {
+    left: clamp(16px, 4.5vw, 24px);
+    bottom: clamp(20px, 3.5vh, 28px);
+  }
+
+  .hero-editorial__year {
+    font-size: clamp(0.78rem, 2.2vw, 0.92rem);
+    margin-bottom: 2px;
+  }
+
+  .hero-editorial__fg-name {
+    font-size: clamp(2.8rem, 10.5vw, 3.8rem);
+  }
+
+  /* Bottom Badge */
   .hero-floating-badge--bottom {
-    bottom: 20px;
-    right: 6%;
-    width: 210px;
-    padding: 8px 10px;
+    right: clamp(16px, 4.5vw, 24px);
+    bottom: clamp(20px, 3.5vh, 28px);
+    width: clamp(200px, 36vw, 235px);
+    padding: 7px 10px;
   }
 
   .hero-floating-badge__avatar {
@@ -486,35 +643,223 @@
   }
 
   .hero-floating-badge__btn {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Small Mobile Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .hero-editorial__grid {
+    --grid-v1: 6%;
+    --grid-v2: 30%;
+    --grid-v3: 70%;
+    --grid-v4: 94%;
+  }
+
+  .hero-editorial__bg-name {
+    top: clamp(62px, 11vh, 80px);
+    font-size: clamp(3rem, 15vw, 4.5rem);
+  }
+
+  .hero-editorial__portrait-img {
+    height: clamp(290px, 52svh, 420px);
+  }
+
+  .hero-editorial__statement {
+    top: clamp(80px, 12.5vh, 105px);
+    left: clamp(12px, 3.8vw, 18px);
+    max-width: clamp(130px, 45vw, 170px);
+  }
+
+  .hero-editorial__statement p {
+    font-size: clamp(0.64rem, 2.4vw, 0.74rem);
+    line-height: 1.32;
+  }
+
+  .hero-floating-card--top {
+    top: clamp(80px, 12.5vh, 105px);
+    right: clamp(12px, 3.8vw, 18px);
+    width: clamp(98px, 28vw, 120px);
+    padding: 5px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.28);
+  }
+
+  .hero-floating-card__thumb-box {
+    margin-bottom: 4px;
+  }
+
+  .hero-floating-card__tag,
+  .hero-floating-card__category {
+    font-size: 0.58rem;
+  }
+
+  /* Centered Bottom Badge for ergonomic one-hand phone reach */
+  .hero-floating-badge--bottom {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    bottom: clamp(10px, 1.8vh, 16px);
+    width: calc(100% - 24px);
+    max-width: 340px;
+    padding: 8px 12px;
+    animation: hero-float-badge-mobile 6.5s ease-in-out infinite 0.75s;
+  }
+
+  .hero-floating-badge--bottom:hover {
+    transform: translateX(-50%) translateY(-2px);
+  }
+
+  .hero-floating-badge__btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Stack brand name cleanly above the bottom badge */
+  .hero-editorial__bottom-brand {
+    left: clamp(12px, 3.8vw, 18px);
+    bottom: clamp(82px, 11vh, 98px);
+  }
+
+  .hero-editorial__fg-name {
+    font-size: clamp(2.4rem, 11.5vw, 3.4rem);
+  }
+}
+
+/* Extra-Small Mobile (max-width: 360px - e.g. 320px–350px) */
+@media (max-width: 360px) {
+  .hero-editorial__statement {
+    max-width: 125px;
+  }
+
+  .hero-editorial__statement p {
+    font-size: 0.62rem;
+  }
+
+  .hero-floating-card--top {
+    width: 90px;
+    padding: 4px;
+  }
+
+  .hero-floating-card__tag,
+  .hero-floating-card__category {
+    font-size: 0.52rem;
+  }
+
+  .hero-editorial__bottom-brand {
+    bottom: 80px;
+  }
+
+  .hero-editorial__fg-name {
+    font-size: 2.15rem;
+  }
+
+  .hero-floating-badge--bottom {
+    width: calc(100% - 16px);
+    padding: 6px 10px;
+  }
+
+  .hero-floating-badge__avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hero-floating-badge__btn {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* Landscape Mobile & Very Short Viewports (max-height: 540px and orientation: landscape) */
+@media (max-height: 540px) and (orientation: landscape) {
+  .hero-editorial__grid {
+    --grid-h1: 20%;
+    --grid-h2: 72%;
+  }
+
+  .hero-editorial__bg-name {
+    top: 50px;
+    font-size: clamp(3rem, 11vh, 5.5rem);
+  }
+
+  .hero-editorial__portrait-img {
+    height: 76svh;
+    max-height: 290px;
+  }
+
+  .hero-editorial__statement {
+    top: 18%;
+    left: 4%;
+    max-width: 170px;
+  }
+
+  .hero-editorial__statement p {
+    font-size: 0.65rem;
+  }
+
+  .hero-floating-card--top {
+    top: 14%;
+    right: 4%;
+    width: 105px;
+    padding: 5px;
+  }
+
+  .hero-editorial__bottom-brand {
+    bottom: 10px;
+    left: 4%;
+  }
+
+  .hero-editorial__fg-name {
+    font-size: 2.2rem;
+  }
+
+  .hero-floating-badge--bottom {
+    left: auto;
+    right: 4%;
+    transform: none;
+    bottom: 10px;
+    width: 205px;
+    padding: 5px 8px;
+    animation: hero-float-badge 6.5s ease-in-out infinite;
+  }
+
+  .hero-floating-badge--bottom:hover {
+    transform: translateY(-2px);
+  }
+
+  .hero-floating-badge__avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .hero-floating-badge__btn {
     width: 28px;
     height: 28px;
   }
 }
 
-/* Extra small mobile (max-width: 480px) */
-@media (max-width: 480px) {
-  .hero-floating-card--top {
-    display: none; /* Keep clean breathing space on very narrow viewports */
+/* Mobile animation variant for centered badge */
+@keyframes hero-float-badge-mobile {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
   }
-
-  .hero-editorial__statement {
-    max-width: 180px;
-    top: 18%;
+  50% {
+    transform: translateX(-50%) translateY(-4px);
   }
+}
 
+/* Accessibility: Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .hero-floating-card--top,
   .hero-floating-badge--bottom {
-    right: 50%;
-    transform: translateX(50%);
-    bottom: 12px;
-    width: calc(100% - 32px);
-    max-width: 320px;
+    animation: none !important;
   }
 
-  .hero-floating-badge--bottom:hover {
-    transform: translateX(50%) translateY(-2px);
-  }
-
-  .hero-editorial__bottom-brand {
-    bottom: 95px; /* Clear space above bottom badge */
+  .hero-floating-card--top,
+  .hero-floating-badge--bottom,
+  .hero-floating-badge__btn,
+  .hero-floating-card__img,
+  .hero-editorial__portrait-img {
+    transition: none !important;
   }
 }
