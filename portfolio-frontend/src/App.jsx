@@ -8,6 +8,7 @@ import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
 import ContactSection from './components/sections/ContactSection';
+import WebsiteGlimpses from './components/sections/WebsiteGlimpses';
 import './App.css';
 
 function HomePage() {
@@ -80,6 +81,9 @@ function HomePage() {
 
       {/* Projects Section */}
       <Projects />
+
+      {/* Website Glimpses Accordion Gallery (React Bits) */}
+      <WebsiteGlimpses />
 
       {/* Modern High-Converting Contact Hub */}
       <ContactSection />

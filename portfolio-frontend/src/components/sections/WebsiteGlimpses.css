@@ -1,0 +1,70 @@
+/* ==========================================================================
+   WEBSITE GLIMPSES SECTION
+   Integrating <AccordionGallery /> from React Bits
+   Adhering strictly to the 6 Official Colors:
+   Warm Yellow (#F4D35E), Ocean Teal (#3C6E71), Deep Steel Blue (#284B63),
+   Light Gray (#D9D9D9), Black (#000000), White (#FFFFFF)
+   ========================================================================== */
+
+.glimpses-section {
+  position: relative;
+  overflow-x: hidden;
+  padding: var(--section-padding) 0;
+  background-color: var(--bg-primary);
+}
+
+.glimpses-container {
+  max-width: min(100% - 2rem, 1400px);
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.glimpses-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.75rem;
+}
+
+.glimpses-header .section-subtitle {
+  max-width: 660px;
+  margin-top: 0.75rem;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.glimpses-gallery-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .glimpses-header {
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .glimpses-section {
+    padding: calc(var(--section-padding) * 0.75) 0;
+  }
+
+  .glimpses-container {
+    padding: 0 0.75rem;
+  }
+
+  .glimpses-header {
+    margin-bottom: 1.75rem;
+  }
+}
