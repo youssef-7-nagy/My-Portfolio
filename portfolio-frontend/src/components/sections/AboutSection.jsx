@@ -4,13 +4,8 @@ import {
   Code2, 
   Layers, 
   Building2, 
-  Download, 
-  Mail, 
-  CheckCircle2, 
-  Sparkles,
-  ArrowRight
+  Sparkles
 } from 'lucide-react';
-import { developer } from '../../data/portfolioData';
 import './AboutSection.css';
 
 const statsData = [
@@ -52,29 +47,6 @@ const statsData = [
   }
 ];
 
-const competencyGroups = [
-  {
-    category: 'Frontend Engineering',
-    color: 'var(--color-ocean-teal)',
-    skills: ['React.js', 'Next.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3', 'Bootstrap', 'Responsive UI']
-  },
-  {
-    category: 'Backend & Real-Time',
-    color: 'var(--color-deep-steel-blue)',
-    skills: ['Node.js', 'Express.js', 'NestJS', 'REST APIs', 'JWT Authentication', 'Socket.IO']
-  },
-  {
-    category: 'Databases & Analytics',
-    color: 'var(--color-warm-yellow)',
-    skills: ['MongoDB', 'SQL', 'Oracle SQL', 'Data Modeling']
-  },
-  {
-    category: 'Professional Strengths',
-    color: 'var(--color-light-gray)',
-    skills: ['System Architecture', 'Business Logic', 'Team Leadership', 'Problem Solving', 'Scouts Leadership']
-  }
-];
-
 export default function AboutSection() {
   const sectionRef = useRef(null);
   const [inView, setInView] = useState(false);
@@ -96,14 +68,6 @@ export default function AboutSection() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
-
-  const handleContactClick = (e) => {
-    e.preventDefault();
-    const contactSection = document.querySelector('#contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
 
   return (
     <section 
@@ -153,108 +117,6 @@ export default function AboutSection() {
               </div>
             );
           })}
-        </div>
-
-        {/* 2. Main Narrative & Skills Two-Column Bento Layout */}
-        <div className="about-main-grid">
-          {/* Left Column: Narrative Professional Bio */}
-          <div className="about-bio-card">
-            <div className="about-card-badge">
-              <span className="badge-bullet" />
-              My Journey & Perspective
-            </div>
-
-            <div className="about-bio-paragraphs">
-              <p className="about-bio-p about-bio-p--lead">
-                I am a <strong>Junior Full Stack (MERN) Developer</strong> driven by a passion for creating reliable, high-performance web applications. My foundation is built upon a <strong>Bachelor of Commerce in Business Information Systems (BIS)</strong> from Helwan University, where I graduated with an <strong>Excellent 3.5 GPA</strong>. This distinct blend of business acumen and computer information systems equips me with a unique edge: I don&apos;t just write code; I thoroughly understand <em>business logic</em>, <em>system architecture</em>, and the seamless user journeys that drive real value.
-              </p>
-
-              <p className="about-bio-p">
-                To reinforce my engineering craft, I completed an intensive <strong>Full Stack Node.js Diploma at AMIT</strong> and developed end-to-end production platforms. Among my notable projects is <strong>&quot;Maghsaltak&quot;</strong>, a multi-role car wash web platform featuring Client, Service Provider, and Admin portals powered by real-time Socket.IO event updates, appointment scheduling, and secure JWT authentication. Furthermore, during my <strong>Data Analytics & Business Planning internship at QNB Bank</strong>, I utilized <strong>Oracle SQL</strong> to extract and analyze core banking variance data across deposits and financial products, cementing my data-driven mindset.
-              </p>
-
-              <p className="about-bio-p">
-                Outside of software engineering, I have been an active member of the worldwide Scout movement (<strong>Scouts & Guides Wadi El Nil</strong>) since 2016. Years of scouting have forged my teamwork, discipline, time management, and empathetic leadership skills. I am dedicated to clean code, modular architecture, and continuous growth, eager to contribute as an impactful Full Stack Developer on ambitious products.
-              </p>
-            </div>
-
-            {/* Quick Resume & Contact Action CTA */}
-            <div className="about-bio-actions">
-              <a 
-                href={developer.resumeUrl && developer.resumeUrl !== '#' ? developer.resumeUrl : 'mailto:youssefn899@gmail.com?subject=Resume%20Request%20-%20Youssef%20Nagy'} 
-                className="about-btn about-btn--primary"
-                target="_blank"
-                rel="noreferrer"
-                download
-              >
-                <Download size={16} />
-                <span>Download Resume</span>
-              </a>
-
-              <a 
-                href="#contact" 
-                onClick={handleContactClick} 
-                className="about-btn about-btn--outline"
-              >
-                <Mail size={16} />
-                <span>Get In Touch</span>
-                <ArrowRight size={14} className="about-btn-arrow" />
-              </a>
-            </div>
-          </div>
-
-          {/* Right Column: Categorized Competencies & Core Technical Stack */}
-          <div className="about-skills-card">
-            <div className="about-card-badge">
-              <span className="badge-bullet badge-bullet--yellow" />
-              Verified Competencies
-            </div>
-
-            <h3 className="about-skills-heading">
-              Technical Stack & Engineering Disciplines
-            </h3>
-            <p className="about-skills-sub">
-              Organized by layer of architecture, certified through practical production platforms and academic excellence.
-            </p>
-
-            <div className="about-competency-groups">
-              {competencyGroups.map((group) => (
-                <div key={group.category} className="competency-group">
-                  <div className="competency-group__header">
-                    <span 
-                      className="competency-group__indicator" 
-                      style={{ background: group.color }} 
-                    />
-                    <h4 className="competency-group__title">{group.category}</h4>
-                  </div>
-                  <div className="competency-badges-row">
-                    {group.skills.map((skill) => (
-                      <span key={skill} className="competency-pill">
-                        <CheckCircle2 size={12} className="competency-check" />
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Language Proficiency Bar */}
-            <div className="about-languages-card">
-              <span className="about-languages-title">Language Fluency</span>
-              <div className="about-languages-tags">
-                <span className="lang-tag">
-                  <strong>Arabic:</strong> Native (C2)
-                </span>
-                <span className="lang-tag">
-                  <strong>English:</strong> Professional (B2, AUC Certified)
-                </span>
-                <span className="lang-tag">
-                  <strong>French:</strong> Elementary (A2)
-                </span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </section>
