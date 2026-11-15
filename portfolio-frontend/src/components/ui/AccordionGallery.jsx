@@ -19,15 +19,15 @@ const AccordionGallery = ({
   accentColor = '#F4D35E',
   overlayColor = '#000000',
   textColor = '#ffffff',
-  height = 460,
+  height = 390,
   gap = 12,
   radius = 20,
-  expandRatio = 0.52,
+  expandRatio = 0.60,
   orientation = 'horizontal',
-  duration = 0.6,
+  duration = 0.65,
   ease = 'power3.out',
-  parallax = 0.5,
-  tilt = 8,
+  parallax = 0.2,
+  tilt = 5,
   stagger = 0.06,
   trigger = 'hover',
   showLabels = true,
@@ -142,7 +142,9 @@ const AccordionGallery = ({
       const rect = el.getBoundingClientRect();
       const total = vertical ? rect.height : rect.width;
       const usable = Math.max(total - gap * (count - 1), 120);
-      const size = Math.max(140, usable * Math.min(Math.max(expandRatio, 0.2), 0.9) * 1.22);
+      const targetRatio = Math.min(Math.max(expandRatio, 0.2), 0.9);
+      // Size media to match the panel without artificial 1.22x magnification so full photos appear
+      const size = Math.max(140, usable * targetRatio);
       mediaSizeRef.current = size;
       el.style.setProperty('--ag-media-size', `${size}px`);
       applyLayout(!firstRunRef.current);

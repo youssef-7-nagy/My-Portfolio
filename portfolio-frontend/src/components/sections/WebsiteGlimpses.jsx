@@ -63,17 +63,18 @@ export default function WebsiteGlimpses() {
         <div className="glimpses-gallery-wrapper">
           <AccordionGallery
             items={galleryItems}
-            defaultIndex={2}
+            defaultIndex={0}
             accentColor="var(--color-warm-yellow)"
             overlayColor="#000000"
             textColor="#ffffff"
-            height={460}
+            height={390}
             gap={12}
             radius={20}
-            expandRatio={0.52}
+            expandRatio={0.60}
             trigger="hover"
             grayscale={true}
-            tilt={7}
+            tilt={5}
+            parallax={0.2}
             duration={0.65}
           />
         </div>
