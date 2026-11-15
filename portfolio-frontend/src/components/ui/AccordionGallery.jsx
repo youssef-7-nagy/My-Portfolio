@@ -143,8 +143,8 @@ const AccordionGallery = ({
       const total = vertical ? rect.height : rect.width;
       const usable = Math.max(total - gap * (count - 1), 120);
       const targetRatio = Math.min(Math.max(expandRatio, 0.2), 0.9);
-      // Size media to match the panel without artificial 1.22x magnification so full photos appear
-      const size = Math.max(140, usable * targetRatio);
+      // Give media a 2% safety bleed so sub-pixel rounding never leaves 1px gaps
+      const size = Math.max(140, Math.ceil(usable * targetRatio * 1.02));
       mediaSizeRef.current = size;
       el.style.setProperty('--ag-media-size', `${size}px`);
       applyLayout(!firstRunRef.current);
