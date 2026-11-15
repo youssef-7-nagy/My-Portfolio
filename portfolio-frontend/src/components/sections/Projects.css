@@ -1258,22 +1258,6 @@
   white-space: nowrap;
 }
 
-.modal-live-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  color: var(--color-ocean-teal);
-  background: rgba(var(--color-ocean-teal-rgb), 0.15);
-  border: 1px solid rgba(var(--color-ocean-teal-rgb), 0.35);
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  flex-shrink: 0;
-  letter-spacing: 0.03em;
-}
-
 /* Right Action Buttons */
 .modal-actions {
   display: flex;
@@ -1493,12 +1477,6 @@
 [data-theme='light'] .modal-url-text {
   color: #111827;
   font-weight: 600;
-}
-
-[data-theme='light'] .modal-live-badge {
-  color: var(--color-ocean-teal);
-  background: rgba(var(--color-ocean-teal-rgb), 0.12);
-  border-color: rgba(var(--color-ocean-teal-rgb), 0.35);
 }
 
 /* Action Buttons in Light Mode */

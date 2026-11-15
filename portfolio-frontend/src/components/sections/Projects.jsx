@@ -399,10 +399,6 @@ export default function Projects() {
                   <div className="modal-address-bar">
                     <Lock size={12} className="modal-address-lock" />
                     <span className="modal-url-text">{liveModalProject.domain}</span>
-                    <span className="modal-live-badge">
-                      <span className="hero-badge__dot" style={{ width: 6, height: 6 }} />
-                      Live Production
-                    </span>
                   </div>
 
                   {/* Right Action Buttons */}
