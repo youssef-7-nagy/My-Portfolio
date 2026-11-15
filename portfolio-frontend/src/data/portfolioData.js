@@ -72,7 +72,6 @@ export const skills = [
 
 import ariadneImg from '../assets/projects/ariadne_preview.png';
 import novamartImg from '../assets/projects/novamart_preview.jpg';
-import taskflowImg from '../assets/projects/taskflow_preview.jpg';
 
 export const projects = [
   {
@@ -122,26 +121,26 @@ export const projects = [
     ],
   },
   {
-    id: 'taskflow',
-    title: 'TaskFlow Workspace',
-    subtitle: 'Productivity & Sprint Tracking App',
-    description: 'Intuitive project management board with drag-and-drop tasks, team sprint collaboration, progress analytics, and responsive mobile optimization.',
-    liveUrl: 'https://github.com/',
-    embedUrl: null,
-    githubUrl: 'https://github.com/',
-    image: taskflowImg,
-    domain: 'https://taskflow-app.io',
-    status: 'Interactive App',
-    isLiveClient: false,
-    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'REST API'],
+    id: 'maghsaltak',
+    title: 'Maghsaltak',
+    subtitle: 'Mobile Car Wash Application (Graduation Project)',
+    description: 'An on-demand mobile car wash application developed as a graduation project that allows people to get their cars washed at their doorstep without having to visit a car wash station or wait in long queues.',
+    liveUrl: 'https://maghsaltak-one.vercel.app/',
+    embedUrl: 'https://maghsaltak-one.vercel.app/',
+    githubUrl: 'https://github.com/youssef-7-nagy',
+    image: null,
+    domain: 'https://maghsaltak-one.vercel.app',
+    status: 'Graduation Project',
+    isLiveClient: true,
+    tags: ['React', 'Node.js', 'Express', 'MongoDB', 'Socket.IO'],
     category: 'fullstack',
     featured: true,
-    hasLiveEmbed: false,
+    hasLiveEmbed: true,
     accent: '#F4D35E',
     highlights: [
-      'Kanban board with dynamic status management',
-      'Full CRUD operations connected to MongoDB Atlas',
-      'Sprint velocity charts & glassmorphism UI',
+      'Doorstep on-demand car wash booking platform',
+      'Eliminates long waiting lines at physical car wash stations',
+      'Multi-role portals with real-time Socket.IO dispatching',
     ],
   },
 ];

@@ -64,12 +64,24 @@ function MacBookDisplay({ project, index, onOpenModal }) {
                   title={hasEmbed ? 'Click to open interactive preview' : project.title}
                 >
                   {/* High-res project screenshot rendered as underlying base layer */}
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="macbook-preview-fallback"
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                  />
+                  {project.image && (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="macbook-preview-fallback"
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                    />
+                  )}
+
+                  {/* Loading indicator when iframe is loading */}
+                  {hasEmbed && !iframeLoaded && (
+                    <div className="macbook-screen-loading">
+                      <div className="macbook-loading-indicator">
+                        <span className="macbook-spinner" />
+                        <span>Loading live app...</span>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Live Injected Iframe */}
                   {hasEmbed && (
@@ -429,11 +441,13 @@ export default function Projects() {
                 {/* Live Interactive Iframe Viewport */}
                 <div className="modal-iframe-viewport">
                   {/* Underlying High-res Screenshot fallback while iframe loads */}
-                  <img
-                    src={liveModalProject.image}
-                    alt={liveModalProject.title}
-                    className="modal-preview-fallback"
-                  />
+                  {liveModalProject.image && (
+                    <img
+                      src={liveModalProject.image}
+                      alt={liveModalProject.title}
+                      className="modal-preview-fallback"
+                    />
+                  )}
 
                   <iframe
                     key={iframeKey}

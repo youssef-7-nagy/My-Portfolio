@@ -236,7 +236,7 @@
   will-change: transform, opacity;
 }
 
-/* 1. Odd Rows (Row 1 - Ariadne, Row 3 - TaskFlow, etc. - Laptop Right / Text Left) */
+/* 1. Odd Rows (Row 1 - Ariadne, Row 3 - Maghsaltak, etc. - Laptop Right / Text Left) */
 /* Laptop Mockup (Right): Slides in Right to Left (x: 80px -> 0) */
 .project-zigzag-row.row--laptop-right .zigzag-col--media {
   transform: translate3d(80px, 0, 0);
