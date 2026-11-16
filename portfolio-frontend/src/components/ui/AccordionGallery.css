@@ -156,6 +156,13 @@
   transform: none !important;
 }
 
+/* In the expanded active panel, display the full screenshot (contain) so no content is cropped */
+.ag-panel--active .ag-panel__media img {
+  object-fit: contain;
+  object-position: center center;
+  background-color: #0b0f14;
+}
+
 .ag-panel__overlay {
   position: absolute;
   inset: 0;
@@ -271,9 +278,9 @@
   }
 
   .ag-panel--active {
-    /* Expanded active card takes a prominent focus width */
-    flex: 0 0 clamp(240px, 68vw, 300px) !important;
-    min-width: clamp(240px, 68vw, 300px) !important;
+    /* Expanded active card takes a prominent focus width fitting full widescreen proportion */
+    flex: 0 0 clamp(290px, 86vw, 360px) !important;
+    min-width: clamp(290px, 86vw, 360px) !important;
     height: 100% !important;
     scroll-snap-align: center;
   }
