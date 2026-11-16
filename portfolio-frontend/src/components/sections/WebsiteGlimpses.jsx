@@ -105,7 +105,7 @@ export default function WebsiteGlimpses() {
         <div className="glimpses-gallery-wrapper">
           <AccordionGallery
             items={galleryItems}
-            defaultIndex={2}
+            defaultIndex={-1}
             accentColor="var(--color-warm-yellow)"
             overlayColor="#000000"
             textColor="#ffffff"

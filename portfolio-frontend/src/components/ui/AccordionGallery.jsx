@@ -46,7 +46,8 @@ const AccordionGallery = ({
 
   const vertical = orientation === 'vertical';
   const count = items.length;
-  const [active, setActive] = useState(Math.min(Math.max(defaultIndex, 0), count - 1));
+  const initialActive = defaultIndex === -1 ? -1 : Math.min(Math.max(defaultIndex, 0), count - 1);
+  const [active, setActive] = useState(initialActive);
 
   const prefersReduced =
     typeof window !== 'undefined' && window.matchMedia
@@ -58,6 +59,7 @@ const AccordionGallery = ({
       const panels = panelRefs.current;
       if (!panels.length) return;
 
+      const hasActive = active >= 0 && active < count;
       const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
       const mediaSize = mediaSizeRef.current;
@@ -68,21 +70,23 @@ const AccordionGallery = ({
 
       panels.forEach((panel, i) => {
         if (!panel) return;
-        const isActive = i === active;
+        const isActive = hasActive && i === active;
         const media = mediaRefs.current[i];
         const label = labelRefs.current[i];
         const bar = barRefs.current[i];
         const text = textRefs.current[i];
 
-        const rot = isActive ? 0 : i < active ? tilt : -tilt;
+        // When no panel is active (all shrunk), keep panels flat with 0 tilt and subtle resting dim
+        const rot = !hasActive ? 0 : isActive ? 0 : i < active ? tilt : -tilt;
         const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot };
+        const restingDim = hasActive ? 0.35 : 0.08;
 
         tl.to(
           panel, 
           { 
             flexGrow: isActive ? grow : 1, 
             ...rotProp, 
-            '--ag-dim': isActive ? 0 : 0.35,
+            '--ag-dim': isActive ? 0 : restingDim,
             duration: dur, 
             ease 
           }, 
@@ -90,9 +94,10 @@ const AccordionGallery = ({
         );
 
         if (media) {
-          const drift = Math.max(-1.5, Math.min(1.5, active - i));
+          const drift = hasActive ? Math.max(-1.5, Math.min(1.5, active - i)) : 0;
           const shift = drift * parallax * mediaSize * 0.06;
-          const gray = grayscale ? (isActive ? 0 : 1) : 0;
+          // When all shrunk, show crisp full color (or neutral tone)
+          const gray = hasActive ? (grayscale ? (isActive ? 0 : 1) : 0) : 0;
           tl.to(
             media,
             {
@@ -101,7 +106,7 @@ const AccordionGallery = ({
               x: vertical ? 0 : isActive ? 0 : shift,
               y: vertical ? (isActive ? 0 : shift) : 0,
               '--ag-gray': gray,
-              '--ag-dim': isActive ? 0 : 0.35,
+              '--ag-dim': isActive ? 0 : restingDim,
               duration: dur,
               ease
             },
@@ -216,6 +221,12 @@ const AccordionGallery = ({
     }
   };
 
+  const handleLeaveGallery = () => {
+    if (trigger === 'hover') {
+      setActive(-1);
+    }
+  };
+
   return (
     <div
       ref={rootRef}
@@ -230,6 +241,7 @@ const AccordionGallery = ({
       }}
       role="list"
       aria-label="Image accordion gallery"
+      onMouseLeave={handleLeaveGallery}
     >
       {items.map((item, i) => {
         const isActive = i === active;
