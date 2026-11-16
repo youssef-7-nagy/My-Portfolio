@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { gsap } from 'gsap';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import './AccordionGallery.css';
 
@@ -60,6 +61,7 @@ const AccordionGallery = ({
       if (!panels.length) return;
 
       const hasActive = active >= 0 && active < count;
+      const isMobile = typeof window !== 'undefined' && window.innerWidth <= 680;
       const r = Math.min(Math.max(expandRatio, 0.2), 0.9);
       const grow = count > 1 ? (r * (count - 1)) / (1 - r) : 1;
       const mediaSize = mediaSizeRef.current;
@@ -76,22 +78,23 @@ const AccordionGallery = ({
         const bar = barRefs.current[i];
         const text = textRefs.current[i];
 
-        // When no panel is active (all shrunk), keep panels flat with 0 tilt and subtle resting dim
-        const rot = !hasActive ? 0 : isActive ? 0 : i < active ? tilt : -tilt;
+        // On mobile, flex-basis/width is controlled by CSS scroll-snap rules to avoid GSAP flexGrow conflicts
+        const rot = isMobile || !hasActive ? 0 : isActive ? 0 : i < active ? tilt : -tilt;
         const rotProp = vertical ? { rotateX: -rot } : { rotateY: rot };
         const restingDim = hasActive ? 0.35 : 0.08;
 
-        tl.to(
-          panel, 
-          { 
-            flexGrow: isActive ? grow : 1, 
-            ...rotProp, 
-            '--ag-dim': isActive ? 0 : restingDim,
-            duration: dur, 
-            ease 
-          }, 
-          0
-        );
+        const panelAnimationProps = {
+          ...rotProp,
+          '--ag-dim': isActive ? 0 : restingDim,
+          duration: dur,
+          ease
+        };
+
+        if (!isMobile) {
+          panelAnimationProps.flexGrow = isActive ? grow : 1;
+        }
+
+        tl.to(panel, panelAnimationProps, 0);
 
         if (media) {
           const drift = hasActive ? Math.max(-1.5, Math.min(1.5, active - i)) : 0;
@@ -222,69 +225,97 @@ const AccordionGallery = ({
   };
 
   const handleLeaveGallery = () => {
-    if (trigger === 'hover') {
+    // Only reset on desktop when not in touch/mobile layout
+    if (typeof window !== 'undefined' && window.innerWidth > 680 && trigger === 'hover') {
       setActive(-1);
     }
   };
 
+  const scrollGallery = direction => {
+    if (!rootRef.current) return;
+    const scrollAmount = direction === 'left' ? -240 : 240;
+    rootRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
+
   return (
-    <div
-      ref={rootRef}
-      className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
-      style={{
-        '--ag-accent': accentColor,
-        '--ag-overlay': overlayColor,
-        '--ag-text': textColor,
-        '--ag-gap': `${gap}px`,
-        '--ag-radius': `${radius}px`,
-        height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`
-      }}
-      role="list"
-      aria-label="Image accordion gallery"
-      onMouseLeave={handleLeaveGallery}
-    >
-      {items.map((item, i) => {
-        const isActive = i === active;
-        const Tag = item.link ? 'a' : 'div';
-        return (
-          <Tag
-            key={i}
-            ref={el => (panelRefs.current[i] = el)}
-            className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
-            style={{ borderRadius: `${radius}px` }}
-            href={item.link || undefined}
-            target={item.link?.startsWith('http') ? '_blank' : undefined}
-            rel={item.link?.startsWith('http') ? 'noopener noreferrer' : undefined}
-            onClick={e => handleClick(i, e)}
-            onMouseEnter={() => handleEnter(i)}
-            onFocus={() => setActive(i)}
-            onKeyDown={e => handleKeyDown(i, e)}
-            role="listitem"
-            tabIndex={0}
-            aria-current={isActive ? 'true' : undefined}
-            aria-label={item.label}
-          >
-            <span className="ag-panel__frame">
-              <span className="ag-panel__media" ref={el => (mediaRefs.current[i] = el)}>
-                <img src={item.image} alt={item.alt || item.label || ''} draggable="false" />
-              </span>
-              <span className="ag-panel__overlay" aria-hidden="true" />
-            </span>
-            {showLabels && (
-              <span
-                className="ag-panel__label"
-                ref={el => (labelRefs.current[i] = el)}
-                aria-hidden="true"
-              >
-                <span className="ag-panel__bar" ref={el => (barRefs.current[i] = el)} />
-                <span className="ag-panel__text" ref={el => (textRefs.current[i] = el)}>
-                  {item.label}
+    <div className="accordion-gallery-wrapper">
+      {/* Mobile Subtle Chevron Navigation Controls */}
+      <button
+        type="button"
+        className="ag-nav-arrow ag-nav-arrow--left"
+        onClick={() => scrollGallery('left')}
+        aria-label="Scroll gallery left"
+      >
+        <ChevronLeft size={18} />
+      </button>
+
+      <div
+        ref={rootRef}
+        className={`accordion-gallery${vertical ? ' accordion-gallery--vertical' : ''}${className ? ` ${className}` : ''}`}
+        style={{
+          '--ag-accent': accentColor,
+          '--ag-overlay': overlayColor,
+          '--ag-text': textColor,
+          '--ag-gap': `${gap}px`,
+          '--ag-radius': `${radius}px`,
+          height: vertical ? `${Math.round(height * 1.6)}px` : `${height}px`
+        }}
+        role="list"
+        aria-label="Image accordion gallery"
+        onMouseLeave={handleLeaveGallery}
+      >
+        {items.map((item, i) => {
+          const isActive = i === active;
+          const Tag = item.link ? 'a' : 'div';
+          return (
+            <Tag
+              key={i}
+              ref={el => (panelRefs.current[i] = el)}
+              className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
+              style={{ borderRadius: `${radius}px` }}
+              href={item.link || undefined}
+              target={item.link?.startsWith('http') ? '_blank' : undefined}
+              rel={item.link?.startsWith('http') ? 'noopener noreferrer' : undefined}
+              onClick={e => handleClick(i, e)}
+              onMouseEnter={() => handleEnter(i)}
+              onFocus={() => setActive(i)}
+              onKeyDown={e => handleKeyDown(i, e)}
+              role="listitem"
+              tabIndex={0}
+              aria-current={isActive ? 'true' : undefined}
+              aria-label={item.label}
+            >
+              <span className="ag-panel__frame">
+                <span className="ag-panel__media" ref={el => (mediaRefs.current[i] = el)}>
+                  <img src={item.image} alt={item.alt || item.label || ''} draggable="false" />
                 </span>
+                <span className="ag-panel__overlay" aria-hidden="true" />
               </span>
-            )}
-          </Tag>
-        );
-      })}
+              {showLabels && (
+                <span
+                  className="ag-panel__label"
+                  ref={el => (labelRefs.current[i] = el)}
+                  aria-hidden="true"
+                >
+                  <span className="ag-panel__bar" ref={el => (barRefs.current[i] = el)} />
+                  <span className="ag-panel__text" ref={el => (textRefs.current[i] = el)}>
+                    {item.label}
+                  </span>
+                </span>
+              )}
+            </Tag>
+          );
+        })}
+      </div>
+
+      <button
+        type="button"
+        className="ag-nav-arrow ag-nav-arrow--right"
+        onClick={() => scrollGallery('right')}
+        aria-label="Scroll gallery right"
+      >
+        <ChevronRight size={18} />
+      </button>
     </div>
   );
 };
