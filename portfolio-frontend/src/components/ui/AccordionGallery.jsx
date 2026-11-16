@@ -208,28 +208,14 @@ const AccordionGallery = ({
   };
 
   const handleClick = (i, e) => {
-    const isTouchDevice =
-      typeof window !== 'undefined' &&
-      (window.matchMedia('(pointer: coarse)').matches ||
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.innerWidth <= 768);
+    // Prevent opening any website link on all devices
+    e.preventDefault();
+    setActive(i);
 
-    if (isTouchDevice) {
-      // On touch devices: clicking any photo must only expand the photo, never navigate away
-      e.preventDefault();
-      setActive(i);
-      // Center the tapped panel smoothly within the horizontal scrolling view
-      const panel = panelRefs.current[i];
-      if (panel && rootRef.current) {
-        panel.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-      }
-      return;
-    }
-
-    if (i !== active) {
-      e.preventDefault();
-      setActive(i);
+    // On touch/mobile devices, smoothly center the tapped panel in the carousel
+    const panel = panelRefs.current[i];
+    if (panel && rootRef.current) {
+      panel.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
     }
   };
 
@@ -285,16 +271,12 @@ const AccordionGallery = ({
       >
         {items.map((item, i) => {
           const isActive = i === active;
-          const Tag = item.link ? 'a' : 'div';
           return (
-            <Tag
+            <div
               key={i}
               ref={el => (panelRefs.current[i] = el)}
               className={`ag-panel${isActive ? ' ag-panel--active' : ''}`}
               style={{ borderRadius: `${radius}px` }}
-              href={item.link || undefined}
-              target={item.link?.startsWith('http') ? '_blank' : undefined}
-              rel={item.link?.startsWith('http') ? 'noopener noreferrer' : undefined}
               onClick={e => handleClick(i, e)}
               onMouseEnter={() => handleEnter(i)}
               onFocus={() => setActive(i)}
@@ -322,7 +304,7 @@ const AccordionGallery = ({
                   </span>
                 </span>
               )}
-            </Tag>
+            </div>
           );
         })}
       </div>
