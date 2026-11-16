@@ -22,9 +22,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
   const isDraggingRef = useRef(false);
   const snapTimerRef = useRef(null);
 
-  // Constants
-  const WIDGET_WIDTH = 74;
-  const WIDGET_HEIGHT = 74;
+  // Constants - A little bigger and comfortable
+  const WIDGET_WIDTH = 90;
+  const WIDGET_HEIGHT = 90;
   const POPUP_WIDTH = 326;
   const POPUP_HEIGHT = 310;
   const EDGE_MARGIN = 16;
