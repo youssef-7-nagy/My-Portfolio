@@ -89,10 +89,6 @@ export default function WebsiteGlimpses() {
       <div className="container glimpses-container">
         {/* Section Header */}
         <div className="glimpses-header">
-          <div className="hero-badge animate-fade-in-up" style={{ alignSelf: 'center', marginBottom: '12px' }}>
-            <span className="hero-badge__dot" />
-            Website Glimpses
-          </div>
           <h2 className="section-title">
             Website <span className="gradient-text">Glimpses</span>
           </h2>

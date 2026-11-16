@@ -81,10 +81,6 @@ export default function ContactSection() {
       <div className="container contact-container">
         {/* Section Header */}
         <div className="contact-header">
-          <div className="hero-badge animate-fade-in-up">
-            <span className="hero-badge__dot" />
-            Get In Touch
-          </div>
           <h2 className="section-title">
             Let&rsquo;s Build Something <span className="gradient-text">Great Together.</span>
           </h2>

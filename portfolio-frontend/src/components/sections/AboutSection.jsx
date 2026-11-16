@@ -78,10 +78,6 @@ export default function AboutSection() {
       <div className="container about-container">
         {/* Section Header */}
         <div className="about-header">
-          <div className="hero-badge animate-fade-in-up" style={{ alignSelf: 'center', marginBottom: '12px' }}>
-            <span className="hero-badge__dot" />
-            Engineering & Analytical Mindset
-          </div>
           <h2 className="section-title">
             About <span className="gradient-text">Me</span>
           </h2>

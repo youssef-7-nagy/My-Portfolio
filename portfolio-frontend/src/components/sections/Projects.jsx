@@ -302,10 +302,6 @@ export default function Projects() {
       <div className="container projects-container">
         {/* Section Header */}
         <div className="projects-header">
-          <div className="hero-badge animate-fade-in-up" style={{ alignSelf: 'center', marginBottom: '12px' }}>
-            <span className="hero-badge__dot" />
-            Portfolio Showcase
-          </div>
           <h2 className="section-title">
             Featured <span className="gradient-text">Projects</span>
           </h2>
