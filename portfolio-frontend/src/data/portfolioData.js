@@ -71,7 +71,8 @@ export const skills = [
 ];
 
 import ariadneImg from '../assets/projects/ariadne_preview.png';
-import novamartImg from '../assets/projects/novamart_preview.jpg';
+import velmoraImg from '../assets/projects/velmora_preview.png';
+import maghsaltakImg from '../assets/projects/maghsaltak_preview.png';
 
 export const projects = [
   {
@@ -105,7 +106,7 @@ export const projects = [
     liveUrl: 'https://velmora-bliss-9iqf.vercel.app/',
     embedUrl: 'https://velmora-bliss-9iqf.vercel.app/',
     githubUrl: 'https://github.com/',
-    image: novamartImg,
+    image: velmoraImg,
     domain: 'https://velmora-bliss-9iqf.vercel.app',
     status: 'Live Production',
     isLiveClient: true,
@@ -128,7 +129,7 @@ export const projects = [
     liveUrl: 'https://maghsaltak-one.vercel.app/',
     embedUrl: 'https://maghsaltak-one.vercel.app/',
     githubUrl: 'https://github.com/youssef-7-nagy',
-    image: null,
+    image: maghsaltakImg,
     domain: 'https://maghsaltak-one.vercel.app',
     status: 'Graduation Project',
     isLiveClient: true,

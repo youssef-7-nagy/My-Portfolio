@@ -749,10 +749,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  -webkit-mask-image: -webkit-radial-gradient(white, black);
-  mask-image: radial-gradient(white, black);
-  transform: translateZ(0);
-  isolation: isolate;
 }
 
 .macbook-screen-frame {
@@ -793,7 +789,7 @@
   pointer-events: auto; /* Active when user clicks 'Interact' */
 }
 
-/* Fallback & Base Screenshot States */
+/* Fallback & Base Screenshot States - Optimized for Ultra-Sharp Retina Rendering */
 .macbook-preview-fallback {
   position: absolute;
   inset: 0;
@@ -805,6 +801,16 @@
   z-index: 1;
   background-color: #08080c;
   border-radius: inherit;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.macbook-screen-frame:hover .macbook-preview-fallback {
+  transform: scale(1.02);
 }
 
 .macbook-screen-loading {
@@ -815,11 +821,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.macbook-screen-loading .macbook-preview-fallback {
-  opacity: 0.35;
-  filter: blur(3px);
 }
 
 .macbook-loading-indicator {
@@ -1337,6 +1338,10 @@
   object-fit: cover;
   object-position: top center;
   z-index: 1;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .modal-iframe {
@@ -1347,6 +1352,8 @@
   border: none;
   display: block;
   background: #000000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Ultra-subtle Retina Glass Sheen Reflection */

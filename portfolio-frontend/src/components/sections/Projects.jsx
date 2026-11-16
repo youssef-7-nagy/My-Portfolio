@@ -10,7 +10,6 @@ import './Projects.css';
  * and ambient color halo glow.
  */
 function MacBookDisplay({ project, index, onOpenModal }) {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
   const stageRef = useRef(null);
   const [dynamicScale, setDynamicScale] = useState(null);
 
@@ -63,35 +62,14 @@ function MacBookDisplay({ project, index, onOpenModal }) {
                   style={{ cursor: hasEmbed ? 'pointer' : 'default' }}
                   title={hasEmbed ? 'Click to open interactive preview' : project.title}
                 >
-                  {/* High-res project screenshot rendered as underlying base layer */}
+                  {/* High-res Retina project screenshot rendered with maximum sharpness */}
                   {project.image && (
                     <img
                       src={project.image}
                       alt={project.title}
                       className="macbook-preview-fallback"
                       loading={index === 0 ? 'eager' : 'lazy'}
-                    />
-                  )}
-
-                  {/* Loading indicator when iframe is loading */}
-                  {hasEmbed && !iframeLoaded && (
-                    <div className="macbook-screen-loading">
-                      <div className="macbook-loading-indicator">
-                        <span className="macbook-spinner" />
-                        <span>Loading live app...</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Live Injected Iframe */}
-                  {hasEmbed && (
-                    <iframe
-                      src={project.embedUrl}
-                      title={`${project.title} Live Preview`}
-                      className={`macbook-live-iframe ${iframeLoaded ? 'macbook-live-iframe--loaded' : 'macbook-live-iframe--loading'}`}
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      onLoad={() => setIframeLoaded(true)}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      decoding="async"
                     />
                   )}
                 </div>
