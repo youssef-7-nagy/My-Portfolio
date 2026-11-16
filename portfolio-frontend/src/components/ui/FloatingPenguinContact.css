@@ -1,0 +1,444 @@
+/* ==========================================================================
+   FLOATING PENGUIN CONTACT WIDGET & CONTACT POPUP
+   Apple AssistiveTouch Dragging + Reference Image 1 Luxury Popup Design
+   Official Design Tokens & Zero Dependencies
+   ========================================================================== */
+
+.floating-penguin-root {
+  position: fixed;
+  z-index: 9990;
+  pointer-events: none; /* children enable pointer-events */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: visible;
+}
+
+/* --------------------------------------------------------------------------
+   1. Draggable Penguin Floating Character
+   -------------------------------------------------------------------------- */
+.floating-penguin-btn {
+  position: fixed;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none;
+  cursor: grab;
+  z-index: 9995;
+  width: 74px;
+  height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  will-change: left, top, transform;
+  animation: penguinEntrance 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.25) forwards;
+}
+
+@keyframes penguinEntrance {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.floating-penguin-btn:active {
+  cursor: grabbing;
+}
+
+.floating-penguin-btn.is-dragging {
+  cursor: grabbing;
+  transition: none !important;
+}
+
+.floating-penguin-btn.is-snapping {
+  transition: left 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.25),
+              top 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.25);
+}
+
+/* Subtle continuous live floating animation */
+.floating-penguin-avatar-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: penguinFloat 3.6s ease-in-out infinite;
+  transform-origin: center bottom;
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.floating-penguin-btn:hover .floating-penguin-avatar-wrapper {
+  transform: scale(1.08);
+}
+
+.floating-penguin-btn:active .floating-penguin-avatar-wrapper {
+  transform: scale(0.96);
+}
+
+/* When dragging or open, pause the idle float so positioning is crisp */
+.floating-penguin-btn.is-dragging .floating-penguin-avatar-wrapper,
+.floating-penguin-btn.is-open .floating-penguin-avatar-wrapper {
+  animation: none;
+}
+
+.floating-penguin-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.32))
+          drop-shadow(0 2px 6px rgba(0, 0, 0, 0.18));
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Status indicator dot on the penguin */
+.floating-penguin-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-warm-yellow, #F4D35E);
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.floating-penguin-btn.is-open .floating-penguin-badge {
+  background: var(--color-deep-steel-blue, #284B63);
+  color: #ffffff;
+}
+
+.floating-penguin-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #000000;
+  display: block;
+}
+
+.floating-penguin-btn.is-open .floating-penguin-badge__dot {
+  display: none;
+}
+
+/* Subtle glow ring when popup is active */
+.floating-penguin-btn.is-open .floating-penguin-img {
+  filter: drop-shadow(0 0 14px rgba(244, 211, 94, 0.65))
+          drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
+}
+
+@keyframes penguinFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(1.2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-3px) rotate(-1.2deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Contact Popup (Matching Reference Image 1)
+   -------------------------------------------------------------------------- */
+.floating-contact-popup {
+  position: fixed;
+  pointer-events: auto;
+  z-index: 9998;
+  width: 326px;
+  max-width: calc(100vw - 24px);
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 20px 48px -10px rgba(0, 0, 0, 0.42),
+              0 8px 20px -6px rgba(0, 0, 0, 0.2),
+              0 0 0 1px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  will-change: transform, opacity;
+  animation: popupReveal 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes popupReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Popup Header - Dark Navy with Decorative Bracket Details */
+.popup-header {
+  position: relative;
+  background: linear-gradient(180deg, #18283f 0%, #111e30 100%);
+  padding: 20px 22px 18px 22px;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+/* Top-Left Decorative Corner Bracket ┌ */
+.popup-header__bracket-tl {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 14px;
+  height: 14px;
+  border-top: 1.5px solid rgba(244, 211, 94, 0.65);
+  border-left: 1.5px solid rgba(244, 211, 94, 0.65);
+  pointer-events: none;
+}
+
+/* Bottom-Right Decorative Corner Bracket ┘ */
+.popup-header__bracket-br {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 1.5px solid rgba(244, 211, 94, 0.65);
+  border-right: 1.5px solid rgba(244, 211, 94, 0.65);
+  pointer-events: none;
+}
+
+.popup-header__top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.popup-header__brand {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-warm-yellow, #F4D35E);
+  margin-left: 8px;
+}
+
+.popup-header__close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+}
+
+.popup-header__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: scale(1.06);
+}
+
+.popup-header__close:active {
+  transform: scale(0.94);
+}
+
+.popup-header__title {
+  margin: 4px 0 0 8px;
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+}
+
+/* Popup Body - Cards Area */
+.popup-body {
+  background: #f8fafc;
+  padding: 16px 16px 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+/* Contact Option Card (Email & Instagram) */
+.popup-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 14px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.035);
+  transition: all 0.22s ease;
+  color: inherit;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.popup-card:hover {
+  background: #ffffff;
+  border-color: rgba(60, 110, 113, 0.45);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40, 75, 99, 0.12);
+}
+
+.popup-card:active {
+  transform: translateY(0);
+}
+
+.popup-card__left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+
+/* Icon Containers */
+.popup-card__icon-box {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.popup-card:hover .popup-card__icon-box {
+  transform: scale(1.05);
+}
+
+/* Email Icon: Deep Royal Blue with soft ambient shadow */
+.popup-card__icon-box--email {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+}
+
+/* Instagram Icon: Official Rich Gradient with soft colorful shadow */
+.popup-card__icon-box--instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.35);
+}
+
+.popup-card__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+.popup-card__title {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.25;
+}
+
+.popup-card__subtitle {
+  font-family: var(--font-sans, sans-serif);
+  font-size: 0.81rem;
+  color: #64748b;
+  margin-top: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 175px;
+}
+
+.popup-card__arrow {
+  color: #94a3b8;
+  flex-shrink: 0;
+  margin-left: 8px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.popup-card:hover .popup-card__arrow {
+  color: var(--color-ocean-teal, #3C6E71);
+  transform: translateX(3px);
+}
+
+/* Popup Footer */
+.popup-footer {
+  padding: 10px 16px 14px 16px;
+  text-align: center;
+  background: #f8fafc;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.popup-footer__tagline {
+  font-family: var(--font-heading, sans-serif);
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #64748b;
+  margin: 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. Responsive Adaptations
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .floating-penguin-btn {
+    width: 66px;
+    height: 66px;
+  }
+
+  .floating-contact-popup {
+    width: min(calc(100vw - 28px), 320px);
+  }
+
+  .popup-header {
+    padding: 18px 18px 16px 18px;
+  }
+
+  .popup-header__title {
+    font-size: 1.25rem;
+  }
+
+  .popup-card__subtitle {
+    max-width: 160px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floating-penguin-avatar-wrapper {
+    animation: none !important;
+  }
+
+  .floating-penguin-btn.is-snapping {
+    transition: none !important;
+  }
+
+  .floating-contact-popup {
+    animation: none !important;
+  }
+}

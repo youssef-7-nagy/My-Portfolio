@@ -9,6 +9,7 @@ import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
 import ContactSection from './components/sections/ContactSection';
 import WebsiteGlimpses from './components/sections/WebsiteGlimpses';
+import FloatingPenguinContact from './components/ui/FloatingPenguinContact';
 import './App.css';
 
 function HomePage() {
@@ -129,6 +130,7 @@ export default function App() {
           </Routes>
         </main>
         <Footer />
+        <FloatingPenguinContact splashActive={showSplash} />
       </div>
     </>
   );
