@@ -271,9 +271,9 @@
   }
 
   .ag-panel--active {
-    /* Expanded active card takes a prominent focus width to show full photo without cropping */
-    flex: 0 0 clamp(290px, 86vw, 420px) !important;
-    min-width: clamp(290px, 86vw, 420px) !important;
+    /* Expanded active card takes a prominent focus width */
+    flex: 0 0 clamp(240px, 68vw, 300px) !important;
+    min-width: clamp(240px, 68vw, 300px) !important;
     height: 100% !important;
     scroll-snap-align: center;
   }
@@ -281,12 +281,6 @@
   .ag-panel__media {
     width: 100%;
     height: 100%;
-  }
-
-  /* When active on mobile, display the entire photo cleanly using contain so nothing is cropped */
-  .ag-panel--active .ag-panel__media img {
-    object-fit: contain !important;
-    object-position: center center !important;
   }
 
   .ag-panel__text {

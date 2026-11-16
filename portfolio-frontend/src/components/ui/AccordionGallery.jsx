@@ -208,19 +208,26 @@ const AccordionGallery = ({
   };
 
   const handleClick = (i, e) => {
-    // If clicking a panel on mobile, or clicking an inactive panel on desktop:
-    // always prevent external navigation and expand the photo instead!
-    const isMobile = typeof window !== 'undefined' && window.innerWidth <= 680;
-    if (isMobile) {
+    const isTouchDevice =
+      typeof window !== 'undefined' &&
+      (window.matchMedia('(pointer: coarse)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.innerWidth <= 768);
+
+    if (isTouchDevice) {
+      // On touch devices: clicking any photo must only expand the photo, never navigate away
       e.preventDefault();
-      // If clicking the currently active panel, toggle it back to shrunk (-1), otherwise expand it
-      setActive(prev => (prev === i ? -1 : i));
-      // Scroll smoothly to center the panel
-      const panelEl = panelRefs.current[i];
-      if (panelEl && rootRef.current) {
-        panelEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      setActive(i);
+      // Center the tapped panel smoothly within the horizontal scrolling view
+      const panel = panelRefs.current[i];
+      if (panel && rootRef.current) {
+        panel.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
-    } else if (i !== active) {
+      return;
+    }
+
+    if (i !== active) {
       e.preventDefault();
       setActive(i);
     }
