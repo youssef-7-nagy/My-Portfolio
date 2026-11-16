@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { developer } from '../../data/portfolioData';
-import SocialClock from '../ui/SocialClock';
 import {
   Check,
   Copy,
@@ -251,11 +250,6 @@ export default function ContactSection() {
                   </div>
                 </div>
               </div>
-            </div>
-
-            {/* Interactive Social Clock Radar Area */}
-            <div className="contact-radar-container">
-              <SocialClock />
             </div>
           </div>
         </div>
