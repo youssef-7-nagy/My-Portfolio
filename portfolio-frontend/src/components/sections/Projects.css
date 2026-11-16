@@ -79,6 +79,7 @@
 }
 
 @media (max-width: 768px) {
+
   /* Mobile 1 column */
   :root {
     --laptop-scale: 0.68;
@@ -118,27 +119,23 @@
   left: 50%;
   width: 1px;
   transform: translateX(-50%);
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(var(--color-ocean-teal-rgb), 0.35) 15%,
-    rgba(var(--color-warm-yellow-rgb), 0.4) 50%,
-    rgba(var(--color-ocean-teal-rgb), 0.35) 85%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(var(--color-ocean-teal-rgb), 0.35) 15%,
+      rgba(var(--color-warm-yellow-rgb), 0.4) 50%,
+      rgba(var(--color-ocean-teal-rgb), 0.35) 85%,
+      transparent 100%);
   pointer-events: none;
   z-index: 1;
 }
 
 [data-theme='light'] .zigzag-center-spine {
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.12) 15%,
-    rgba(var(--color-ocean-teal-rgb), 0.35) 50%,
-    rgba(0, 0, 0, 0.12) 85%,
-    transparent 100%
-  );
+  background: linear-gradient(180deg,
+      transparent 0%,
+      rgba(0, 0, 0, 0.12) 15%,
+      rgba(var(--color-ocean-teal-rgb), 0.35) 50%,
+      rgba(0, 0, 0, 0.12) 85%,
+      transparent 100%);
 }
 
 /* --- Alternating Project Row --- */
@@ -198,7 +195,7 @@
   opacity: 0;
   transform: scale(0.3);
   transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
-              opacity 0.5s ease 0.1s;
+    opacity 0.5s ease 0.1s;
 }
 
 [data-theme='light'] .track-node-dot {
@@ -241,14 +238,14 @@
 .project-zigzag-row.row--laptop-right .zigzag-col--media {
   transform: translate3d(80px, 0, 0);
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.65s ease;
+    opacity 0.65s ease;
 }
 
 /* Text Content (Left): Slides in Left to Right (x: -80px -> 0) with stagger delay 0.18s */
 .project-zigzag-row.row--laptop-right .zigzag-col--text {
   transform: translate3d(-80px, 0, 0);
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
-              opacity 0.65s ease 0.18s;
+    opacity 0.65s ease 0.18s;
 }
 
 /* 2. Even Rows (Row 2 - Velmora Bliss, etc. - Laptop Left / Text Right) */
@@ -256,14 +253,14 @@
 .project-zigzag-row.row--laptop-left .zigzag-col--media {
   transform: translate3d(-80px, 0, 0);
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.65s ease;
+    opacity 0.65s ease;
 }
 
 /* Text Content (Right): Slides in Right to Left (x: 80px -> 0) with stagger delay 0.18s */
 .project-zigzag-row.row--laptop-left .zigzag-col--text {
   transform: translate3d(80px, 0, 0);
   transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.18s,
-              opacity 0.65s ease 0.18s;
+    opacity 0.65s ease 0.18s;
 }
 
 /* In-View Settled State: Smooth GPU slide snap into position */
@@ -282,7 +279,7 @@
   opacity: 0;
   transform: translate3d(0, 10px, 0);
   transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .project-zigzag-row.is-in-view .project-title-large {
@@ -317,6 +314,7 @@
 
 /* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
+
   .project-zigzag-row .zigzag-col--text,
   .project-zigzag-row .zigzag-col--media,
   .project-zigzag-row .project-number-row,
@@ -351,11 +349,9 @@
   transform: translateX(-50%);
   width: 72%;
   height: 60%;
-  background: radial-gradient(
-    circle,
-    var(--project-accent, var(--color-ocean-teal)) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      var(--project-accent, var(--color-ocean-teal)) 0%,
+      transparent 70%);
   opacity: 0.32;
   filter: blur(55px);
   pointer-events: none;
@@ -440,7 +436,8 @@
   letter-spacing: -0.03em;
   line-height: 1.12;
   margin: 0;
-  color: #000000; /* High-contrast Black requirement */
+  color: #000000;
+  /* High-contrast Black requirement */
 }
 
 /* In Dark Mode, high-contrast crisp White ensures maximum legibility */
@@ -488,9 +485,12 @@
   align-items: center;
   padding: 5px 12px;
   border-radius: var(--radius-full);
-  background: #FFFFFF; /* Pure White Requirement */
-  border: 1px solid #D9D9D9; /* Light Gray Requirement */
-  color: #000000; /* Dark Text */
+  background: #FFFFFF;
+  /* Pure White Requirement */
+  border: 1px solid #D9D9D9;
+  /* Light Gray Requirement */
+  color: #000000;
+  /* Dark Text */
   font-family: var(--font-body);
   font-size: 0.76rem;
   font-weight: 600;
@@ -650,6 +650,7 @@
   0% {
     transform: perspective(1400px) rotateX(-65deg);
   }
+
   100% {
     transform: perspective(1400px) rotateX(0deg);
   }
@@ -749,6 +750,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  mask-image: radial-gradient(white, black);
+  transform: translateZ(0);
+  isolation: isolate;
 }
 
 .macbook-screen-frame {
@@ -771,7 +776,8 @@
   transform-origin: 0 0;
   border: none;
   background-color: transparent;
-  pointer-events: none; /* Safe by default so user can scroll portfolio freely */
+  pointer-events: none;
+  /* Safe by default so user can scroll portfolio freely */
   transition: opacity 0.5s ease;
   z-index: 5;
   -webkit-overflow-scrolling: touch;
@@ -786,10 +792,11 @@
 }
 
 .macbook-live-iframe.is-interactive {
-  pointer-events: auto; /* Active when user clicks 'Interact' */
+  pointer-events: auto;
+  /* Active when user clicks 'Interact' */
 }
 
-/* Fallback & Base Screenshot States - Optimized for Ultra-Sharp Retina Rendering */
+/* Fallback & Base Screenshot States */
 .macbook-preview-fallback {
   position: absolute;
   inset: 0;
@@ -801,16 +808,6 @@
   z-index: 1;
   background-color: #08080c;
   border-radius: inherit;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  transform: translateZ(0);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.macbook-screen-frame:hover .macbook-preview-fallback {
-  transform: scale(1.02);
 }
 
 .macbook-screen-loading {
@@ -821,6 +818,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.macbook-screen-loading .macbook-preview-fallback {
+  opacity: 0.35;
+  filter: blur(3px);
 }
 
 .macbook-loading-indicator {
@@ -848,7 +850,9 @@
 }
 
 @keyframes macbookSpin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .macbook-screen-fallback {
@@ -860,12 +864,10 @@
 .macbook-screen-glare {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.11) 0%,
-    rgba(255, 255, 255, 0.02) 28%,
-    transparent 55%
-  );
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0.11) 0%,
+      rgba(255, 255, 255, 0.02) 28%,
+      transparent 55%);
   pointer-events: none;
   z-index: 22;
   border-radius: inherit;
@@ -1051,6 +1053,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -1064,12 +1067,10 @@
   transform: translate(-50%, -50%);
   width: min(85vw, 980px);
   height: min(60vh, 580px);
-  background: radial-gradient(
-    ellipse at center,
-    rgba(var(--color-ocean-teal-rgb), 0.22) 0%,
-    rgba(var(--color-deep-steel-blue-rgb), 0.12) 45%,
-    transparent 72%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(var(--color-ocean-teal-rgb), 0.22) 0%,
+      rgba(var(--color-deep-steel-blue-rgb), 0.12) 45%,
+      transparent 72%);
   filter: blur(60px);
   pointer-events: none;
   z-index: 0;
@@ -1096,6 +1097,7 @@
     opacity: 0;
     transform: scale(0.92) translateY(14px);
   }
+
   100% {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -1338,10 +1340,6 @@
   object-fit: cover;
   object-position: top center;
   z-index: 1;
-  image-rendering: -webkit-optimize-contrast;
-  image-rendering: high-quality;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
 .modal-iframe {
@@ -1352,20 +1350,16 @@
   border: none;
   display: block;
   background: #000000;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Ultra-subtle Retina Glass Sheen Reflection */
 .modal-macbook-glare {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.06) 0%,
-    rgba(255, 255, 255, 0.02) 28%,
-    transparent 45%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.06) 0%,
+      rgba(255, 255, 255, 0.02) 28%,
+      transparent 45%);
   pointer-events: none;
   z-index: 3;
 }
@@ -1410,12 +1404,10 @@
 }
 
 [data-theme='light'] .modal-macbook-glow {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(var(--color-ocean-teal-rgb), 0.2) 0%,
-    rgba(var(--color-warm-yellow-rgb), 0.15) 45%,
-    transparent 70%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(var(--color-ocean-teal-rgb), 0.2) 0%,
+      rgba(var(--color-warm-yellow-rgb), 0.15) 45%,
+      transparent 70%);
   opacity: 0.95;
 }
 
@@ -1458,14 +1450,17 @@
   background: #ff5f56;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
 }
+
 [data-theme='light'] .modal-dot.dot-yellow {
   background: #ffbd2e;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
 }
+
 [data-theme='light'] .modal-dot.dot-green {
   background: #27c93f;
   border: 0.5px solid rgba(0, 0, 0, 0.15);
 }
+
 [data-theme='light'] .modal-chrome-dots:hover .modal-dot.dot-red {
   color: rgba(90, 0, 0, 0.85);
 }
@@ -1549,12 +1544,10 @@
 }
 
 [data-theme='light'] .modal-macbook-glare {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.12) 0%,
-    rgba(255, 255, 255, 0.04) 28%,
-    transparent 45%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.04) 28%,
+      transparent 45%);
 }
 
 /* =======================================================
@@ -1592,7 +1585,8 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: center;
-    gap: clamp(1.5rem, 2.5vw, 2rem); /* gap-6 to gap-8 */
+    gap: clamp(1.5rem, 2.5vw, 2rem);
+    /* gap-6 to gap-8 */
     width: 100%;
   }
 
@@ -1638,17 +1632,20 @@
   }
 
   .project-zigzag-row .project-title-large {
-    font-size: clamp(1.35rem, 2.4vw, 1.65rem); /* text-2xl */
+    font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+    /* text-2xl */
     line-height: 1.2;
   }
 
   .project-zigzag-row .project-subtitle-lead {
-    font-size: 0.875rem; /* text-sm */
+    font-size: 0.875rem;
+    /* text-sm */
     line-height: 1.4;
   }
 
   .project-zigzag-row .project-description-text {
-    font-size: 0.85rem; /* text-sm */
+    font-size: 0.85rem;
+    /* text-sm */
     line-height: 1.55;
     margin: 2px 0 4px;
     max-width: 100%;
@@ -1662,7 +1659,8 @@
 
   .project-zigzag-row .tech-badge-item {
     padding: 3px 8px;
-    font-size: 0.72rem; /* text-xs */
+    font-size: 0.72rem;
+    /* text-xs */
   }
 
   /* Compact action buttons */
@@ -1675,7 +1673,8 @@
 
   .project-zigzag-row .project-action-btn {
     padding: 6px 12px;
-    font-size: 0.78rem; /* text-xs */
+    font-size: 0.78rem;
+    /* text-xs */
     gap: 6px;
   }
 
@@ -1732,7 +1731,7 @@
   .project-zigzag-row.row--laptop-left .zigzag-col--text {
     transform: translate3d(0, 24px, 0) !important;
     transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-                opacity 0.55s ease !important;
+      opacity 0.55s ease !important;
   }
 
   .project-zigzag-row.is-in-view .zigzag-col--text,

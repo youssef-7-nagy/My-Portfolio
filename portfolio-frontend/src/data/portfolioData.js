@@ -70,10 +70,6 @@ export const skills = [
   { name: 'Vite', category: 'tools' },
 ];
 
-import ariadneImg from '../assets/projects/ariadne_preview.png';
-import velmoraImg from '../assets/projects/velmora_preview.png';
-import maghsaltakImg from '../assets/projects/maghsaltak_preview.png';
-
 export const projects = [
   {
     id: 'ariadne',
@@ -83,7 +79,7 @@ export const projects = [
     liveUrl: 'https://ariadneg.com',
     embedUrl: 'https://ariadneg.com/',
     githubUrl: 'https://github.com/',
-    image: ariadneImg,
+    image: null,
     domain: 'https://ariadneg.com',
     status: 'Live Production',
     isLiveClient: true,
@@ -106,7 +102,7 @@ export const projects = [
     liveUrl: 'https://velmora-bliss-9iqf.vercel.app/',
     embedUrl: 'https://velmora-bliss-9iqf.vercel.app/',
     githubUrl: 'https://github.com/',
-    image: velmoraImg,
+    image: null,
     domain: 'https://velmora-bliss-9iqf.vercel.app',
     status: 'Live Production',
     isLiveClient: true,
@@ -129,7 +125,7 @@ export const projects = [
     liveUrl: 'https://maghsaltak-one.vercel.app/',
     embedUrl: 'https://maghsaltak-one.vercel.app/',
     githubUrl: 'https://github.com/youssef-7-nagy',
-    image: maghsaltakImg,
+    image: null,
     domain: 'https://maghsaltak-one.vercel.app',
     status: 'Graduation Project',
     isLiveClient: true,
