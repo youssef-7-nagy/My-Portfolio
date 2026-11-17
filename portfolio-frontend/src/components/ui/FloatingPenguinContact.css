@@ -264,7 +264,7 @@ body.floating-widget-dragging {
    Social Clock Animation Mechanism (Pure CSS Variables + Radial Layout)
    -------------------------------------------------------------------------- */
 .popup-body--clock .social-clock {
-  --count-buttons: 6;
+  --count-buttons: 4;
   --size-button: 2.35rem;
   --size-clock: 10.4rem;
   --size-padding: 0.35rem;
@@ -455,7 +455,7 @@ body.floating-widget-dragging {
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
-/* Brand Palette Mapping for 6 Real Contacts */
+/* Brand Palette Mapping for 4 Real Contacts */
 .popup-body--clock .social-clock__button.email {
   --color: 37, 99, 235; /* Royal Blue */
 }
@@ -465,23 +465,15 @@ body.floating-widget-dragging {
 .popup-body--clock .social-clock__button.linkedin {
   --color: 10, 102, 194; /* LinkedIn Blue */
 }
-.popup-body--clock .social-clock__button.instagram {
-  --color: 225, 48, 108; /* Instagram Rose/Pink */
-}
 .popup-body--clock .social-clock__button.github {
   --color: 40, 75, 99; /* Deep Steel Blue / Slate */
 }
-.popup-body--clock .social-clock__button.facebook {
-  --color: 24, 119, 242; /* Facebook Blue */
-}
 
-/* Button Symmetrical Distribution (6 items, 60 degrees apart) */
+/* Button Symmetrical Distribution (4 items, 90 degrees apart) */
 .popup-body--clock .social-clock__button:nth-child(1) { --index: 0; }
 .popup-body--clock .social-clock__button:nth-child(2) { --index: 1; }
 .popup-body--clock .social-clock__button:nth-child(3) { --index: 2; }
 .popup-body--clock .social-clock__button:nth-child(4) { --index: 3; }
-.popup-body--clock .social-clock__button:nth-child(5) { --index: 4; }
-.popup-body--clock .social-clock__button:nth-child(6) { --index: 5; }
 
 /* --------------------------------------------------------------------------
    3. Responsive Adaptations (Mobile dimensions strictly isolated)
