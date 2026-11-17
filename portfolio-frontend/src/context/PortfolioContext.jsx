@@ -44,9 +44,44 @@ export function PortfolioProvider({ children }) {
     return () => { document.body.style.overflow = ''; };
   }, [mobileMenuOpen]);
 
+  // Ref to prevent overlapping transitions if clicked rapidly
+  const isTransitioningRef = useRef(false);
+
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  }, []);
+    // Safely ignore rapid repeated clicks while a transition is running
+    if (isTransitioningRef.current) return;
+
+    const nextTheme = theme === 'dark' ? 'light' : 'dark';
+
+    // Respect accessibility settings
+    const prefersReducedMotion = typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Direct switch if View Transitions API is unsupported or user prefers reduced motion
+    if (typeof document === 'undefined' || !document.startViewTransition || prefersReducedMotion) {
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('portfolio-theme', nextTheme);
+      setTheme(nextTheme);
+      return;
+    }
+
+    isTransitioningRef.current = true;
+    document.documentElement.classList.add('theme-ink-transitioning');
+
+    const transition = document.startViewTransition(() => {
+      // Synchronously set data-theme so the new view snapshot captures all CSS variables immediately
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('portfolio-theme', nextTheme);
+      setTheme(nextTheme);
+    });
+
+    transition.finished
+      .catch(() => {})
+      .finally(() => {
+        isTransitioningRef.current = false;
+        document.documentElement.classList.remove('theme-ink-transitioning');
+      });
+  }, [theme]);
 
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen((prev) => !prev);

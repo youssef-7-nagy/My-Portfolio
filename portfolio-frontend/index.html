@@ -15,9 +15,10 @@
         } catch (e) {}
       })();
     </script>
-    <!-- Preload brand logos so they are decoded before splash screen and navbar render -->
+    <!-- Preload brand logos and ink brush mask so they are decoded before interaction -->
     <link rel="preload" as="image" href="/src/assets/logos/y.png" />
     <link rel="preload" as="image" href="/src/assets/logos/y-white.png" />
+    <link rel="preload" as="image" href="/ink-brush-mask.svg" type="image/svg+xml" />
   </head>
   <body>
     <div id="root"></div>

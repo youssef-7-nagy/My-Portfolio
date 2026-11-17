@@ -362,3 +362,61 @@ h1, h2, h3, h4, h5, h6 {
     --section-padding: 70px;
   }
 }
+
+/* ==========================================================================
+   PREMIUM INK-BRUSH THEME TRANSITION (LIGHT MODE <-> DARK MODE)
+   Authentic organic fluid ink / paintbrush sweep across the screen
+   ========================================================================== */
+
+/* Configure root view transition animation */
+::view-transition-group(root) {
+  animation-duration: 0.95s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Temporarily disable pointer events on toggle button during transition */
+html.theme-ink-transitioning .navbar__quick-theme-toggle {
+  pointer-events: none;
+}
+
+/* Old theme snapshot stays stationary underneath without crossfade */
+::view-transition-old(root) {
+  animation: none;
+  z-index: 1;
+  mix-blend-mode: normal;
+}
+
+/* Incoming theme snapshot expands across the screen through the organic ink brush mask */
+::view-transition-new(root) {
+  animation: inkBrushReveal 0.95s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 999999;
+  mix-blend-mode: normal;
+  mask-image: url('/ink-brush-mask.svg');
+  -webkit-mask-image: url('/ink-brush-mask.svg');
+  mask-repeat: no-repeat;
+  -webkit-mask-repeat: no-repeat;
+  mask-position: 0 0;
+  -webkit-mask-position: 0 0;
+}
+
+@keyframes inkBrushReveal {
+  0% {
+    mask-size: 0vmax 0vmax;
+    -webkit-mask-size: 0vmax 0vmax;
+  }
+  100% {
+    mask-size: 380vmax 380vmax;
+    -webkit-mask-size: 380vmax 380vmax;
+  }
+}
+
+/* Accessibility: Instant switch for users with reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+}
