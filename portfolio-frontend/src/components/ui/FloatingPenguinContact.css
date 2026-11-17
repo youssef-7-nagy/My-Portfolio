@@ -130,12 +130,12 @@
   position: fixed;
   pointer-events: auto;
   z-index: 9998;
-  width: 268px;
+  width: 292px;
   max-width: calc(100vw - 24px);
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.42),
-              0 6px 16px -4px rgba(0, 0, 0, 0.18),
+  border-radius: 18px;
+  box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.42),
+              0 6px 18px -4px rgba(0, 0, 0, 0.18),
               0 0 0 1px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   will-change: transform, opacity;
@@ -157,7 +157,7 @@
 .popup-header {
   position: relative;
   background: linear-gradient(180deg, #18283f 0%, #111e30 100%);
-  padding: 13px 15px 11px 15px;
+  padding: 15px 17px 13px 17px;
   color: #ffffff;
   overflow: hidden;
 }
@@ -165,10 +165,10 @@
 /* Top-Left Decorative Corner Bracket ┌ */
 .popup-header__bracket-tl {
   position: absolute;
-  top: 9px;
-  left: 9px;
-  width: 10px;
-  height: 10px;
+  top: 10px;
+  left: 10px;
+  width: 11px;
+  height: 11px;
   border-top: 1.5px solid rgba(244, 211, 94, 0.7);
   border-left: 1.5px solid rgba(244, 211, 94, 0.7);
   pointer-events: none;
@@ -177,10 +177,10 @@
 /* Bottom-Right Decorative Corner Bracket ┘ */
 .popup-header__bracket-br {
   position: absolute;
-  bottom: 8px;
-  right: 9px;
-  width: 10px;
-  height: 10px;
+  bottom: 9px;
+  right: 10px;
+  width: 11px;
+  height: 11px;
   border-bottom: 1.5px solid rgba(244, 211, 94, 0.7);
   border-right: 1.5px solid rgba(244, 211, 94, 0.7);
   pointer-events: none;
@@ -190,12 +190,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
 
 .popup-header__brand {
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.62rem;
+  font-size: 0.66rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -204,8 +204,8 @@
 }
 
 .popup-header__close {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -231,7 +231,7 @@
 .popup-header__title {
   margin: 2px 0 0 4px;
   font-family: var(--font-heading, sans-serif);
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: #ffffff;
@@ -240,10 +240,10 @@
 /* Popup Body - Cards Area */
 .popup-body {
   background: #f8fafc;
-  padding: 10px 11px 9px 11px;
+  padding: 12px 13px 11px 13px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
 }
 
 /* Contact Option Card (Email & Instagram) */
@@ -251,10 +251,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 10px;
+  padding: 9px 12px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 11px;
+  border-radius: 12px;
   text-decoration: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   transition: all 0.2s ease;
@@ -278,15 +278,15 @@
 .popup-card__left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 11px;
   min-width: 0;
 }
 
 /* Icon Containers */
 .popup-card__icon-box {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 35px;
+  height: 35px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -320,7 +320,7 @@
 
 .popup-card__title {
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.78rem;
+  font-size: 0.84rem;
   font-weight: 700;
   color: #1e293b;
   line-height: 1.2;
@@ -328,13 +328,13 @@
 
 .popup-card__subtitle {
   font-family: var(--font-sans, sans-serif);
-  font-size: 0.67rem;
+  font-size: 0.72rem;
   color: #64748b;
   margin-top: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 140px;
+  max-width: 155px;
 }
 
 .popup-card__arrow {
@@ -351,7 +351,7 @@
 
 /* Popup Footer */
 .popup-footer {
-  padding: 6px 10px 8px 10px;
+  padding: 7px 12px 9px 12px;
   text-align: center;
   background: #f8fafc;
   border-top: 1px solid rgba(0, 0, 0, 0.05);
@@ -359,7 +359,7 @@
 
 .popup-footer__tagline {
   font-family: var(--font-heading, sans-serif);
-  font-size: 0.52rem;
+  font-size: 0.56rem;
   font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;

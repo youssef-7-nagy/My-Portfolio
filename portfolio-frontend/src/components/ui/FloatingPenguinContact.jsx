@@ -95,11 +95,6 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     // Only respond to primary mouse button or touch
     if (e.button !== undefined && e.button !== 0) return;
 
-    // Close popup on new drag interaction
-    if (isOpen) {
-      setIsOpen(false);
-    }
-
     pointerStartRef.current = { x: e.clientX, y: e.clientY };
     widgetStartRef.current = position || { x: 0, y: 0 };
     hasMovedRef.current = false;
@@ -152,6 +147,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
 
     if (hasMovedRef.current) {
       // It was a drag: snap smoothly to nearest edge!
+      if (isOpen) {
+        setIsOpen(false);
+      }
       snapToNearestEdge(currentPosRef.current.x, currentPosRef.current.y);
     } else {
       // It was a clean click/tap: toggle contact popup!
@@ -209,9 +207,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     const vh = typeof window !== 'undefined' ? window.innerHeight : 768;
     const isMobile = vw <= 768;
 
-    // Compact luxury dimensions matching reference
-    const popupWidth = isMobile ? Math.min(252, vw - 24) : 268;
-    const popupHeight = 222; // Compact rendered height of the popup
+    // Clean, comfortable luxury dimensions matching reference
+    const popupWidth = isMobile ? Math.min(276, vw - 24) : 292;
+    const popupHeight = 240; // Rendered height of the popup
 
     const isDockedOnRight = position.x >= (vw - WIDGET_WIDTH) / 2;
 
@@ -282,10 +280,6 @@ export default function FloatingPenguinContact({ splashActive = false }) {
             className="floating-penguin-img"
             draggable="false"
           />
-          {/* Subtle status indicator dot or toggle icon */}
-          <span className="floating-penguin-badge" aria-hidden="true">
-            {isOpen ? <X size={10} strokeWidth={2.5} /> : <span className="floating-penguin-badge__dot" />}
-          </span>
         </div>
       </button>
 
