@@ -6,17 +6,25 @@
 
 .floating-penguin-root {
   position: fixed;
-  z-index: 9990;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none; /* children enable pointer-events */
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: visible;
+  overflow: hidden;
+  z-index: 9990;
+}
+
+/* Page lock while dragging to prevent any background scrolling or shifting */
+body.floating-widget-dragging {
+  overflow: hidden !important;
+  touch-action: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  overscroll-behavior: none !important;
 }
 
 /* --------------------------------------------------------------------------
-   1. Draggable Penguin Character (Static & Clean - No bobbing animation, No shadow)
+   1. Draggable Character (Static & Clean - No bobbing animation, No shadow)
    -------------------------------------------------------------------------- */
 .floating-penguin-btn {
   position: fixed;
@@ -38,6 +46,8 @@
   outline: none;
   -webkit-tap-highlight-color: transparent;
   will-change: left, top, transform;
+  contain: layout style;
+  overscroll-behavior: none;
 }
 
 .floating-penguin-btn:active {
@@ -368,22 +378,98 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Responsive Adaptations
+   3. Responsive Adaptations (Mobile dimensions strictly isolated)
    -------------------------------------------------------------------------- */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+  /* 1. Subtle, comfortable increase of the floating widget size */
   .floating-penguin-btn {
-    width: 80px;
-    height: 80px;
+    width: 88px;
+    height: 88px;
   }
 
   .floating-contact-popup {
-    border-radius: 14px;
-    box-shadow: 0 12px 30px -6px rgba(0, 0, 0, 0.45),
+    border-radius: 16px;
+    box-shadow: 0 16px 38px -8px rgba(0, 0, 0, 0.45),
+                0 4px 12px rgba(0, 0, 0, 0.15),
                 0 0 0 1px rgba(0, 0, 0, 0.08);
   }
 
+  /* 2. Compact, balanced top-left header tab */
+  .popup-header {
+    padding: 9px 13px 8px 13px;
+  }
+
+  .popup-header__top-row {
+    margin-bottom: 2px;
+  }
+
+  .popup-header__brand {
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    margin-left: 2px;
+  }
+
+  .popup-header__close {
+    width: 20px;
+    height: 20px;
+  }
+
+  .popup-header__title {
+    font-size: 0.96rem;
+    margin: 1px 0 0 2px;
+    letter-spacing: -0.01em;
+  }
+
+  .popup-header__bracket-tl {
+    top: 6px;
+    left: 7px;
+    width: 8px;
+    height: 8px;
+  }
+
+  .popup-header__bracket-br {
+    bottom: 6px;
+    right: 7px;
+    width: 8px;
+    height: 8px;
+  }
+
+  /* 3. Streamlined compact body cards */
+  .popup-body {
+    padding: 9px 11px 8px 11px;
+    gap: 6px;
+  }
+
+  .popup-card {
+    padding: 7px 10px;
+    border-radius: 10px;
+  }
+
+  .popup-card__left {
+    gap: 9px;
+  }
+
+  .popup-card__icon-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .popup-card__title {
+    font-size: 0.78rem;
+  }
+
   .popup-card__subtitle {
-    max-width: 135px;
+    font-size: 0.67rem;
+    max-width: 140px;
+  }
+
+  .popup-footer {
+    padding: 5px 10px 7px 10px;
+  }
+
+  .popup-footer__tagline {
+    font-size: 0.50rem;
   }
 }
 

@@ -22,9 +22,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
   const isDraggingRef = useRef(false);
   const snapTimerRef = useRef(null);
 
-  // Constants - Sleek compact dimensions matching luxury reference
-  const WIDGET_WIDTH = 84;
-  const WIDGET_HEIGHT = 84;
+  // Constants - Sleek, slightly increased size on mobile
+  const WIDGET_WIDTH = 88;
+  const WIDGET_HEIGHT = 88;
   const EDGE_MARGIN = 16;
 
   // Instagram data from portfolioData
@@ -116,8 +116,12 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     const dy = e.clientY - pointerStartRef.current.y;
     const dist = Math.hypot(dx, dy);
 
-    if (dist > 6) {
+    if (dist > 5) {
       hasMovedRef.current = true;
+      // Requirement 3: Close/hide Get in Touch immediately as soon as dragging begins!
+      if (isOpen) {
+        setIsOpen(false);
+      }
     }
 
     if (hasMovedRef.current) {
@@ -147,12 +151,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
 
     if (hasMovedRef.current) {
       // It was a drag: snap smoothly to nearest edge!
-      if (isOpen) {
-        setIsOpen(false);
-      }
       snapToNearestEdge(currentPosRef.current.x, currentPosRef.current.y);
     } else {
-      // It was a clean click/tap: toggle contact popup!
+      // Requirement 4: It was a clean tap without dragging: toggle contact popup!
       setIsOpen(prev => !prev);
     }
   };
@@ -168,6 +169,27 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     }
     snapToNearestEdge(currentPosRef.current.x, currentPosRef.current.y);
   };
+
+  // Requirement 5: Isolate widget drag & prevent underlying page scrolling / gesture movement
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const preventTouchScroll = e => {
+      if (e.cancelable) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('touchmove', preventTouchScroll, { passive: false });
+    document.addEventListener('gesturestart', preventTouchScroll, { passive: false });
+    document.body.classList.add('floating-widget-dragging');
+
+    return () => {
+      document.removeEventListener('touchmove', preventTouchScroll);
+      document.removeEventListener('gesturestart', preventTouchScroll);
+      document.body.classList.remove('floating-widget-dragging');
+    };
+  }, [isDragging]);
 
   // 4. Outside-Click and Escape Key Listeners to Close Popup
   useEffect(() => {
@@ -207,42 +229,42 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     const vh = typeof window !== 'undefined' ? window.innerHeight : 768;
     const isMobile = vw <= 768;
 
-    // Clean, comfortable luxury dimensions matching reference
-    const popupWidth = isMobile ? Math.min(276, vw - 24) : 292;
-    const popupHeight = 240; // Rendered height of the popup
+    const popupWidth = isMobile ? Math.min(270, vw - 24) : 292;
+    const popupHeight = 240; // Rendered height of the popup for desktop
 
     const isDockedOnRight = position.x >= (vw - WIDGET_WIDTH) / 2;
 
-    let left;
-    let top;
-
     if (isMobile) {
-      // On mobile viewports: Float neatly above the widget (or below if widget is near screen top)
-      if (isDockedOnRight) {
-        // Align popup with the widget's right edge
-        left = Math.max(12, Math.min(vw - popupWidth - 12, position.x + WIDGET_WIDTH - popupWidth));
-      } else {
-        // Align popup with the widget's left edge
-        left = Math.max(12, Math.min(vw - popupWidth - 12, position.x));
-      }
+      // Mobile positioning: neatly right/left-aligned with the widget
+      const left = isDockedOnRight
+        ? Math.max(12, Math.min(vw - popupWidth - 12, position.x + WIDGET_WIDTH - popupWidth))
+        : Math.max(12, Math.min(vw - popupWidth - 12, position.x));
 
-      // Vertical: Prefer hovering directly above the widget
+      // Vertical: Prefer hovering directly above the widget with exact 10px spacing
       const spaceAbove = position.y;
-      if (spaceAbove >= popupHeight + 14) {
-        top = Math.max(12, position.y - popupHeight - 8);
+      if (spaceAbove >= 180) {
+        return {
+          left: `${Math.round(left)}px`,
+          bottom: `${Math.round(Math.max(12, vh - position.y + 10))}px`,
+          width: `${Math.round(popupWidth)}px`
+        };
       } else {
-        // Open below if dragged to the upper screen
-        top = Math.min(vh - popupHeight - 12, position.y + WIDGET_HEIGHT + 8);
+        // Open below if widget is dragged near screen top
+        return {
+          left: `${Math.round(left)}px`,
+          top: `${Math.round(position.y + WIDGET_HEIGHT + 10)}px`,
+          width: `${Math.round(popupWidth)}px`
+        };
       }
-    } else {
-      // Desktop / Tablet: Float to the side of the widget
-      left = isDockedOnRight
-        ? Math.max(16, position.x - popupWidth - 14)
-        : Math.min(vw - popupWidth - 16, position.x + WIDGET_WIDTH + 14);
-
-      const idealTop = position.y + WIDGET_HEIGHT - popupHeight;
-      top = Math.max(16, Math.min(vh - popupHeight - 16, idealTop));
     }
+
+    // Desktop / Tablet Landscape: Float to the side of the widget
+    const left = isDockedOnRight
+      ? Math.max(16, position.x - popupWidth - 14)
+      : Math.min(vw - popupWidth - 16, position.x + WIDGET_WIDTH + 14);
+
+    const idealTop = position.y + WIDGET_HEIGHT - popupHeight;
+    const top = Math.max(16, Math.min(vh - popupHeight - 16, idealTop));
 
     return {
       left: `${Math.round(left)}px`,
