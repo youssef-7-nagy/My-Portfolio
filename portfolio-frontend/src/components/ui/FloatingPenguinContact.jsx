@@ -25,7 +25,7 @@ export default function FloatingPenguinContact({ splashActive = false }) {
   // Constants - Sleek, comfortable size on mobile
   const WIDGET_WIDTH = 88;
   const WIDGET_HEIGHT = 88;
-  const EDGE_MARGIN = 16;
+  const getEdgeMargin = (vw) => (vw <= 768 ? 4 : 16);
 
   // Two-stage opening: when popup opens, smoothly expand the social clock radar after a short delay
   useEffect(() => {
@@ -41,13 +41,15 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     };
   }, [isOpen]);
 
-  // 1. Initial Positioning at Bottom-Right of Viewport
+  // 1. Initial Positioning at Bottom-Right of Viewport (Close to edge like Reference Image)
   useEffect(() => {
     const initPos = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
-      const initialX = Math.max(EDGE_MARGIN, vw - WIDGET_WIDTH - 24);
-      const initialY = Math.max(EDGE_MARGIN, vh - WIDGET_HEIGHT - 28);
+      const isMobile = vw <= 768;
+      const edgeMargin = getEdgeMargin(vw);
+      const initialX = Math.max(edgeMargin, vw - WIDGET_WIDTH - edgeMargin);
+      const initialY = Math.max(edgeMargin, vh - WIDGET_HEIGHT - (isMobile ? 80 : 28));
       const coords = { x: initialX, y: initialY };
       currentPosRef.current = coords;
       setPosition(coords);
@@ -61,11 +63,12 @@ export default function FloatingPenguinContact({ splashActive = false }) {
         if (!prev) return prev;
         const vw = window.innerWidth;
         const vh = window.innerHeight;
+        const edgeMargin = getEdgeMargin(vw);
         const isRightDocked = prev.x >= (vw - WIDGET_WIDTH) / 2;
         const newX = isRightDocked
-          ? Math.max(EDGE_MARGIN, vw - WIDGET_WIDTH - EDGE_MARGIN)
-          : EDGE_MARGIN;
-        const newY = Math.max(EDGE_MARGIN, Math.min(vh - WIDGET_HEIGHT - EDGE_MARGIN, prev.y));
+          ? Math.max(edgeMargin, vw - WIDGET_WIDTH - edgeMargin)
+          : edgeMargin;
+        const newY = Math.max(edgeMargin, Math.min(vh - WIDGET_HEIGHT - edgeMargin, prev.y));
         return { x: newX, y: newY };
       });
     };
@@ -74,19 +77,22 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 2. Apple AssistiveTouch Snapping logic
+  // 2. Apple AssistiveTouch Snapping logic (Snaps close to edge on mobile)
   const snapToNearestEdge = useCallback((currentX, currentY) => {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
+    const isMobile = vw <= 768;
+    const edgeMargin = getEdgeMargin(vw);
     const midPoint = (vw - WIDGET_WIDTH) / 2;
 
     const targetX = currentX < midPoint
-      ? EDGE_MARGIN
-      : Math.max(EDGE_MARGIN, vw - WIDGET_WIDTH - EDGE_MARGIN);
+      ? edgeMargin
+      : Math.max(edgeMargin, vw - WIDGET_WIDTH - edgeMargin);
 
+    const bottomSafeMargin = isMobile ? 60 : edgeMargin;
     const targetY = Math.max(
-      EDGE_MARGIN,
-      Math.min(vh - WIDGET_HEIGHT - EDGE_MARGIN, currentY)
+      edgeMargin,
+      Math.min(vh - WIDGET_HEIGHT - bottomSafeMargin, currentY)
     );
 
     setIsSnapping(true);
@@ -137,8 +143,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
       const vh = window.innerHeight;
 
       // Allow fluid free movement during drag inside viewport
+      const edgeMargin = getEdgeMargin(vw);
       const nextX = Math.max(0, Math.min(vw - WIDGET_WIDTH, widgetStartRef.current.x + dx));
-      const nextY = Math.max(EDGE_MARGIN, Math.min(vh - WIDGET_HEIGHT - EDGE_MARGIN, widgetStartRef.current.y + dy));
+      const nextY = Math.max(edgeMargin, Math.min(vh - WIDGET_HEIGHT - edgeMargin, widgetStartRef.current.y + dy));
 
       const nextCoords = { x: nextX, y: nextY };
       currentPosRef.current = nextCoords;
@@ -261,15 +268,15 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     if (isMobile) {
       // Mobile positioning: neatly right/left-aligned with the widget
       const left = isDockedOnRight
-        ? Math.max(12, Math.min(vw - popupWidth - 12, position.x + WIDGET_WIDTH - popupWidth))
-        : Math.max(12, Math.min(vw - popupWidth - 12, position.x));
+        ? Math.max(8, Math.min(vw - popupWidth - 8, position.x + WIDGET_WIDTH - popupWidth))
+        : Math.max(8, Math.min(vw - popupWidth - 8, position.x));
 
       // Vertical: Prefer hovering directly above the widget with exact 10px spacing
       const spaceAbove = position.y;
       if (spaceAbove >= 260) {
         return {
           left: `${Math.round(left)}px`,
-          bottom: `${Math.round(Math.max(12, vh - position.y + 10))}px`,
+          bottom: `${Math.round(Math.max(8, vh - position.y + 10))}px`,
           width: `${Math.round(popupWidth)}px`
         };
       } else {
