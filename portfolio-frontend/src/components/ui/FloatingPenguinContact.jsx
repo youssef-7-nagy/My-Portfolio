@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { developer, socialLinks } from '../../data/portfolioData';
-import pipoImg from '../../assets/pipo.png';
+import codiImg from '../../assets/pop-up/codi.png';
 import { Mail, X, ChevronRight } from 'lucide-react';
 import { FaInstagram } from 'react-icons/fa';
 import './FloatingPenguinContact.css';
@@ -277,8 +277,8 @@ export default function FloatingPenguinContact({ splashActive = false }) {
       >
         <div className="floating-penguin-avatar-wrapper">
           <img
-            src={pipoImg}
-            alt="Youssef Nagy interactive penguin assistant"
+            src={codiImg}
+            alt="Youssef Nagy interactive assistant"
             className="floating-penguin-img"
             draggable="false"
           />
