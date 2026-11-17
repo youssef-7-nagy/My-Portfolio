@@ -247,135 +247,241 @@ body.floating-widget-dragging {
   color: #ffffff;
 }
 
-/* Popup Body - Cards Area */
-.popup-body {
-  background: #f8fafc;
-  padding: 12px 13px 11px 13px;
+/* Popup Body - Centered White Content Area for Animated Social Clock */
+.popup-body--clock {
+  background: #ffffff;
+  padding: 1.25rem 0.6rem 1.15rem 0.6rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: visible;
+  min-height: 205px;
 }
 
-/* Contact Option Card (Email & Instagram) */
-.popup-card {
+/* --------------------------------------------------------------------------
+   Social Clock Animation Mechanism (Pure CSS Variables + Radial Layout)
+   -------------------------------------------------------------------------- */
+.popup-body--clock .social-clock {
+  --count-buttons: 6;
+  --size-button: 2.35rem;
+  --size-clock: 10.4rem;
+  --size-padding: 0.35rem;
+  --size: var(--size-clock);
+
+  border-radius: 50%;
+  cursor: default;
+  height: var(--size);
+  pointer-events: none;
+  position: relative;
+  width: var(--size);
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 9px 12px;
-  background: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.07);
-  border-radius: 12px;
-  text-decoration: none;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s ease;
-  color: inherit;
+  justify-content: center;
+  transition: all 0.5s linear;
+}
+
+/* Central Trigger Node */
+.popup-body--clock .social-clock__trigger {
+  --size: var(--size-button);
+
+  background: linear-gradient(135deg, #18283f 0%, #111e30 100%);
+  border: 2px solid rgba(244, 211, 94, 0.45);
+  border-radius: 50%;
+  height: var(--size);
+  width: var(--size);
+  pointer-events: auto;
+  z-index: 4;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(17, 30, 48, 0.35), 0 0 12px rgba(244, 211, 94, 0.25);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  padding: 0;
+}
+
+.popup-body--clock .social-clock:hover .social-clock__trigger,
+.popup-body--clock .social-clock.is-open .social-clock__trigger {
+  transform: scale(1.08);
+  border-color: var(--color-warm-yellow, #F4D35E);
+  box-shadow: 0 0 22px rgba(244, 211, 94, 0.55), 0 6px 18px rgba(17, 30, 48, 0.45);
+}
+
+.popup-body--clock .social-clock__trigger svg {
+  --size: calc(0.58 * var(--size-button));
+
+  fill: #ffffff;
+  height: var(--size);
+  width: var(--size);
+  transition: transform 0.4s ease;
+}
+
+.popup-body--clock .social-clock:hover .social-clock__trigger svg,
+.popup-body--clock .social-clock.is-open .social-clock__trigger svg {
+  transform: rotate(180deg);
+}
+
+/* Circular Radial List Wrapper */
+.popup-body--clock .social-clock__list {
+  --size: calc(var(--size-button) + var(--size-padding));
+
+  border-radius: 50%;
+  height: var(--size);
+  left: calc(50% - var(--size) / 2);
+  pointer-events: auto;
+  position: absolute;
+  top: calc(50% - var(--size) / 2);
+  width: var(--size);
+  transition: all 0.38s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Open & Hover Animation: Expand to 100% and 360-degree rotation */
+.popup-body--clock .social-clock:hover .social-clock__list,
+.popup-body--clock .social-clock.is-open .social-clock__list {
+  --size: 100%;
+  transform: rotate(360deg);
+}
+
+/* Button */
+.popup-body--clock .social-clock__button {
+  --angle: calc(var(--index, 0) * 360deg / var(--count-buttons));
+  --height: calc(100% - var(--size-padding) * 2);
+  --size: var(--size-button);
+
+  background: none;
+  border: none;
+  border-radius: var(--size);
+  box-sizing: content-box;
+  cursor: pointer;
+  height: var(--height);
+  left: calc(50% - var(--size) / 2);
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - var(--height) / 2);
+  transform: rotate(var(--angle));
+  width: var(--size);
+  padding: 0;
   outline: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-.popup-card:hover {
-  background: #ffffff;
-  border-color: rgba(60, 110, 113, 0.45);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(40, 75, 99, 0.1);
+.popup-body--clock .social-clock:hover .social-clock__button,
+.popup-body--clock .social-clock.is-open .social-clock__button {
+  pointer-events: auto;
 }
 
-.popup-card:active {
-  transform: translateY(0);
+/* Button Background: Circular Badge */
+.popup-body--clock .social-clock__button::after,
+.popup-body--clock .social-clock__button::before {
+  --size: var(--size-button);
+
+  border-radius: inherit;
+  box-sizing: border-box;
+  content: "";
+  left: calc(50% - var(--size) / 2);
+  position: absolute;
+  width: var(--size);
 }
 
-.popup-card__left {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  min-width: 0;
+.popup-body--clock .social-clock__button::before {
+  --fill-opacity: 0.94;
+  background: rgba(var(--color), var(--fill-opacity));
+  height: var(--size);
+  pointer-events: auto;
+  top: 0;
+  transition: background 0.3s linear, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* Icon Containers */
-.popup-card__icon-box {
-  width: 35px;
-  height: 35px;
-  border-radius: 9px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
+.popup-body--clock .social-clock:hover .social-clock__button::before,
+.popup-body--clock .social-clock.is-open .social-clock__button::before {
+  background: rgba(var(--color), 1);
+  box-shadow: 0 4px 14px rgba(var(--color), 0.38);
 }
 
-.popup-card:hover .popup-card__icon-box {
-  transform: scale(1.05);
+/* Button Ray Light Effect Connecting to Center on Hover */
+.popup-body--clock .social-clock__button::after {
+  --fill-opacity: 0.95;
+  --fill-size: 0;
+  --height: calc(50% + var(--size) / 2);
+
+  bottom: calc(100% - var(--height));
+  box-shadow: inset 0 var(--fill-size) 0 rgba(var(--color), var(--fill-opacity));
+  height: var(--height);
+  pointer-events: none;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-/* Email Icon: Deep Royal Blue with soft ambient shadow */
-.popup-card__icon-box--email {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.32);
+.popup-body--clock .social-clock__button:hover::after {
+  --fill-size: calc(-0.5 * (var(--size-clock) + var(--size)));
+  pointer-events: auto;
 }
 
-/* Instagram Icon: Official Rich Gradient with soft colorful shadow */
-.popup-card__icon-box--instagram {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  box-shadow: 0 3px 8px rgba(225, 48, 108, 0.32);
+.popup-body--clock .social-clock__button:active::after {
+  --fill-opacity: 1;
 }
 
-.popup-card__content {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  text-align: left;
+.popup-body--clock .social-clock__button:hover::before {
+  box-shadow: 0 0 18px rgba(var(--color), 0.7);
+  transform: scale(1.08);
 }
 
-.popup-card__title {
-  font-family: var(--font-heading, sans-serif);
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: #1e293b;
-  line-height: 1.2;
+/* Button Icon: Rotated inversely to stay upright */
+.popup-body--clock .social-clock__button svg {
+  --padding: calc((var(--size-button) - var(--size)) / 2);
+  --size: calc(0.55 * var(--size-button));
+
+  fill: #ffffff;
+  height: var(--size);
+  left: var(--padding);
+  position: absolute;
+  top: var(--padding);
+  transform: rotate(calc(-1 * var(--angle)));
+  width: var(--size);
+  z-index: 2;
+  transition: transform 0.2s ease, filter 0.2s ease;
+  pointer-events: none;
 }
 
-.popup-card__subtitle {
-  font-family: var(--font-sans, sans-serif);
-  font-size: 0.72rem;
-  color: #64748b;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 155px;
+.popup-body--clock .social-clock__button:hover svg {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
-.popup-card__arrow {
-  color: #94a3b8;
-  flex-shrink: 0;
-  margin-left: 6px;
-  transition: transform 0.2s ease, color 0.2s ease;
+/* Brand Palette Mapping for 6 Real Contacts */
+.popup-body--clock .social-clock__button.email {
+  --color: 37, 99, 235; /* Royal Blue */
+}
+.popup-body--clock .social-clock__button.whatsapp {
+  --color: 37, 211, 102; /* WhatsApp Green */
+}
+.popup-body--clock .social-clock__button.linkedin {
+  --color: 10, 102, 194; /* LinkedIn Blue */
+}
+.popup-body--clock .social-clock__button.instagram {
+  --color: 225, 48, 108; /* Instagram Rose/Pink */
+}
+.popup-body--clock .social-clock__button.github {
+  --color: 40, 75, 99; /* Deep Steel Blue / Slate */
+}
+.popup-body--clock .social-clock__button.facebook {
+  --color: 24, 119, 242; /* Facebook Blue */
 }
 
-.popup-card:hover .popup-card__arrow {
-  color: var(--color-ocean-teal, #3C6E71);
-  transform: translateX(2px);
-}
-
-/* Popup Footer */
-.popup-footer {
-  padding: 7px 12px 9px 12px;
-  text-align: center;
-  background: #f8fafc;
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.popup-footer__tagline {
-  font-family: var(--font-heading, sans-serif);
-  font-size: 0.56rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #64748b;
-  margin: 0;
-}
+/* Button Symmetrical Distribution (6 items, 60 degrees apart) */
+.popup-body--clock .social-clock__button:nth-child(1) { --index: 0; }
+.popup-body--clock .social-clock__button:nth-child(2) { --index: 1; }
+.popup-body--clock .social-clock__button:nth-child(3) { --index: 2; }
+.popup-body--clock .social-clock__button:nth-child(4) { --index: 3; }
+.popup-body--clock .social-clock__button:nth-child(5) { --index: 4; }
+.popup-body--clock .social-clock__button:nth-child(6) { --index: 5; }
 
 /* --------------------------------------------------------------------------
    3. Responsive Adaptations (Mobile dimensions strictly isolated)
@@ -434,42 +540,16 @@ body.floating-widget-dragging {
     height: 8px;
   }
 
-  /* 3. Streamlined compact body cards */
-  .popup-body {
-    padding: 9px 11px 8px 11px;
-    gap: 6px;
+  /* 3. Streamlined compact Social Clock content area for mobile */
+  .popup-body--clock {
+    padding: 1rem 0.5rem 0.9rem 0.5rem;
+    min-height: 195px;
   }
 
-  .popup-card {
-    padding: 7px 10px;
-    border-radius: 10px;
-  }
-
-  .popup-card__left {
-    gap: 9px;
-  }
-
-  .popup-card__icon-box {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-  }
-
-  .popup-card__title {
-    font-size: 0.78rem;
-  }
-
-  .popup-card__subtitle {
-    font-size: 0.67rem;
-    max-width: 140px;
-  }
-
-  .popup-footer {
-    padding: 5px 10px 7px 10px;
-  }
-
-  .popup-footer__tagline {
-    font-size: 0.50rem;
+  .popup-body--clock .social-clock {
+    --size-button: 2.25rem;
+    --size-clock: 9.8rem;
+    --size-padding: 0.3rem;
   }
 }
 
