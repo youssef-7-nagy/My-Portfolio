@@ -22,11 +22,9 @@ export default function FloatingPenguinContact({ splashActive = false }) {
   const isDraggingRef = useRef(false);
   const snapTimerRef = useRef(null);
 
-  // Constants - A little bigger and comfortable
-  const WIDGET_WIDTH = 90;
-  const WIDGET_HEIGHT = 90;
-  const POPUP_WIDTH = 326;
-  const POPUP_HEIGHT = 310;
+  // Constants - Sleek compact dimensions matching luxury reference
+  const WIDGET_WIDTH = 84;
+  const WIDGET_HEIGHT = 84;
   const EDGE_MARGIN = 16;
 
   // Instagram data from portfolioData
@@ -203,25 +201,55 @@ export default function FloatingPenguinContact({ splashActive = false }) {
     };
   }, [isOpen]);
 
-  // 5. Intelligent Popup Positioning Calculation
+  // 5. Intelligent Popup Positioning Calculation (Reference Image 1 Alignment)
   const calculatePopupStyle = () => {
     if (!position) return { display: 'none' };
 
     const vw = typeof window !== 'undefined' ? window.innerWidth : 1024;
     const vh = typeof window !== 'undefined' ? window.innerHeight : 768;
+    const isMobile = vw <= 768;
+
+    // Compact luxury dimensions matching reference
+    const popupWidth = isMobile ? Math.min(252, vw - 24) : 268;
+    const popupHeight = 222; // Compact rendered height of the popup
+
     const isDockedOnRight = position.x >= (vw - WIDGET_WIDTH) / 2;
 
-    const left = isDockedOnRight
-      ? Math.max(12, position.x - POPUP_WIDTH - 14)
-      : Math.min(vw - POPUP_WIDTH - 12, position.x + WIDGET_WIDTH + 14);
+    let left;
+    let top;
 
-    // Vertical positioning: align popup's bottom with penguin bottom, clamped to viewport
-    const idealTop = position.y + WIDGET_HEIGHT - POPUP_HEIGHT;
-    const top = Math.max(16, Math.min(vh - POPUP_HEIGHT - 16, idealTop));
+    if (isMobile) {
+      // On mobile viewports: Float neatly above the widget (or below if widget is near screen top)
+      if (isDockedOnRight) {
+        // Align popup with the widget's right edge
+        left = Math.max(12, Math.min(vw - popupWidth - 12, position.x + WIDGET_WIDTH - popupWidth));
+      } else {
+        // Align popup with the widget's left edge
+        left = Math.max(12, Math.min(vw - popupWidth - 12, position.x));
+      }
+
+      // Vertical: Prefer hovering directly above the widget
+      const spaceAbove = position.y;
+      if (spaceAbove >= popupHeight + 14) {
+        top = Math.max(12, position.y - popupHeight - 8);
+      } else {
+        // Open below if dragged to the upper screen
+        top = Math.min(vh - popupHeight - 12, position.y + WIDGET_HEIGHT + 8);
+      }
+    } else {
+      // Desktop / Tablet: Float to the side of the widget
+      left = isDockedOnRight
+        ? Math.max(16, position.x - popupWidth - 14)
+        : Math.min(vw - popupWidth - 16, position.x + WIDGET_WIDTH + 14);
+
+      const idealTop = position.y + WIDGET_HEIGHT - popupHeight;
+      top = Math.max(16, Math.min(vh - popupHeight - 16, idealTop));
+    }
 
     return {
       left: `${Math.round(left)}px`,
-      top: `${Math.round(top)}px`
+      top: `${Math.round(top)}px`,
+      width: `${Math.round(popupWidth)}px`
     };
   };
 
@@ -283,7 +311,7 @@ export default function FloatingPenguinContact({ splashActive = false }) {
                 onClick={() => setIsOpen(false)}
                 aria-label="Close contact popup"
               >
-                <X size={14} strokeWidth={2.5} />
+                <X size={12} strokeWidth={2.5} />
               </button>
             </div>
 
@@ -302,14 +330,14 @@ export default function FloatingPenguinContact({ splashActive = false }) {
             >
               <div className="popup-card__left">
                 <div className="popup-card__icon-box popup-card__icon-box--email">
-                  <Mail size={19} strokeWidth={2} />
+                  <Mail size={15} strokeWidth={2} />
                 </div>
                 <div className="popup-card__content">
                   <span className="popup-card__title">Email Me</span>
                   <span className="popup-card__subtitle">{developer.email}</span>
                 </div>
               </div>
-              <ChevronRight size={16} className="popup-card__arrow" />
+              <ChevronRight size={13} className="popup-card__arrow" />
             </a>
 
             {/* 2. Instagram Card */}
@@ -322,7 +350,7 @@ export default function FloatingPenguinContact({ splashActive = false }) {
             >
               <div className="popup-card__left">
                 <div className="popup-card__icon-box popup-card__icon-box--instagram">
-                  <FaInstagram size={20} />
+                  <FaInstagram size={15} />
                 </div>
                 <div className="popup-card__content">
                   <span className="popup-card__title">Instagram</span>
@@ -331,7 +359,7 @@ export default function FloatingPenguinContact({ splashActive = false }) {
                   </span>
                 </div>
               </div>
-              <ChevronRight size={16} className="popup-card__arrow" />
+              <ChevronRight size={13} className="popup-card__arrow" />
             </a>
           </div>
 
