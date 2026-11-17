@@ -1764,18 +1764,32 @@
   /* =======================================================
      MOBILE RESPONSIVE MACBOOK PRO LAPTOP MOCKUP
      Preserves exact desktop hardware 16:10 aspect ratio,
-     single-row browser chrome, and proportional scaling.
+     single-row browser chrome, and edge-to-edge desktop scaling.
      ======================================================= */
   .modal-macbook-device {
     width: 100%;
     max-width: 440px;
     margin: auto;
     max-height: calc(100vh - 24px);
+    animation: macbookModalMobileIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes macbookModalMobileIn {
+    0% {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .modal-macbook-lid {
     border-radius: clamp(12px, 2.5vw, 16px) clamp(12px, 2.5vw, 16px) 2px 2px;
     padding: clamp(5px, 1.2vw, 8px) clamp(6px, 1.4vw, 10px) clamp(4px, 1vw, 7px) clamp(6px, 1.4vw, 10px);
+    box-sizing: border-box;
   }
 
   .modal-macbook-camera {
@@ -1796,6 +1810,9 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   /* Keep browser chrome neatly on a single row */
@@ -1809,6 +1826,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 6px;
+    margin: 0;
+    box-sizing: border-box;
   }
 
   .modal-chrome-dots {
@@ -1832,6 +1851,7 @@
     height: clamp(20px, 4.5vw, 24px);
     padding: 0 8px;
     gap: 5px;
+    box-sizing: border-box;
   }
 
   .modal-address-lock {
@@ -1857,6 +1877,7 @@
     height: clamp(20px, 4.5vw, 24px);
     font-size: 0.68rem;
     gap: 4px;
+    box-sizing: border-box;
   }
 
   .browser-action-btn svg {
@@ -1867,6 +1888,7 @@
   .modal-close-btn {
     width: clamp(20px, 4.5vw, 24px);
     height: clamp(20px, 4.5vw, 24px);
+    box-sizing: border-box;
   }
 
   .modal-close-btn svg {
@@ -1874,14 +1896,29 @@
     height: 12px;
   }
 
-  /* Viewport fills remaining 16:10 screen height */
+  /* Viewport fills 100% of the inner screen display with zero margins/padding */
   .modal-iframe-viewport {
-    flex: 1;
+    flex: 1 1 0%;
     width: 100%;
-    height: auto;
+    height: 100%;
     min-height: 0;
     position: relative;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: #000000;
+  }
+
+  .modal-iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: block;
+    box-sizing: border-box;
   }
 
   /* Miniature base chassis with notch */
@@ -1889,6 +1926,7 @@
     width: calc(100% + clamp(6px, 1.5vw, 10px));
     height: clamp(8px, 1.8vw, 11px);
     border-radius: 0 0 clamp(8px, 1.8vw, 12px) clamp(8px, 1.8vw, 12px);
+    box-sizing: border-box;
   }
 
   .modal-macbook-notch {

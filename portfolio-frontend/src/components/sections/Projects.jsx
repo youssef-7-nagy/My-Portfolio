@@ -306,8 +306,7 @@ export default function Projects() {
 
     const DESKTOP_CANVAS_WIDTH = 1200;
 
-    const updateScale = () => {
-      // Apply ONLY to mobile screen dimensions (<= 767px) as requested
+    const measureAndApplyScale = () => {
       const isMobile = window.innerWidth <= 767;
       if (!isMobile) {
         setModalScale(1);
@@ -315,33 +314,58 @@ export default function Projects() {
         return;
       }
 
-      const rect = el.getBoundingClientRect();
-      const width = rect.width || el.clientWidth;
-      const height = rect.height || el.clientHeight;
+      // ALWAYS use layout dimensions (clientWidth / clientHeight)
+      // which are 100% immune to CSS transforms or animations on ancestors
+      const width = el.clientWidth || el.offsetWidth;
+      const height = el.clientHeight || el.offsetHeight;
 
       if (width > 0) {
         const scale = width / DESKTOP_CANVAS_WIDTH;
         setModalScale(scale);
         if (height > 0) {
-          setModalCanvasHeight(Math.round(height / scale));
+          // Exact ceiling pixel height to completely fill the viewport with zero bottom gap
+          setModalCanvasHeight(Math.ceil(height / scale));
         }
       }
     };
 
-    updateScale();
+    measureAndApplyScale();
+    const rafId = requestAnimationFrame(measureAndApplyScale);
+    const timerId = setTimeout(measureAndApplyScale, 350);
 
     let observer;
     if (typeof ResizeObserver !== 'undefined') {
-      observer = new ResizeObserver(() => {
-        updateScale();
+      observer = new ResizeObserver((entries) => {
+        for (const entry of entries) {
+          const width = entry.contentRect.width;
+          const height = entry.contentRect.height;
+          if (width > 0) {
+            const isMobile = window.innerWidth <= 767;
+            if (!isMobile) {
+              setModalScale(1);
+              setModalCanvasHeight(null);
+              return;
+            }
+            const scale = width / DESKTOP_CANVAS_WIDTH;
+            setModalScale(scale);
+            if (height > 0) {
+              setModalCanvasHeight(Math.ceil(height / scale));
+            }
+          }
+        }
       });
       observer.observe(el);
     }
 
-    window.addEventListener('resize', updateScale);
+    window.addEventListener('resize', measureAndApplyScale);
+    window.addEventListener('orientationchange', measureAndApplyScale);
+
     return () => {
+      cancelAnimationFrame(rafId);
+      clearTimeout(timerId);
       if (observer) observer.disconnect();
-      window.removeEventListener('resize', updateScale);
+      window.removeEventListener('resize', measureAndApplyScale);
+      window.removeEventListener('orientationchange', measureAndApplyScale);
     };
   }, [liveModalProject]);
 
@@ -492,7 +516,11 @@ export default function Projects() {
                             transformOrigin: '0 0',
                             position: 'absolute',
                             top: 0,
-                            left: 0
+                            left: 0,
+                            margin: 0,
+                            padding: 0,
+                            border: 'none',
+                            display: 'block'
                           }
                         : undefined
                     }
