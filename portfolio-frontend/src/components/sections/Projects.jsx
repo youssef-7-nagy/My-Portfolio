@@ -240,7 +240,10 @@ export default function Projects() {
   const [liveModalProject, setLiveModalProject] = useState(null);
   const [iframeKey, setIframeKey] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [modalScale, setModalScale] = useState(1);
+  const [modalCanvasHeight, setModalCanvasHeight] = useState(null);
   const sectionRef = useRef(null);
+  const modalViewportRef = useRef(null);
 
   // Trigger smooth one-time opening animation when Projects section enters view
   useEffect(() => {
@@ -290,6 +293,55 @@ export default function Projects() {
     return () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [liveModalProject]);
+
+  // Dynamically scale embedded desktop website inside mobile modal viewport
+  // to preserve full desktop navbar/layout without collapsing into mobile mode
+  useEffect(() => {
+    if (!liveModalProject) return;
+
+    const el = modalViewportRef.current;
+    if (!el) return;
+
+    const DESKTOP_CANVAS_WIDTH = 1200;
+
+    const updateScale = () => {
+      // Apply ONLY to mobile screen dimensions (<= 767px) as requested
+      const isMobile = window.innerWidth <= 767;
+      if (!isMobile) {
+        setModalScale(1);
+        setModalCanvasHeight(null);
+        return;
+      }
+
+      const rect = el.getBoundingClientRect();
+      const width = rect.width || el.clientWidth;
+      const height = rect.height || el.clientHeight;
+
+      if (width > 0) {
+        const scale = width / DESKTOP_CANVAS_WIDTH;
+        setModalScale(scale);
+        if (height > 0) {
+          setModalCanvasHeight(Math.round(height / scale));
+        }
+      }
+    };
+
+    updateScale();
+
+    let observer;
+    if (typeof ResizeObserver !== 'undefined') {
+      observer = new ResizeObserver(() => {
+        updateScale();
+      });
+      observer.observe(el);
+    }
+
+    window.addEventListener('resize', updateScale);
+    return () => {
+      if (observer) observer.disconnect();
+      window.removeEventListener('resize', updateScale);
     };
   }, [liveModalProject]);
 
@@ -421,7 +473,7 @@ export default function Projects() {
                 </div>
 
                 {/* Live Interactive Iframe Viewport */}
-                <div className="modal-iframe-viewport">
+                <div className="modal-iframe-viewport" ref={modalViewportRef}>
                   <iframe
                     key={iframeKey}
                     src={liveModalProject.liveUrl}
@@ -429,6 +481,21 @@ export default function Projects() {
                     className="modal-iframe"
                     loading="lazy"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    style={
+                      modalScale < 1
+                        ? {
+                            width: '1200px',
+                            height: modalCanvasHeight
+                              ? `${modalCanvasHeight}px`
+                              : `${Math.round(100 / modalScale)}%`,
+                            transform: `scale(${modalScale})`,
+                            transformOrigin: '0 0',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0
+                          }
+                        : undefined
+                    }
                   />
 
                   {/* Ultra-subtle Retina Glass Sheen Reflection */}

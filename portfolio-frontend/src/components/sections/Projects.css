@@ -1761,24 +1761,139 @@
     display: none;
   }
 
-  .modal-browser-chrome {
-    padding: 8px 12px;
-    gap: 8px;
+  /* =======================================================
+     MOBILE RESPONSIVE MACBOOK PRO LAPTOP MOCKUP
+     Preserves exact desktop hardware 16:10 aspect ratio,
+     single-row browser chrome, and proportional scaling.
+     ======================================================= */
+  .modal-macbook-device {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+    max-height: calc(100vh - 24px);
   }
 
-  .modal-address-bar {
-    order: 3;
-    max-width: 100%;
+  .modal-macbook-lid {
+    border-radius: clamp(12px, 2.5vw, 16px) clamp(12px, 2.5vw, 16px) 2px 2px;
+    padding: clamp(5px, 1.2vw, 8px) clamp(6px, 1.4vw, 10px) clamp(4px, 1vw, 7px) clamp(6px, 1.4vw, 10px);
+  }
+
+  .modal-macbook-camera {
+    top: clamp(2px, 0.5vw, 4px);
+    width: 5px;
+    height: 5px;
+  }
+
+  .modal-macbook-camera__lens {
+    width: 2px;
+    height: 2px;
+  }
+
+  .modal-macbook-screen {
+    border-radius: clamp(8px, 1.8vw, 10px);
+    aspect-ratio: 16 / 10;
     width: 100%;
-    margin-top: 6px;
-    padding: 4px 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  /* Keep browser chrome neatly on a single row */
+  .modal-browser-chrome {
+    flex-shrink: 0;
+    height: clamp(28px, 6vw, 34px);
+    padding: 0 clamp(6px, 1.5vw, 10px);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+
+  .modal-chrome-dots {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .modal-dot {
+    width: 7.5px;
+    height: 7.5px;
+  }
+
+  /* Address bar centered between dots and actions without wrapping */
+  .modal-address-bar {
+    order: unset;
+    flex: 1;
+    min-width: 0;
+    max-width: none;
+    width: auto;
+    margin: 0;
+    height: clamp(20px, 4.5vw, 24px);
+    padding: 0 8px;
+    gap: 5px;
+  }
+
+  .modal-address-lock {
+    width: 9px;
+    height: 9px;
+    flex-shrink: 0;
   }
 
   .modal-url-text {
-    font-size: 0.72rem;
+    font-size: clamp(0.62rem, 1.8vw, 0.72rem);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
+  .modal-actions {
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .browser-action-btn {
+    padding: 2px 6px;
+    height: clamp(20px, 4.5vw, 24px);
+    font-size: 0.68rem;
+    gap: 4px;
+  }
+
+  .browser-action-btn svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .modal-close-btn {
+    width: clamp(20px, 4.5vw, 24px);
+    height: clamp(20px, 4.5vw, 24px);
+  }
+
+  .modal-close-btn svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  /* Viewport fills remaining 16:10 screen height */
   .modal-iframe-viewport {
-    height: clamp(300px, 55vh, 480px);
+    flex: 1;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Miniature base chassis with notch */
+  .modal-macbook-base {
+    width: calc(100% + clamp(6px, 1.5vw, 10px));
+    height: clamp(8px, 1.8vw, 11px);
+    border-radius: 0 0 clamp(8px, 1.8vw, 12px) clamp(8px, 1.8vw, 12px);
+  }
+
+  .modal-macbook-notch {
+    width: clamp(44px, 11vw, 60px);
+    height: clamp(3px, 0.7vw, 4.5px);
+    border-radius: 0 0 clamp(3px, 0.7vw, 4px) clamp(3px, 0.7vw, 4px);
   }
 }
