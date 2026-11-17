@@ -9,7 +9,8 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* children enable pointer-events */
+  pointer-events: none;
+  /* children enable pointer-events */
   overflow: hidden;
   z-index: 9990;
 }
@@ -61,7 +62,7 @@ body.floating-widget-dragging {
 
 .floating-penguin-btn.is-snapping {
   transition: left 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.25),
-              top 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.25);
+    top 0.42s cubic-bezier(0.18, 0.89, 0.32, 1.25);
 }
 
 /* Static clean wrapper (no bobbing animation) */
@@ -88,7 +89,8 @@ body.floating-widget-dragging {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: none !important; /* Zero drop-shadow */
+  filter: none !important;
+  /* Zero drop-shadow */
   pointer-events: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -145,8 +147,8 @@ body.floating-widget-dragging {
   background: #ffffff;
   border-radius: 18px;
   box-shadow: 0 18px 44px -8px rgba(0, 0, 0, 0.42),
-              0 6px 18px -4px rgba(0, 0, 0, 0.18),
-              0 0 0 1px rgba(0, 0, 0, 0.08);
+    0 6px 18px -4px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
   overflow: hidden;
   will-change: transform, opacity;
   animation: popupReveal 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -157,6 +159,7 @@ body.floating-widget-dragging {
     opacity: 0;
     transform: scale(0.93) translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -264,7 +267,7 @@ body.floating-widget-dragging {
    Social Clock Animation Mechanism (Pure CSS Variables + Radial Layout)
    -------------------------------------------------------------------------- */
 .popup-body--clock .social-clock {
-  --count-buttons: 4;
+  --count-buttons: 6;
   --size-button: 2.35rem;
   --size-clock: 10.4rem;
   --size-padding: 0.35rem;
@@ -300,8 +303,8 @@ body.floating-widget-dragging {
   justify-content: center;
   box-shadow: 0 4px 14px rgba(17, 30, 48, 0.35), 0 0 12px rgba(244, 211, 94, 0.25);
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s ease,
-              border-color 0.3s ease;
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
   outline: none;
   -webkit-tap-highlight-color: transparent;
   padding: 0;
@@ -340,7 +343,7 @@ body.floating-widget-dragging {
   top: calc(50% - var(--size) / 2);
   width: var(--size);
   transition: all 0.38s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform 0.48s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Open & Hover Animation: Expand to 100% and 360-degree rotation */
@@ -371,11 +374,18 @@ body.floating-widget-dragging {
   padding: 0;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  z-index: 2;
 }
 
+/* Ensure hovered button and its ray are always on top */
+.popup-body--clock .social-clock__button:hover {
+  z-index: 10;
+}
+
+/* Keep the tall container transparent to pointer events so opposite buttons are never blocked */
 .popup-body--clock .social-clock:hover .social-clock__button,
 .popup-body--clock .social-clock.is-open .social-clock__button {
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 /* Button Background: Circular Badge */
@@ -391,6 +401,7 @@ body.floating-widget-dragging {
   width: var(--size);
 }
 
+/* Only the circular badge at the top captures pointer events */
 .popup-body--clock .social-clock__button::before {
   --fill-opacity: 0.94;
   background: rgba(var(--color), var(--fill-opacity));
@@ -405,6 +416,7 @@ body.floating-widget-dragging {
 .popup-body--clock .social-clock.is-open .social-clock__button::before {
   background: rgba(var(--color), 1);
   box-shadow: 0 4px 14px rgba(var(--color), 0.38);
+  pointer-events: auto;
 }
 
 /* Button Ray Light Effect Connecting to Center on Hover */
@@ -455,30 +467,67 @@ body.floating-widget-dragging {
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
 }
 
-/* Brand Palette Mapping for 4 Real Contacts */
+/* Brand Palette Mapping for 6 Real Contacts */
 .popup-body--clock .social-clock__button.email {
-  --color: 37, 99, 235; /* Royal Blue */
-}
-.popup-body--clock .social-clock__button.whatsapp {
-  --color: 37, 211, 102; /* WhatsApp Green */
-}
-.popup-body--clock .social-clock__button.linkedin {
-  --color: 10, 102, 194; /* LinkedIn Blue */
-}
-.popup-body--clock .social-clock__button.github {
-  --color: 40, 75, 99; /* Deep Steel Blue / Slate */
+  --color: 37, 99, 235;
+  /* Royal Blue */
 }
 
-/* Button Symmetrical Distribution (4 items, 90 degrees apart) */
-.popup-body--clock .social-clock__button:nth-child(1) { --index: 0; }
-.popup-body--clock .social-clock__button:nth-child(2) { --index: 1; }
-.popup-body--clock .social-clock__button:nth-child(3) { --index: 2; }
-.popup-body--clock .social-clock__button:nth-child(4) { --index: 3; }
+.popup-body--clock .social-clock__button.whatsapp {
+  --color: 37, 211, 102;
+  /* WhatsApp Green */
+}
+
+.popup-body--clock .social-clock__button.linkedin {
+  --color: 10, 102, 194;
+  /* LinkedIn Blue */
+}
+
+.popup-body--clock .social-clock__button.instagram {
+  --color: 225, 48, 108;
+  /* Instagram Rose/Pink */
+}
+
+.popup-body--clock .social-clock__button.github {
+  --color: 40, 75, 99;
+  /* Deep Steel Blue / Slate */
+}
+
+.popup-body--clock .social-clock__button.facebook {
+  --color: 24, 119, 242;
+  /* Facebook Blue */
+}
+
+/* Button Symmetrical Distribution (6 items, 60 degrees apart) */
+.popup-body--clock .social-clock__button:nth-child(1) {
+  --index: 0;
+}
+
+.popup-body--clock .social-clock__button:nth-child(2) {
+  --index: 1;
+}
+
+.popup-body--clock .social-clock__button:nth-child(3) {
+  --index: 2;
+}
+
+.popup-body--clock .social-clock__button:nth-child(4) {
+  --index: 3;
+}
+
+.popup-body--clock .social-clock__button:nth-child(5) {
+  --index: 4;
+}
+
+.popup-body--clock .social-clock__button:nth-child(6) {
+  --index: 5;
+}
 
 /* --------------------------------------------------------------------------
    3. Responsive Adaptations (Mobile dimensions strictly isolated)
    -------------------------------------------------------------------------- */
 @media (max-width: 768px) {
+
   /* 1. Subtle, comfortable increase of the floating widget size */
   .floating-penguin-btn {
     width: 88px;
@@ -488,8 +537,8 @@ body.floating-widget-dragging {
   .floating-contact-popup {
     border-radius: 16px;
     box-shadow: 0 16px 38px -8px rgba(0, 0, 0, 0.45),
-                0 4px 12px rgba(0, 0, 0, 0.15),
-                0 0 0 1px rgba(0, 0, 0, 0.08);
+      0 4px 12px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(0, 0, 0, 0.08);
   }
 
   /* 2. Compact, balanced top-left header tab */
