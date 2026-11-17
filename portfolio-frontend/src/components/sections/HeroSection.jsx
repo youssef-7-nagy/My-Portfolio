@@ -212,29 +212,6 @@ export default function HeroSection() {
               <span>3</span>
             </div>
           </div>
-
-          {/* Action CTA Button */}
-          <a
-            href="#contact"
-            onClick={handleContactClick}
-            className="hero-mobile-cta"
-            title="Let's Connect"
-          >
-            <span>LET&rsquo;S CONNECT</span>
-            <span className="hero-mobile-cta__arrow">→</span>
-          </a>
-
-          {/* Social Profile Badge Link */}
-          <a
-            href="https://linkedin.com/in/youssef-nagy7"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hero-mobile-social"
-            title="View LinkedIn Profile"
-          >
-            <span className="hero-mobile-social__icon">in</span>
-            <span className="hero-mobile-social__handle">Youssef Nagy</span>
-          </a>
         </div>
       </div>
     </section>

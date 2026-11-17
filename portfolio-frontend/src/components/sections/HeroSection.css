@@ -647,32 +647,32 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: clamp(4px, 1vh, 10px);
+    margin-top: 0;
   }
 
   /* 3. Flanking Headline Words (HEY, / I'M) around head */
   .hero-mobile-flank {
     position: absolute;
-    top: clamp(8px, 2.5vh, 26px);
+    top: clamp(14px, 3.5vh, 36px);
     left: 0;
     right: 0;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 0 clamp(4px, 2.5vw, 16px);
+    padding: 0 clamp(4px, 2vw, 12px);
     pointer-events: none;
     z-index: 1;
   }
 
   .hero-mobile-word {
     font-family: var(--font-heading, -apple-system, sans-serif);
-    font-size: clamp(2.2rem, 10.5vw, 4rem);
+    font-size: clamp(2.8rem, 13vw, 4.8rem);
     font-weight: 900;
     color: #FFFFFF;
-    line-height: 0.9;
+    line-height: 0.88;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    text-shadow: 0 3px 16px rgba(0, 0, 0, 0.4);
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45);
     user-select: none;
   }
 
@@ -684,11 +684,11 @@
     text-align: right;
   }
 
-  /* 4. Cutout Portrait Anchor */
+  /* 4. Cutout Portrait Anchor (Bigger & Broad like reference) */
   .hero-mobile-portrait-wrapper {
     position: relative;
     width: 100%;
-    max-width: clamp(220px, 66vw, 300px);
+    max-width: clamp(280px, 86vw, 420px);
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -699,27 +699,27 @@
   .hero-mobile-portrait-img {
     width: 100%;
     height: auto;
-    max-height: clamp(250px, 42vh, 370px);
+    max-height: clamp(320px, 52vh, 480px);
     object-fit: contain;
     object-position: bottom center;
     display: block;
-    filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.4));
+    filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.45));
   }
 
   /* 5. Large Bold Name Across Chest */
   .hero-mobile-name {
     font-family: var(--font-heading, -apple-system, sans-serif);
-    font-size: clamp(3.2rem, 15.5vw, 5.6rem);
+    font-size: clamp(3.6rem, 17vw, 6.2rem);
     font-weight: 900;
     color: #FFFFFF;
     text-transform: uppercase;
     letter-spacing: -0.03em;
     line-height: 0.85;
-    margin: clamp(-46px, -6.8vh, -28px) 0 0 0;
+    margin: clamp(-54px, -8vh, -36px) 0 0 0;
     padding: 0;
     text-align: center;
     z-index: 4;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 4px 26px rgba(0, 0, 0, 0.55);
     pointer-events: none;
     user-select: none;
   }
@@ -729,16 +729,17 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(5px, 1.6vw, 9px);
-    margin-top: clamp(10px, 1.8vh, 16px);
-    padding: 5px clamp(10px, 2.5vw, 16px);
-    background: rgba(0, 0, 0, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    gap: clamp(6px, 1.8vw, 10px);
+    margin-top: clamp(12px, 2vh, 18px);
+    padding: 6px clamp(12px, 2.8vw, 18px);
+    background: rgba(0, 0, 0, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 9999px;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     z-index: 4;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+    margin-bottom: clamp(12px, 2vh, 20px);
   }
 
   .tech-divider {
@@ -752,8 +753,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: clamp(23px, 6.2vw, 29px);
-    height: clamp(23px, 6.2vw, 29px);
+    width: clamp(24px, 6.5vw, 30px);
+    height: clamp(24px, 6.5vw, 30px);
     border-radius: 5px;
     font-family: var(--font-heading, -apple-system, sans-serif);
     font-weight: 800;
@@ -783,111 +784,29 @@
   .tech-badge--ts {
     background: #3178C6;
     color: #FFFFFF;
-    font-size: clamp(0.62rem, 1.9vw, 0.74rem);
+    font-size: clamp(0.64rem, 2vw, 0.76rem);
     letter-spacing: -0.02em;
   }
 
   .tech-badge--js {
     background: #F7DF1E;
     color: #000000;
-    font-size: clamp(0.62rem, 1.9vw, 0.74rem);
+    font-size: clamp(0.64rem, 2vw, 0.76rem);
     letter-spacing: -0.02em;
   }
 
   .tech-badge--html {
     background: #E34F26;
     color: #FFFFFF;
-    font-size: clamp(0.7rem, 2.1vw, 0.8rem);
+    font-size: clamp(0.72rem, 2.2vw, 0.82rem);
     font-weight: 900;
   }
 
   .tech-badge--css {
     background: #1572B6;
     color: #FFFFFF;
-    font-size: clamp(0.7rem, 2.1vw, 0.8rem);
+    font-size: clamp(0.72rem, 2.2vw, 0.82rem);
     font-weight: 900;
-  }
-
-  /* 7. Action Pill Button (LET'S CONNECT →) */
-  .hero-mobile-cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: clamp(14px, 2.2vh, 20px);
-    padding: clamp(10px, 1.8vh, 13px) clamp(26px, 7vw, 36px);
-    background: linear-gradient(180deg, #10cf65 0%, #00a843 100%);
-    color: #FFFFFF;
-    font-family: var(--font-heading, -apple-system, sans-serif);
-    font-size: clamp(0.85rem, 2.8vw, 0.98rem);
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 9999px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 6px 18px rgba(0, 168, 67, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.35);
-    z-index: 4;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .hero-mobile-cta:hover,
-  .hero-mobile-cta:active {
-    transform: translateY(-2px) scale(1.02);
-    filter: brightness(1.08);
-    box-shadow: 0 8px 22px rgba(0, 168, 67, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
-  }
-
-  .hero-mobile-cta__arrow {
-    font-size: 1.15em;
-    transition: transform 0.2s ease;
-  }
-
-  .hero-mobile-cta:hover .hero-mobile-cta__arrow {
-    transform: translateX(3px);
-  }
-
-  /* 8. LinkedIn Profile Link */
-  .hero-mobile-social {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: clamp(8px, 1.4vh, 12px);
-    padding: 4px 10px;
-    text-decoration: none;
-    color: #FFFFFF;
-    z-index: 4;
-    transition: opacity 0.2s ease;
-  }
-
-  .hero-mobile-social:hover {
-    opacity: 0.85;
-  }
-
-  .hero-mobile-social__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 19px;
-    height: 19px;
-    background: #0077B5;
-    color: #FFFFFF;
-    border-radius: 3px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    font-size: 11px;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .hero-mobile-social__handle {
-    font-family: var(--font-body);
-    font-size: clamp(0.78rem, 2.4vw, 0.86rem);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: #FFFFFF;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 }
 
