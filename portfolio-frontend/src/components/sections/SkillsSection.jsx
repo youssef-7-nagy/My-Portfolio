@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
-  ChevronRight,
   Code,
   Sparkles,
   CheckCircle2,
@@ -18,7 +17,6 @@ import './SkillsSection.css';
 export default function SkillsSection() {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [activeCategory, setActiveCategory] = useState('all');
   const [selectedSkill, setSelectedSkill] = useState(() => technicalExpertise.backend.skills[0]); // Default to Node.js
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -39,26 +37,6 @@ export default function SkillsSection() {
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
-
-  // Filter tabs definition
-  const filterTabs = [
-    { id: 'all', label: 'All Technologies' },
-    { id: 'frontend', label: 'Frontend' },
-    { id: 'backend', label: 'Backend (Primary)', isPrimary: true },
-    { id: 'database', label: 'Databases' },
-    { id: 'toolkit', label: 'Developer Workflow' }
-  ];
-
-  // Helper to check card visibility based on active filter
-  const isCardVisible = (category) => {
-    if (activeCategory === 'all') return true;
-    if (activeCategory === 'toolkit') return false;
-    return activeCategory === category;
-  };
-
-  const isToolkitVisible = useMemo(() => {
-    return activeCategory === 'all' || activeCategory === 'toolkit';
-  }, [activeCategory]);
 
   return (
     <section
@@ -88,24 +66,6 @@ export default function SkillsSection() {
           <p className="section-subtitle skills-subtitle">
             A complete development ecosystem — from frontend interfaces to scalable backend APIs and database architecture.
           </p>
-
-          {/* Interactive Category Filter Pills */}
-          <div className="skills-filter-nav" role="tablist" aria-label="Filter skill categories">
-            {filterTabs.map((tab) => (
-              <button
-                key={tab.id}
-                role="tab"
-                aria-selected={activeCategory === tab.id}
-                className={`skills-filter-btn ${activeCategory === tab.id ? 'is-active' : ''} ${
-                  tab.isPrimary ? 'skills-filter-btn--primary' : ''
-                }`}
-                onClick={() => setActiveCategory(tab.id)}
-              >
-                {tab.isPrimary && <Sparkles size={13} className="skills-filter-btn__sparkle" />}
-                <span>{tab.label}</span>
-              </button>
-            ))}
-          </div>
         </div>
 
         {/* 3-Column Interactive Architecture Layout: Left Cards + Center 3D Stack + Right Primary Backend */}
@@ -113,112 +73,92 @@ export default function SkillsSection() {
           {/* ----- Left Column: Frontend & Databases Cards ----- */}
           <div className="skills-col skills-col--left">
             {/* Frontend Development Card */}
-            {isCardVisible('frontend') && (
-              <div
-                className={`skill-card skill-card--frontend ${
-                  hoveredCard === 'frontend' ? 'is-card-hovered' : ''
-                }`}
-                onMouseEnter={() => setHoveredCard('frontend')}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <div className="skill-card__header">
-                  <div className="skill-card__icon-box skill-card__icon-box--teal">
-                    <technicalExpertise.frontend.icon size={20} />
-                  </div>
-                  <div className="skill-card__header-text">
-                    <h3 className="skill-card__title">{technicalExpertise.frontend.title}</h3>
-                    <p className="skill-card__subtitle">{technicalExpertise.frontend.subtitle}</p>
-                  </div>
-                  <button
-                    className="skill-card__chevron-btn"
-                    title="Spotlight Frontend"
-                    onClick={() => setActiveCategory(activeCategory === 'frontend' ? 'all' : 'frontend')}
-                    aria-label="Filter frontend skills"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
+            <div
+              className={`skill-card skill-card--frontend ${
+                hoveredCard === 'frontend' ? 'is-card-hovered' : ''
+              }`}
+              onMouseEnter={() => setHoveredCard('frontend')}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              <div className="skill-card__header">
+                <div className="skill-card__icon-box skill-card__icon-box--teal">
+                  <technicalExpertise.frontend.icon size={20} />
                 </div>
-
-                <div className="skill-card__items-grid">
-                  {technicalExpertise.frontend.skills.map((skill) => {
-                    const Icon = skill.icon;
-                    const isSelected = selectedSkill?.id === skill.id;
-                    return (
-                      <button
-                        key={skill.id}
-                        type="button"
-                        className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
-                        onClick={() => setSelectedSkill(skill)}
-                        onMouseEnter={() => setSelectedSkill(skill)}
-                        title={`${skill.name} (${skill.level})`}
-                      >
-                        <div
-                          className="skill-item-pill__icon"
-                          style={{ '--brand-color': skill.color }}
-                        >
-                          <Icon size={22} />
-                        </div>
-                        <span className="skill-item-pill__name">{skill.name}</span>
-                      </button>
-                    );
-                  })}
+                <div className="skill-card__header-text">
+                  <h3 className="skill-card__title">{technicalExpertise.frontend.title}</h3>
+                  <p className="skill-card__subtitle">{technicalExpertise.frontend.subtitle}</p>
                 </div>
               </div>
-            )}
+
+              <div className="skill-card__items-grid">
+                {technicalExpertise.frontend.skills.map((skill) => {
+                  const Icon = skill.icon;
+                  const isSelected = selectedSkill?.id === skill.id;
+                  return (
+                    <button
+                      key={skill.id}
+                      type="button"
+                      className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
+                      onClick={() => setSelectedSkill(skill)}
+                      onMouseEnter={() => setSelectedSkill(skill)}
+                      title={`${skill.name} (${skill.level})`}
+                    >
+                      <div
+                        className="skill-item-pill__icon"
+                        style={{ '--brand-color': skill.color }}
+                      >
+                        <Icon size={22} />
+                      </div>
+                      <span className="skill-item-pill__name">{skill.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
             {/* Databases Card */}
-            {isCardVisible('database') && (
-              <div
-                className={`skill-card skill-card--database ${
-                  hoveredCard === 'database' ? 'is-card-hovered' : ''
-                }`}
-                onMouseEnter={() => setHoveredCard('database')}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                <div className="skill-card__header">
-                  <div className="skill-card__icon-box skill-card__icon-box--green">
-                    <technicalExpertise.databases.icon size={20} />
-                  </div>
-                  <div className="skill-card__header-text">
-                    <h3 className="skill-card__title">{technicalExpertise.databases.title}</h3>
-                    <p className="skill-card__subtitle">{technicalExpertise.databases.subtitle}</p>
-                  </div>
-                  <button
-                    className="skill-card__chevron-btn"
-                    title="Spotlight Databases"
-                    onClick={() => setActiveCategory(activeCategory === 'database' ? 'all' : 'database')}
-                    aria-label="Filter database skills"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
+            <div
+              className={`skill-card skill-card--database ${
+                hoveredCard === 'database' ? 'is-card-hovered' : ''
+              }`}
+              onMouseEnter={() => setHoveredCard('database')}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              <div className="skill-card__header">
+                <div className="skill-card__icon-box skill-card__icon-box--green">
+                  <technicalExpertise.databases.icon size={20} />
                 </div>
-
-                <div className="skill-card__items-grid skill-card__items-grid--db">
-                  {technicalExpertise.databases.skills.map((skill) => {
-                    const Icon = skill.icon;
-                    const isSelected = selectedSkill?.id === skill.id;
-                    return (
-                      <button
-                        key={skill.id}
-                        type="button"
-                        className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
-                        onClick={() => setSelectedSkill(skill)}
-                        onMouseEnter={() => setSelectedSkill(skill)}
-                        title={`${skill.name} (${skill.level})`}
-                      >
-                        <div
-                          className="skill-item-pill__icon"
-                          style={{ '--brand-color': skill.color }}
-                        >
-                          <Icon size={22} />
-                        </div>
-                        <span className="skill-item-pill__name">{skill.name}</span>
-                      </button>
-                    );
-                  })}
+                <div className="skill-card__header-text">
+                  <h3 className="skill-card__title">{technicalExpertise.databases.title}</h3>
+                  <p className="skill-card__subtitle">{technicalExpertise.databases.subtitle}</p>
                 </div>
               </div>
-            )}
+
+              <div className="skill-card__items-grid skill-card__items-grid--db">
+                {technicalExpertise.databases.skills.map((skill) => {
+                  const Icon = skill.icon;
+                  const isSelected = selectedSkill?.id === skill.id;
+                  return (
+                    <button
+                      key={skill.id}
+                      type="button"
+                      className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
+                      onClick={() => setSelectedSkill(skill)}
+                      onMouseEnter={() => setSelectedSkill(skill)}
+                      title={`${skill.name} (${skill.level})`}
+                    >
+                      <div
+                        className="skill-item-pill__icon"
+                        style={{ '--brand-color': skill.color }}
+                      >
+                        <Icon size={22} />
+                      </div>
+                      <span className="skill-item-pill__name">{skill.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* ----- Center Column: 3D Isometric Ecosystem Architecture Stack ----- */}
@@ -235,13 +175,8 @@ export default function SkillsSection() {
               {/* Isometric Slabs Container */}
               <div className="stack-isometric-layers" role="region" aria-label="Architecture Stack">
                 {/* Slab 1: Frontend */}
-                <button
-                  type="button"
-                  className={`stack-slab stack-slab--frontend ${
-                    activeCategory === 'frontend' ? 'is-slab-active' : ''
-                  }`}
-                  onClick={() => setActiveCategory(activeCategory === 'frontend' ? 'all' : 'frontend')}
-                  title="Click to spotlight Frontend tier"
+                <div
+                  className="stack-slab stack-slab--frontend"
                 >
                   <div className="stack-slab__top">
                     <span className="stack-slab__label">Frontend</span>
@@ -249,19 +184,14 @@ export default function SkillsSection() {
                   </div>
                   <div className="stack-slab__front" />
                   <div className="stack-slab__side" />
-                </button>
+                </div>
 
                 {/* Connecting Pulse Line Between Tiers */}
                 <div className="stack-connector-pulse stack-connector-pulse--top" />
 
                 {/* Slab 2: Backend (PRIMARY - Bright Glowing Core) */}
-                <button
-                  type="button"
-                  className={`stack-slab stack-slab--backend is-primary-core ${
-                    activeCategory === 'backend' ? 'is-slab-active' : ''
-                  }`}
-                  onClick={() => setActiveCategory(activeCategory === 'backend' ? 'all' : 'backend')}
-                  title="Click to spotlight Backend Core tier"
+                <div
+                  className="stack-slab stack-slab--backend is-primary-core"
                 >
                   <div className="stack-slab__top">
                     <div className="stack-slab__badge-pill">
@@ -274,19 +204,14 @@ export default function SkillsSection() {
                   <div className="stack-slab__front" />
                   <div className="stack-slab__side" />
                   <div className="stack-slab__glow-aura" />
-                </button>
+                </div>
 
                 {/* Connecting Pulse Line Between Tiers */}
                 <div className="stack-connector-pulse stack-connector-pulse--bottom" />
 
                 {/* Slab 3: Database */}
-                <button
-                  type="button"
-                  className={`stack-slab stack-slab--database ${
-                    activeCategory === 'database' ? 'is-slab-active' : ''
-                  }`}
-                  onClick={() => setActiveCategory(activeCategory === 'database' ? 'all' : 'database')}
-                  title="Click to spotlight Database tier"
+                <div
+                  className="stack-slab stack-slab--database"
                 >
                   <div className="stack-slab__top">
                     <span className="stack-slab__label">Database</span>
@@ -294,7 +219,7 @@ export default function SkillsSection() {
                   </div>
                   <div className="stack-slab__front" />
                   <div className="stack-slab__side" />
-                </button>
+                </div>
               </div>
 
               {/* Circuit SVG Lines Radiating outward to cards */}
@@ -331,64 +256,54 @@ export default function SkillsSection() {
 
           {/* ----- Right Column: Backend Development (Primary Specialization) ----- */}
           <div className="skills-col skills-col--right">
-            {isCardVisible('backend') && (
-              <div
-                className={`skill-card skill-card--backend skill-card--primary-highlight ${
-                  hoveredCard === 'backend' ? 'is-card-hovered' : ''
-                }`}
-                onMouseEnter={() => setHoveredCard('backend')}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                {/* Specialization Badge */}
-                <div className="skill-card__specialization-tag">
-                  <Sparkles size={12} />
-                  <span>Primary Specialization</span>
-                </div>
+            <div
+              className={`skill-card skill-card--backend skill-card--primary-highlight ${
+                hoveredCard === 'backend' ? 'is-card-hovered' : ''
+              }`}
+              onMouseEnter={() => setHoveredCard('backend')}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              {/* Specialization Badge */}
+              <div className="skill-card__specialization-tag">
+                <Sparkles size={12} />
+                <span>Primary Specialization</span>
+              </div>
 
-                <div className="skill-card__header">
-                  <div className="skill-card__icon-box skill-card__icon-box--primary">
-                    <technicalExpertise.backend.icon size={22} />
-                  </div>
-                  <div className="skill-card__header-text">
-                    <h3 className="skill-card__title">{technicalExpertise.backend.title}</h3>
-                    <p className="skill-card__subtitle">{technicalExpertise.backend.subtitle}</p>
-                  </div>
-                  <button
-                    className="skill-card__chevron-btn skill-card__chevron-btn--primary"
-                    title="Spotlight Backend"
-                    onClick={() => setActiveCategory(activeCategory === 'backend' ? 'all' : 'backend')}
-                    aria-label="Filter backend skills"
-                  >
-                    <ChevronRight size={18} />
-                  </button>
+              <div className="skill-card__header">
+                <div className="skill-card__icon-box skill-card__icon-box--primary">
+                  <technicalExpertise.backend.icon size={22} />
                 </div>
-
-                <div className="skill-card__items-grid skill-card__items-grid--backend">
-                  {technicalExpertise.backend.skills.map((skill) => {
-                    const Icon = skill.icon;
-                    const isSelected = selectedSkill?.id === skill.id;
-                    return (
-                      <button
-                        key={skill.id}
-                        type="button"
-                        className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
-                        onClick={() => setSelectedSkill(skill)}
-                        onMouseEnter={() => setSelectedSkill(skill)}
-                        title={`${skill.name} (${skill.level})`}
-                      >
-                        <div
-                          className="skill-item-pill__icon"
-                          style={{ '--brand-color': skill.color }}
-                        >
-                          <Icon size={22} />
-                        </div>
-                        <span className="skill-item-pill__name">{skill.name}</span>
-                      </button>
-                    );
-                  })}
+                <div className="skill-card__header-text">
+                  <h3 className="skill-card__title">{technicalExpertise.backend.title}</h3>
+                  <p className="skill-card__subtitle">{technicalExpertise.backend.subtitle}</p>
                 </div>
               </div>
-            )}
+
+              <div className="skill-card__items-grid skill-card__items-grid--backend">
+                {technicalExpertise.backend.skills.map((skill) => {
+                  const Icon = skill.icon;
+                  const isSelected = selectedSkill?.id === skill.id;
+                  return (
+                    <button
+                      key={skill.id}
+                      type="button"
+                      className={`skill-item-pill ${isSelected ? 'is-selected' : ''}`}
+                      onClick={() => setSelectedSkill(skill)}
+                      onMouseEnter={() => setSelectedSkill(skill)}
+                      title={`${skill.name} (${skill.level})`}
+                    >
+                      <div
+                        className="skill-item-pill__icon"
+                        style={{ '--brand-color': skill.color }}
+                      >
+                        <Icon size={22} />
+                      </div>
+                      <span className="skill-item-pill__name">{skill.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -432,8 +347,7 @@ export default function SkillsSection() {
         {/* ====================================================================
             PART 2: DEVELOPER TOOLKIT & ENGINEERING WORKFLOW
             ==================================================================== */}
-        {isToolkitVisible && (
-          <div className="developer-toolkit-wrapper">
+        <div className="developer-toolkit-wrapper">
             <div className="skills-header toolkit-header">
               <div className="skills-pill-badge skills-pill-badge--toolkit">
                 <Laptop size={14} className="skills-pill-badge__icon" />
@@ -539,7 +453,6 @@ export default function SkillsSection() {
               </div>
             </div>
           </div>
-        )}
       </div>
     </section>
   );

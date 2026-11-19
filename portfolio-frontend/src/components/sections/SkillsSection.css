@@ -123,66 +123,6 @@
   line-height: 1.6;
 }
 
-/* Category Filter Tabs */
-.skills-filter-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 1.75rem;
-}
-
-.skills-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 18px;
-  border-radius: var(--radius-full);
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
-  font-size: 0.86rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--transition-base);
-  backdrop-filter: blur(10px);
-}
-
-.skills-filter-btn:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(var(--color-ocean-teal-rgb), 0.4);
-  color: var(--text-primary);
-  transform: translateY(-1px);
-}
-
-.skills-filter-btn.is-active {
-  background: var(--color-ocean-teal);
-  border-color: var(--color-ocean-teal);
-  color: var(--color-white);
-  box-shadow: 0 4px 16px rgba(var(--color-ocean-teal-rgb), 0.35);
-}
-
-.skills-filter-btn--primary.is-active {
-  background: linear-gradient(135deg, var(--color-ocean-teal), var(--color-deep-steel-blue));
-  border-color: var(--color-warm-yellow);
-  box-shadow: 0 0 20px rgba(var(--color-warm-yellow-rgb), 0.3);
-}
-
-[data-theme='light'] .skills-filter-btn {
-  background: rgba(255, 255, 255, 0.85);
-  border-color: rgba(var(--color-light-gray-rgb), 0.8);
-  color: var(--color-deep-steel-blue);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-}
-
-[data-theme='light'] .skills-filter-btn.is-active {
-  background: #365D6B;
-  border-color: #365D6B;
-  color: var(--color-white);
-  box-shadow: 0 4px 14px rgba(54, 93, 107, 0.28);
-}
-
 /* ==========================================================================
    PART 1: 3-COLUMN INTERACTIVE ECOSYSTEM GRID
    Left: Frontend & Databases | Center: 3D Stack | Right: Backend (Primary)
@@ -1278,15 +1218,6 @@
 
   .skills-header {
     margin-bottom: 2rem;
-  }
-
-  .skills-filter-nav {
-    gap: 6px;
-  }
-
-  .skills-filter-btn {
-    padding: 6px 14px;
-    font-size: 0.78rem;
   }
 
   .skills-ecosystem-grid {
