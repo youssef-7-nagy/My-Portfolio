@@ -7,6 +7,7 @@ import SplashScreen from './components/ui/SplashScreen';
 import Projects from './components/sections/Projects';
 import HeroSection from './components/sections/HeroSection';
 import AboutSection from './components/sections/AboutSection';
+import SkillsSection from './components/sections/SkillsSection';
 import ContactSection from './components/sections/ContactSection';
 import WebsiteGlimpses from './components/sections/WebsiteGlimpses';
 import FloatingPenguinContact from './components/ui/FloatingPenguinContact';
@@ -66,12 +67,8 @@ function HomePage() {
       {/* Modern High-Converting About Me Section */}
       <AboutSection />
 
-      <section id="skills" className="section">
-        <div className="container">
-          <h2 className="section-title">My <span className="gradient-text">Skills</span></h2>
-          <p className="section-subtitle">Coming soon — interactive tech stack grid.</p>
-        </div>
-      </section>
+      {/* Redesigned Technical Expertise & Developer Toolkit Ecosystem */}
+      <SkillsSection />
 
       <section id="services" className="section">
         <div className="container">

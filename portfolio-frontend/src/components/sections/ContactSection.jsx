@@ -2,9 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { developer } from '../../data/portfolioData';
 import {
   Check,
-  Copy,
-  Clock,
-  Sparkles
+  Copy
 } from 'lucide-react';
 import { FaWhatsapp, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -13,31 +11,9 @@ import './ContactSection.css';
 
 export default function ContactSection() {
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [cairoTime, setCairoTime] = useState('');
   const [isVisible, setIsVisible] = useState(false);
 
   const sectionRef = useRef(null);
-
-  // Live Cairo Local Time indicator
-  useEffect(() => {
-    const updateTime = () => {
-      try {
-        const timeStr = new Intl.DateTimeFormat('en-US', {
-          timeZone: 'Africa/Cairo',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
-        }).format(new Date());
-        setCairoTime(timeStr);
-      } catch {
-        setCairoTime('GMT+2');
-      }
-    };
-
-    updateTime();
-    const interval = setInterval(updateTime, 1000 * 30);
-    return () => clearInterval(interval);
-  }, []);
 
   // Intersection Observer for scroll entrance
   useEffect(() => {
@@ -88,40 +64,6 @@ export default function ContactSection() {
             Have a project in mind, a junior full-stack opportunity, or want to say hello?
             My inbox is always open.
           </p>
-        </div>
-
-        {/* Live Status & Availability Bento Banner */}
-        <div className="contact-status-banner">
-          <div className="status-banner__item">
-            <div className="status-indicator">
-              <span className="status-indicator__ping" />
-              <span className="status-indicator__dot" />
-            </div>
-            <div className="status-banner__text">
-              <span className="status-banner__label">Current Status</span>
-              <strong className="status-banner__value">Available for Roles & Projects</strong>
-            </div>
-          </div>
-
-          <div className="status-banner__divider" aria-hidden="true" />
-
-          <div className="status-banner__item">
-            <Clock size={16} className="status-banner__icon" />
-            <div className="status-banner__text">
-              <span className="status-banner__label">Local Time (Cairo, Egypt)</span>
-              <strong className="status-banner__value">{cairoTime || 'GMT+2'}</strong>
-            </div>
-          </div>
-
-          <div className="status-banner__divider" aria-hidden="true" />
-
-          <div className="status-banner__item">
-            <Sparkles size={16} className="status-banner__icon" />
-            <div className="status-banner__text">
-              <span className="status-banner__label">Response Time</span>
-              <strong className="status-banner__value">&lt; 24 Hours Guaranteed</strong>
-            </div>
-          </div>
         </div>
 
         {/* Main Contact Experience: Direct Channels & Interactive Social Radar */}
