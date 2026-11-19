@@ -1,6 +1,8 @@
 /* ==========================================================================
-   ISOMETRIC 3D STACKED ARCHITECTURE MODEL (HIGH-END GLASSMORPHIC TECH UI)
-   Frontend, Backend (Glowing Centerpiece), Database + Floating </> Tablet
+   3D TECHNICAL ARCHITECTURE ECOSYSTEM (HIGH-END GLASSMORPHIC MODEL)
+   Recreating the exact 3-tier floating glass composition:
+   Frontend (Top) → Backend (Centerpiece Emerald) → Database (Bottom)
+   + Floating Tilted Code Screen & 3D Orbital Rings with Node Spheres
    ========================================================================== */
 
 .iso-stack-container {
@@ -9,35 +11,55 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 440px;
+  max-width: 480px;
   margin: 0 auto;
   user-select: none;
+  perspective: 1200px;
+  cursor: grab;
+}
+
+.iso-stack-container:active {
+  cursor: grabbing;
+}
+
+.iso-stack-scene {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .iso-stack-svg {
   width: 100%;
   height: auto;
   overflow: visible;
-  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.45));
+  filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.42));
+  transition: filter 0.4s ease;
+}
+
+[data-theme='light'] .iso-stack-svg {
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.08));
 }
 
 /* --------------------------------------------------------------------------
-   1. FLOATING LEVITATION ANIMATIONS (SLIGHT PHASE OFFSET)
+   1. FLOATING LEVITATION ANIMATIONS (SMOOTH PHASE OFFSETS)
    -------------------------------------------------------------------------- */
 
-/* Top Floating Code Tablet */
-.iso-floating-code-tablet {
-  animation: floatTablet 4.5s ease-in-out infinite;
-  transform-origin: 220px 40px;
+/* Top Floating Code Screen */
+.iso-floating-screen-wrapper {
+  animation: floatScreen 5.5s ease-in-out infinite;
+  transform-origin: 260px 60px;
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   cursor: pointer;
 }
 
-.iso-floating-code-tablet:hover {
-  transform: translateY(-6px) scale(1.05);
+.iso-floating-screen-wrapper:hover {
+  transform: translateY(-8px) scale(1.04);
 }
 
-@keyframes floatTablet {
+@keyframes floatScreen {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
@@ -46,49 +68,15 @@
   }
 }
 
-/* Layer 1: Frontend Slab */
+/* Layer 1: Frontend Slab (Top) */
 .iso-slab--frontend {
-  animation: floatSlabFront 5s ease-in-out infinite 0.2s;
-  transform-origin: 220px 120px;
+  animation: floatFrontend 6s ease-in-out infinite 0.2s;
+  transform-origin: 260px 146px;
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
   cursor: pointer;
 }
 
-@keyframes floatSlabFront {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
-/* Layer 2: Backend Slab (Hero Centerpiece) */
-.iso-slab--backend {
-  animation: floatSlabBack 5s ease-in-out infinite 0.6s;
-  transform-origin: 220px 220px;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
-  cursor: pointer;
-}
-
-@keyframes floatSlabBack {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-/* Layer 3: Database Slab */
-.iso-slab--database {
-  animation: floatSlabDb 5s ease-in-out infinite 1s;
-  transform-origin: 220px 310px;
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
-  cursor: pointer;
-}
-
-@keyframes floatSlabDb {
+@keyframes floatFrontend {
   0%, 100% {
     transform: translateY(0px);
   }
@@ -97,16 +85,50 @@
   }
 }
 
-/* Base Platform Shadow Breathing */
-.iso-base-platform {
-  animation: shadowPulse 5s ease-in-out infinite 1s;
-  transform-origin: 220px 390px;
+/* Layer 2: Backend Slab (Hero Centerpiece) */
+.iso-slab--backend {
+  animation: floatBackend 6s ease-in-out infinite 0.7s;
+  transform-origin: 260px 232px;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+  cursor: pointer;
 }
 
-@keyframes shadowPulse {
+@keyframes floatBackend {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+/* Layer 3: Database Slab (Bottom) */
+.iso-slab--database {
+  animation: floatDatabase 6s ease-in-out infinite 1.2s;
+  transform-origin: 260px 318px;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s ease;
+  cursor: pointer;
+}
+
+@keyframes floatDatabase {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Ground Shadows Breathing with Levitation */
+.iso-ground-shadows {
+  animation: shadowBreathe 6s ease-in-out infinite 0.7s;
+  transform-origin: 260px 432px;
+}
+
+@keyframes shadowBreathe {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.9;
+    opacity: 0.95;
   }
   50% {
     transform: scale(0.92);
@@ -115,135 +137,131 @@
 }
 
 /* --------------------------------------------------------------------------
-   2. INTERACTIVE HOVER LIFT & INTENSIFIED GLOW (Z-AXIS TRANSLATION)
+   2. INTERACTIVE HOVER LIFT & INTENSIFIED GLOW
    -------------------------------------------------------------------------- */
+
+.iso-slab {
+  cursor: pointer;
+}
 
 .iso-slab:hover,
 .iso-slab.is-slab-lifted {
-  transform: translateY(-10px) scale(1.02);
+  transform: translateY(-9px) scale(1.02);
 }
 
 .iso-slab--frontend:hover,
 .iso-slab--frontend.is-slab-lifted {
-  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.25));
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 16px rgba(45, 212, 191, 0.35));
 }
 
 .iso-slab--backend:hover,
 .iso-slab--backend.is-slab-lifted {
-  filter: drop-shadow(0 0 32px rgba(163, 230, 53, 0.95)) drop-shadow(0 22px 28px rgba(0, 0, 0, 0.85));
+  filter: drop-shadow(0 0 36px rgba(16, 185, 129, 0.95)) drop-shadow(0 22px 30px rgba(0, 0, 0, 0.85));
 }
 
 .iso-slab--database:hover,
 .iso-slab--database.is-slab-lifted {
-  filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 16px rgba(132, 204, 22, 0.45));
+  filter: drop-shadow(0 22px 28px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 16px rgba(16, 185, 129, 0.45));
 }
 
 .iso-slab-label {
   pointer-events: none;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
-  transition: fill 0.3s ease;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+  user-select: none;
 }
 
 .iso-slab--backend .iso-slab-label--backend {
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 20px rgba(163, 230, 53, 0.5);
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.95), 0 0 22px rgba(16, 185, 129, 0.6);
 }
 
 /* --------------------------------------------------------------------------
-   3. GLOWING NEON-GREEN CONNECTOR CIRCUITS & ENERGY NODES
+   3. 3D ORBITAL RINGS & GLOWING NODE SPHERES
    -------------------------------------------------------------------------- */
 
-.circuit-path {
+.iso-orbit-path {
   fill: none;
-  stroke: #84cc16;
-  stroke-width: 1.5;
-  stroke-dasharray: 6 5;
-  stroke-linecap: round;
-  opacity: 0.75;
-  filter: drop-shadow(0 0 5px rgba(132, 204, 22, 0.6));
-  animation: circuitFlowDash 18s linear infinite;
+  stroke: rgba(45, 212, 191, 0.62);
+  stroke-width: 1.6;
+  filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.7));
 }
 
-.circuit-path--wire2 {
-  stroke-width: 2;
+.iso-orbit-path--back {
+  opacity: 0.5;
+  stroke-dasharray: 8 3;
+}
+
+.iso-orbit-path--front {
   opacity: 0.9;
-  filter: drop-shadow(0 0 8px rgba(163, 230, 53, 0.85));
 }
 
-.circuit-path--arc {
-  stroke: rgba(132, 204, 22, 0.35);
-  stroke-width: 1.2;
+/* Glowing Node Spheres along Orbits */
+.iso-orbit-sphere {
+  animation: sphereFloat 4s ease-in-out infinite;
+  transform-origin: center;
+  cursor: pointer;
 }
 
-@keyframes circuitFlowDash {
-  from {
-    stroke-dashoffset: 220;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
+.sphere--1 {
+  animation-delay: 0s;
 }
 
-/* Pulsing Energy Nodes (Dots) */
-.circuit-energy-node {
-  fill: #bef264;
-  filter: drop-shadow(0 0 6px #a3e635) drop-shadow(0 0 12px #84cc16);
+.sphere--2 {
+  animation-delay: 1s;
 }
 
-.node--pulse1 {
-  animation: nodeGlow 2.5s ease-in-out infinite;
+.sphere--3 {
+  animation-delay: 2s;
 }
 
-.node--pulse2 {
-  animation: nodeGlow 2s ease-in-out infinite 0.5s;
+.sphere--4 {
+  animation-delay: 3s;
 }
 
-.node--pulse3 {
-  animation: nodeGlow 2.8s ease-in-out infinite 1s;
-}
-
-.node--pulse4 {
-  animation: nodeGlow 2.2s ease-in-out infinite 1.4s;
-}
-
-@keyframes nodeGlow {
+@keyframes sphereFloat {
   0%, 100% {
-    transform: scale(1);
-    opacity: 0.6;
+    transform: translateY(0px) scale(1);
+    filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.85));
   }
   50% {
-    transform: scale(1.35);
-    opacity: 1;
+    transform: translateY(-4px) scale(1.1);
+    filter: drop-shadow(0 0 14px rgba(52, 211, 153, 1));
   }
 }
 
 /* --------------------------------------------------------------------------
-   4. LIGHT THEME COMPATIBILITY
+   4. LIGHT / DARK THEME INTEGRATION
    -------------------------------------------------------------------------- */
 
-[data-theme='light'] .iso-stack-svg {
-  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
-}
-
 [data-theme='light'] #dark-top-grad stop:nth-child(1) {
-  stop-color: #2b3b4f;
+  stop-color: #243447;
 }
 
 [data-theme='light'] #dark-top-grad stop:nth-child(2) {
-  stop-color: #1a2533;
+  stop-color: #172230;
 }
 
 [data-theme='light'] #dark-top-grad stop:nth-child(3) {
-  stop-color: #101824;
+  stop-color: #0d141e;
+}
+
+[data-theme='light'] .iso-ground-shadows {
+  opacity: 0.85;
 }
 
 /* --------------------------------------------------------------------------
-   5. ACCESSIBILITY & RESPONSIVENESS
+   5. RESPONSIVE ARCHITECTURE
    -------------------------------------------------------------------------- */
+
+@media (max-width: 1240px) {
+  .iso-stack-container {
+    max-width: 420px;
+  }
+}
 
 @media (max-width: 1023px) {
   .iso-stack-container {
     max-width: 360px;
-    margin: 1rem auto;
+    margin: 1.25rem auto;
   }
 }
 
@@ -253,14 +271,14 @@
   }
 }
 
+/* Accessibility: Respect Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
-  .iso-floating-code-tablet,
+  .iso-floating-screen-wrapper,
   .iso-slab--frontend,
   .iso-slab--backend,
   .iso-slab--database,
-  .iso-base-platform,
-  .circuit-path,
-  .circuit-energy-node {
+  .iso-ground-shadows,
+  .iso-orbit-sphere {
     animation: none !important;
     transition: none !important;
   }
