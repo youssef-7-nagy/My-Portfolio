@@ -130,9 +130,11 @@
 
 .skills-ecosystem-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(1.25rem, 2.5vw, 2.25rem);
+  grid-template-columns: minmax(0, 1fr) clamp(280px, 24vw, 360px) minmax(0, 1fr);
+  gap: clamp(1rem, 2vw, 2.25rem);
   align-items: center;
+  justify-content: center;
+  width: 100%;
   margin-top: 1.5rem;
 }
 
@@ -141,6 +143,7 @@
   flex-direction: column;
   gap: 1.5rem;
   width: 100%;
+  min-width: 0;
 }
 
 /* ---------- Technology Cards (Frontend, Databases, Backend) ---------- */
@@ -170,6 +173,10 @@
 }
 
 /* Primary Specialization Highlight (Backend Card) */
+.skill-card--backend {
+  padding: clamp(1.6rem, 2.3vw, 2.1rem) clamp(1.25rem, 1.8vw, 1.75rem);
+}
+
 .skill-card--primary-highlight {
   border-color: rgba(var(--color-ocean-teal-rgb), 0.5);
   box-shadow: 0 8px 36px rgba(var(--color-ocean-teal-rgb), 0.18);
@@ -307,16 +314,18 @@
 /* Items Grid Inside Card (2 rows of 5 on desktop) */
 .skill-card__items-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(6px, 0.75vw, 10px);
+  width: 100%;
 }
 
 .skill-card__items-grid--db {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 
 .skill-card__items-grid--backend {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(7px, 0.85vw, 11px);
 }
 
 /* Individual Skill Pill Button */
@@ -325,8 +334,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 10px 6px;
+  gap: 5px;
+  padding: 8px 3px;
   border-radius: var(--radius-md);
   background: rgba(var(--color-deep-steel-blue-rgb), 0.1);
   border: 1px solid rgba(var(--color-light-gray-rgb), 0.1);
@@ -334,6 +343,10 @@
   cursor: pointer;
   transition: all var(--transition-base);
   text-align: center;
+  min-width: 0;
+  width: 100%;
+  min-height: 64px;
+  box-sizing: border-box;
 }
 
 [data-theme='light'] .skill-item-pill {
@@ -359,12 +372,18 @@
   box-shadow: 0 4px 14px rgba(54, 93, 107, 0.15);
 }
 
+.skill-card--backend .skill-item-pill {
+  min-height: 68px;
+  padding: 9px 4px;
+}
+
 .skill-item-pill__icon {
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--brand-color, var(--color-ocean-teal));
   transition: transform var(--transition-fast);
+  flex-shrink: 0;
 }
 
 .skill-item-pill:hover .skill-item-pill__icon,
@@ -373,13 +392,18 @@
 }
 
 .skill-item-pill__name {
-  font-size: 0.72rem;
+  font-size: clamp(0.66rem, 0.7vw, 0.73rem);
   font-weight: 600;
-  line-height: 1.15;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.18;
+  text-align: center;
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: break-word;
   max-width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* ==========================================================================
@@ -391,6 +415,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
+  min-width: 0;
 }
 
 /* ==========================================================================
@@ -918,19 +943,20 @@
 /* Large Screens & Desktops (1440px+) */
 @media (min-width: 1440px) {
   .skills-ecosystem-grid {
-    grid-template-columns: 1.15fr 320px 1.15fr;
+    grid-template-columns: minmax(0, 1fr) 350px minmax(0, 1fr);
+    gap: 2.25rem;
   }
 }
 
 /* Medium Laptops & Small Desktops (1024px - 1240px) */
 @media (max-width: 1240px) {
   .skills-ecosystem-grid {
-    grid-template-columns: 1fr 280px 1.1fr;
+    grid-template-columns: minmax(0, 1fr) 290px minmax(0, 1fr);
     gap: 1.25rem;
   }
 
   .skill-card__items-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .toolkit-laptop-display {
