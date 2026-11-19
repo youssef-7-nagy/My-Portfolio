@@ -1,9 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import {
-  Code,
-  ArrowRight,
-  ArrowDown
-} from 'lucide-react';
+import { Code } from 'lucide-react';
 import {
   technicalExpertise,
   developerToolkit
@@ -302,15 +298,28 @@ export default function SkillsSection() {
                         <p className="toolkit-card__desc">{step.desc}</p>
                       </div>
 
-                      {/* Animated Connector Arrow Between Workflow Steps */}
+                      {/* Animated Golden Multi-Chevron Arrows Between Workflow Steps */}
                       {!isLast && (
                         <div className="toolkit-flow-connector" aria-hidden="true">
-                          <div className="toolkit-connector-line" />
-                          <div className="toolkit-connector-arrow">
-                            <ArrowRight size={18} className="arrow-horizontal" />
-                            <ArrowDown size={18} className="arrow-vertical" />
-                          </div>
-                          <span className="toolkit-flow-pulse" />
+                          <svg
+                            className="golden-more-arrows"
+                            viewBox="0 0 66 76"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <polygon
+                              className="golden-arrow golden-arrow-top"
+                              points="27.9,37.6 1.3,1.8 0,3.3 25.3,37.6 0,71.9 1.3,73.7"
+                            />
+                            <polygon
+                              className="golden-arrow golden-arrow-middle"
+                              points="45.8,37.6 18.7,0.8 16.4,4.4 41.2,37.6 16.4,71.2 18.7,74.5"
+                            />
+                            <polygon
+                              className="golden-arrow golden-arrow-bottom"
+                              points="64,37.6 36.1,0 32.8,5.1 56.8,37.6 32.8,70.4 36.1,75.5"
+                            />
+                          </svg>
                         </div>
                       )}
                     </div>
