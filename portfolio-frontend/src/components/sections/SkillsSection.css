@@ -130,7 +130,7 @@
 
 .skills-ecosystem-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(300px, 26vw, 420px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 470px) minmax(0, 1fr);
   gap: clamp(1rem, 2vw, 2.25rem);
   align-items: center;
   justify-content: center;
@@ -943,7 +943,7 @@
 /* Large Screens & Desktops (1440px+) */
 @media (min-width: 1440px) {
   .skills-ecosystem-grid {
-    grid-template-columns: minmax(0, 1fr) 420px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 470px minmax(0, 1fr);
     gap: 2.25rem;
   }
 }
@@ -951,7 +951,7 @@
 /* Medium Laptops & Small Desktops (1024px - 1240px) */
 @media (max-width: 1240px) {
   .skills-ecosystem-grid {
-    grid-template-columns: minmax(0, 1fr) 330px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 380px minmax(0, 1fr);
     gap: 1.25rem;
   }
 

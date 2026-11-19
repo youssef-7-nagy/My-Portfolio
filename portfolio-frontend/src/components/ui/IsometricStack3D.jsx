@@ -1,682 +1,769 @@
-import { useState, useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import * as THREE from 'three';
 import './IsometricStack3D.css';
 
 /**
- * High-End 3D Technical Stack Visualization
- * Recreates the exact 3-tier floating glassmorphic architecture:
- * 1. Base Platform with mint-teal glowing rim & realistic contact shadows
- * 2. Bottom Layer: Database (Smoked obsidian glass with 3D cylinder icon)
- * 3. Middle Layer: Backend (Luminous emerald-green centerpiece with radiant inner glow)
- * 4. Top Layer: Frontend (Smoked obsidian glass with desktop monitor icon)
- * 5. Floating Tilted Glass Code Panel with 3D glowing </> bracket
- * 6. True 3D Orbital Rings with floating glowing node spheres
- * 7. Interactive 3D mouse parallax tilt & slab hover-lift
+ * Procedural Canvas Texture Generator for Front-Facing Labels & Icons
  */
+function createLabelTexture(type) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 320;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const centerY = canvas.height / 2;
+  const startX = 140;
+
+  if (type === 'frontend') {
+    // Desktop Computer Monitor Icon
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 14;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
+
+    // Screen
+    ctx.beginPath();
+    ctx.roundRect(startX, centerY - 64, 110, 80, 14);
+    ctx.fill();
+    ctx.stroke();
+
+    // Stand & Base
+    ctx.beginPath();
+    ctx.moveTo(startX + 55, centerY + 16);
+    ctx.lineTo(startX + 55, centerY + 46);
+    ctx.moveTo(startX + 28, centerY + 46);
+    ctx.lineTo(startX + 82, centerY + 46);
+    ctx.stroke();
+
+    // Text: Frontend
+    ctx.font = 'bold 96px Inter, system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+    ctx.shadowBlur = 18;
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Frontend', startX + 160, centerY - 4);
+  } else if (type === 'backend') {
+    // 3-Tier Server / Database Icon
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 14;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = 'rgba(52, 211, 153, 0.4)';
+
+    const iconX = startX + 55;
+    const rx = 52;
+    const ry = 18;
+
+    // Top Disk
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY - 44, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Middle Arc
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY, rx, ry, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // Bottom Arc
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY + 44, rx, ry, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // Vertical Sides
+    ctx.beginPath();
+    ctx.moveTo(iconX - rx, centerY - 44);
+    ctx.lineTo(iconX - rx, centerY + 44);
+    ctx.moveTo(iconX + rx, centerY - 44);
+    ctx.lineTo(iconX + rx, centerY + 44);
+    ctx.stroke();
+
+    // Text: Backend
+    ctx.font = '800 102px Inter, system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(16, 185, 129, 0.95)';
+    ctx.shadowBlur = 28;
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Backend', startX + 165, centerY - 2);
+  } else if (type === 'database') {
+    // 3-Tier Database Cylinder Icon
+    ctx.strokeStyle = '#FFFFFF';
+    ctx.lineWidth = 14;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.fillStyle = 'rgba(45, 212, 191, 0.28)';
+
+    const iconX = startX + 55;
+    const rx = 52;
+    const ry = 18;
+
+    // Top Disk
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY - 44, rx, ry, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+
+    // Middle Arc
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY, rx, ry, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // Bottom Arc
+    ctx.beginPath();
+    ctx.ellipse(iconX, centerY + 44, rx, ry, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // Vertical Sides
+    ctx.beginPath();
+    ctx.moveTo(iconX - rx, centerY - 44);
+    ctx.lineTo(iconX - rx, centerY + 44);
+    ctx.moveTo(iconX + rx, centerY - 44);
+    ctx.lineTo(iconX + rx, centerY + 44);
+    ctx.stroke();
+
+    // Text: Database
+    ctx.font = 'bold 96px Inter, system-ui, -apple-system, sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.85)';
+    ctx.shadowBlur = 18;
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Database', startX + 160, centerY - 4);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  return texture;
+}
+
+/**
+ * Procedural Texture Generator for the Floating Code Screen </> Glyph
+ */
+function createCodeScreenTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 840;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height / 2;
+
+  // Specular Top Sheen Arc
+  ctx.beginPath();
+  ctx.moveTo(cx - 380, 60);
+  ctx.lineTo(cx + 340, 60);
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+  ctx.lineWidth = 10;
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // Multi-pass neon glow for </> glyph
+  ctx.shadowColor = '#10b981';
+  ctx.shadowBlur = 45;
+  ctx.strokeStyle = '#34d399';
+  ctx.lineWidth = 42;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  // < bracket
+  ctx.beginPath();
+  ctx.moveTo(cx - 110, cy - 130);
+  ctx.lineTo(cx - 240, cy);
+  ctx.lineTo(cx - 110, cy + 130);
+  ctx.stroke();
+
+  // / slash
+  ctx.beginPath();
+  ctx.moveTo(cx + 60, cy - 170);
+  ctx.lineTo(cx - 50, cy + 170);
+  ctx.stroke();
+
+  // > bracket
+  ctx.beginPath();
+  ctx.moveTo(cx + 120, cy - 130);
+  ctx.lineTo(cx + 250, cy);
+  ctx.lineTo(cx + 120, cy + 130);
+  ctx.stroke();
+
+  // 3D Bevel Highlight Overlay (Inner bright core)
+  ctx.shadowBlur = 0;
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 14;
+
+  ctx.beginPath();
+  ctx.moveTo(cx - 110, cy - 128);
+  ctx.lineTo(cx - 236, cy);
+  ctx.lineTo(cx - 110, cy + 128);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(cx + 58, cy - 166);
+  ctx.lineTo(cx - 48, cy + 166);
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(cx + 122, cy - 128);
+  ctx.lineTo(cx + 246, cy);
+  ctx.lineTo(cx + 122, cy + 128);
+  ctx.stroke();
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.generateMipmaps = true;
+  texture.minFilter = THREE.LinearMipmapLinearFilter;
+  texture.magFilter = THREE.LinearFilter;
+  return texture;
+}
+
+/**
+ * Procedural Ground Contact Shadow Texture
+ */
+function createShadowTexture() {
+  const canvas = document.createElement('canvas');
+  canvas.width = 512;
+  canvas.height = 512;
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return null;
+
+  const cx = 256;
+  const cy = 256;
+  const radGrad = ctx.createRadialGradient(cx, cy, 10, cx, cy, 250);
+  radGrad.addColorStop(0, 'rgba(0, 0, 0, 0.55)');
+  radGrad.addColorStop(0.3, 'rgba(0, 0, 0, 0.32)');
+  radGrad.addColorStop(0.55, 'rgba(16, 185, 129, 0.22)');
+  radGrad.addColorStop(0.8, 'rgba(0, 0, 0, 0.05)');
+  radGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+  ctx.fillStyle = radGrad;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.generateMipmaps = true;
+  return texture;
+}
+
+/**
+ * Helper to build extruded rounded rectangle geometry
+ */
+function createRoundedSlabGeometry(w, h, d, radius, bevel) {
+  const shape = new THREE.Shape();
+  const x = -w / 2;
+  const y = -h / 2;
+
+  shape.moveTo(x + radius, y);
+  shape.lineTo(x + w - radius, y);
+  shape.quadraticCurveTo(x + w, y, x + w, y + radius);
+  shape.lineTo(x + w, y + h - radius);
+  shape.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
+  shape.lineTo(x + radius, y + h);
+  shape.quadraticCurveTo(x, y + h, x, y + h - radius);
+  shape.lineTo(x, y + radius);
+  shape.quadraticCurveTo(x, y, x + radius, y);
+
+  const extrudeSettings = {
+    depth: d - bevel * 2,
+    bevelEnabled: true,
+    bevelSegments: 8,
+    steps: 1,
+    bevelSize: bevel,
+    bevelThickness: bevel,
+  };
+
+  const geom = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+  geom.center();
+  return geom;
+}
+
 export default function IsometricStack3D({
-  activeCategory,
   onSelectCategory,
-  hoveredCard
+  hoveredCard,
 }) {
   const containerRef = useRef(null);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
-  const [hoveredSlab, setHoveredSlab] = useState(null);
 
-  // Smooth mouse parallax tracking
-  const handleMouseMove = (e) => {
-    if (!containerRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 to 0.5
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
 
-    // Subtle 3D tilt: max ~6 deg pitch and yaw
-    setTilt({
-      x: -y * 8, // pitch (tilt up/down)
-      y: x * 10  // yaw (tilt left/right)
+    // 1. Scene & Transparent Renderer
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      powerPreference: 'high-performance',
     });
-    setIsHovered(true);
-  };
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    container.appendChild(renderer.domElement);
 
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-    setIsHovered(false);
-    setHoveredSlab(null);
-  };
+    // 2. Camera Setup (Perspective with Isometric Angle)
+    const camera = new THREE.PerspectiveCamera(
+      36,
+      container.clientWidth / container.clientHeight,
+      0.1,
+      100
+    );
+    // Elevated 3/4 camera view
+    camera.position.set(4.8, 4.4, 5.8);
+    camera.lookAt(0, -0.05, 0);
 
-  // Center coordinate of the stack
-  const cx = 260;
+    // 3. Studio Lighting Rig
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.95);
+    scene.add(ambientLight);
+
+    // Main Key Light (sharp bevel highlights)
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.6);
+    keyLight.position.set(6, 9, 6);
+    scene.add(keyLight);
+
+    // Cool Rim Light (accents back-left glass edges)
+    const rimLight = new THREE.DirectionalLight(0x38bdf8, 2.2);
+    rimLight.position.set(-6, 4, -5);
+    scene.add(rimLight);
+
+    // Warm Fill Light
+    const fillLight = new THREE.DirectionalLight(0x94a3b8, 1.2);
+    fillLight.position.set(-4, 6, 4);
+    scene.add(fillLight);
+
+    // Backend Centerpiece Volumetric Core Light
+    const backendCoreLight = new THREE.PointLight(0x34d399, 4.2, 4.5);
+    backendCoreLight.position.set(0, -0.12, 0);
+    scene.add(backendCoreLight);
+
+    // Floating Code Glyph Light
+    const glyphLight = new THREE.PointLight(0x34d399, 2.4, 3.0);
+    glyphLight.position.set(0, 1.45, 0.4);
+    scene.add(glyphLight);
+
+    // 4. Materials Setup
+    // Smoked Graphite Glass (Frontend & Database)
+    const darkGlassMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#16202e'),
+      metalness: 0.15,
+      roughness: 0.18,
+      transmission: 0.85,
+      thickness: 1.4,
+      ior: 1.52,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      transparent: true,
+      opacity: 0.94,
+      reflectivity: 0.9,
+    });
+
+    // Luminous Emerald Glass (Backend - Hero Centerpiece)
+    const emeraldGlassMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#10b981'),
+      emissive: new THREE.Color('#059669'),
+      emissiveIntensity: 0.82,
+      metalness: 0.05,
+      roughness: 0.12,
+      transmission: 0.88,
+      thickness: 1.6,
+      ior: 1.54,
+      attenuationColor: new THREE.Color('#34d399'),
+      attenuationDistance: 0.9,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.06,
+      transparent: true,
+      opacity: 0.93,
+    });
+
+    // Database Material (Dark Smoked Glass catching emerald reflection)
+    const databaseGlassMaterial = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#121e28'),
+      emissive: new THREE.Color('#064e3b'),
+      emissiveIntensity: 0.35,
+      metalness: 0.12,
+      roughness: 0.18,
+      transmission: 0.85,
+      thickness: 1.4,
+      ior: 1.52,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      transparent: true,
+      opacity: 0.94,
+    });
+
+    // Base Platform Material (Dark Graphite with metallic reflection)
+    const basePlateMaterial = new THREE.MeshStandardMaterial({
+      color: new THREE.Color('#0e1722'),
+      metalness: 0.45,
+      roughness: 0.28,
+    });
+
+    // Glowing Mint-Teal Rim Material
+    const mintRimMaterial = new THREE.MeshBasicMaterial({
+      color: new THREE.Color('#2dd4bf'),
+    });
+
+    // 5. Main 3D Architecture Stack Hierarchy
+    const stackGroup = new THREE.Group();
+    // 45 degree isometric orientation
+    stackGroup.rotation.y = Math.PI / 4;
+    scene.add(stackGroup);
+
+    // Dimensions
+    const slabW = 2.65;
+    const slabH = 2.65;
+    const slabD = 0.38;
+    const slabRadius = 0.45;
+    const slabBevel = 0.075;
+
+    // --- Base Platform ---
+    const baseGeom = createRoundedSlabGeometry(3.05, 3.05, 0.18, 0.55, 0.05);
+    const baseMesh = new THREE.Mesh(baseGeom, basePlateMaterial);
+    baseMesh.rotation.x = -Math.PI / 2;
+    baseMesh.position.y = -1.35;
+    stackGroup.add(baseMesh);
+
+    // Glowing mint rim line around the bottom of the base
+    const baseRimCurvePoints = [];
+    const baseRimR = 1.48;
+    for (let i = 0; i <= 64; i++) {
+      const theta = (i / 64) * Math.PI * 2;
+      baseRimCurvePoints.push(
+        new THREE.Vector3(Math.cos(theta) * baseRimR, -1.43, Math.sin(theta) * baseRimR)
+      );
+    }
+    const baseRimCurve = new THREE.CatmullRomCurve3(baseRimCurvePoints, true);
+    const baseRimGeom = new THREE.TubeGeometry(baseRimCurve, 80, 0.016, 8, true);
+    const baseRimMesh = new THREE.Mesh(baseRimGeom, mintRimMaterial);
+    stackGroup.add(baseRimMesh);
+
+    // --- Ground Contact Shadows ---
+    const shadowTexture = createShadowTexture();
+    const shadowGeom = new THREE.PlaneGeometry(6.4, 6.4);
+    const shadowMat = new THREE.MeshBasicMaterial({
+      map: shadowTexture,
+      transparent: true,
+      depthWrite: false,
+    });
+    const shadowMesh = new THREE.Mesh(shadowGeom, shadowMat);
+    shadowMesh.rotation.x = -Math.PI / 2;
+    shadowMesh.position.y = -1.46;
+    scene.add(shadowMesh);
+
+    // Helper to create and attach front-facing label plane
+    function attachFrontLabel(mesh, type) {
+      const labelTex = createLabelTexture(type);
+      if (!labelTex) return;
+      const labelGeom = new THREE.PlaneGeometry(slabW * 0.78, slabD * 0.95);
+      const labelMat = new THREE.MeshBasicMaterial({
+        map: labelTex,
+        transparent: true,
+        opacity: 0.98,
+        depthWrite: false,
+      });
+      const labelMesh = new THREE.Mesh(labelGeom, labelMat);
+      labelMesh.position.set(0, slabH / 2 + slabBevel + 0.005, 0);
+      labelMesh.rotation.x = Math.PI / 2;
+      mesh.add(labelMesh);
+    }
+
+    // --- Layer 3: Database Slab (Bottom) ---
+    const databaseGeom = createRoundedSlabGeometry(slabW, slabH, slabD, slabRadius, slabBevel);
+    const databaseMesh = new THREE.Mesh(databaseGeom, databaseGlassMaterial);
+    databaseMesh.rotation.x = -Math.PI / 2;
+    databaseMesh.position.y = -0.75;
+    databaseMesh.userData = { category: 'database', baseY: -0.75 };
+    attachFrontLabel(databaseMesh, 'database');
+    stackGroup.add(databaseMesh);
+
+    // --- Layer 2: Backend Slab (Hero Centerpiece) ---
+    const backendGeom = createRoundedSlabGeometry(slabW, slabH, slabD + 0.04, slabRadius, slabBevel);
+    const backendMesh = new THREE.Mesh(backendGeom, emeraldGlassMaterial);
+    backendMesh.rotation.x = -Math.PI / 2;
+    backendMesh.position.y = -0.15;
+    backendMesh.userData = { category: 'backend', baseY: -0.15 };
+    attachFrontLabel(backendMesh, 'backend');
+    stackGroup.add(backendMesh);
+
+    // --- Layer 1: Frontend Slab (Top) ---
+    const frontendGeom = createRoundedSlabGeometry(slabW, slabH, slabD, slabRadius, slabBevel);
+    const frontendMesh = new THREE.Mesh(frontendGeom, darkGlassMaterial);
+    frontendMesh.rotation.x = -Math.PI / 2;
+    frontendMesh.position.y = 0.45;
+    frontendMesh.userData = { category: 'frontend', baseY: 0.45 };
+    attachFrontLabel(frontendMesh, 'frontend');
+    stackGroup.add(frontendMesh);
+
+    // --- Floating Code Screen (Above the stack) ---
+    const screenGroup = new THREE.Group();
+    screenGroup.position.set(0, 1.38, 0);
+    // Tilted backwards and slightly angled
+    screenGroup.rotation.set(-0.32, -0.22, -0.04);
+    stackGroup.add(screenGroup);
+
+    const screenGeom = createRoundedSlabGeometry(1.4, 1.15, 0.1, 0.22, 0.04);
+    const screenGlassMat = new THREE.MeshPhysicalMaterial({
+      color: new THREE.Color('#0c1622'),
+      metalness: 0.15,
+      roughness: 0.14,
+      transmission: 0.82,
+      thickness: 0.9,
+      ior: 1.5,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      transparent: true,
+      opacity: 0.92,
+    });
+    const screenPlate = new THREE.Mesh(screenGeom, screenGlassMat);
+    screenPlate.rotation.x = -Math.PI / 2;
+    screenGroup.add(screenPlate);
+
+    // Glowing </> decal on front face of screen
+    const codeScreenTex = createCodeScreenTexture();
+    const codeDecalGeom = new THREE.PlaneGeometry(1.36, 1.12);
+    const codeDecalMat = new THREE.MeshBasicMaterial({
+      map: codeScreenTex,
+      transparent: true,
+      depthWrite: false,
+    });
+    const codeDecalMesh = new THREE.Mesh(codeDecalGeom, codeDecalMat);
+    codeDecalMesh.position.set(0, 1.15 / 2 + 0.04 + 0.005, 0);
+    codeDecalMesh.rotation.x = Math.PI / 2;
+    screenPlate.add(codeDecalMesh);
+
+    // 6. 3D Orbital Rings with Revolving Spheres
+    const orbitGroup = new THREE.Group();
+    scene.add(orbitGroup);
+
+    const orbitMat = new THREE.MeshStandardMaterial({
+      color: 0x2dd4bf,
+      emissive: 0x10b981,
+      emissiveIntensity: 0.95,
+      roughness: 0.2,
+      metalness: 0.2,
+    });
+
+    const sphereMat = new THREE.MeshStandardMaterial({
+      color: 0xa7f3d0,
+      emissive: 0x34d399,
+      emissiveIntensity: 1.6,
+      roughness: 0.1,
+      metalness: 0.1,
+    });
+
+    // Upper Orbit Ring
+    const upperOrbitGroup = new THREE.Group();
+    upperOrbitGroup.position.set(0, 0.65, 0);
+    upperOrbitGroup.rotation.set(0.32, -0.42, 0.18);
+    orbitGroup.add(upperOrbitGroup);
+
+    const upperOrbitPoints = [];
+    const upperRx = 2.45;
+    const upperRz = 1.35;
+    for (let i = 0; i <= 80; i++) {
+      const theta = (i / 80) * Math.PI * 2;
+      upperOrbitPoints.push(
+        new THREE.Vector3(Math.cos(theta) * upperRx, 0, Math.sin(theta) * upperRz)
+      );
+    }
+    const upperCurve = new THREE.CatmullRomCurve3(upperOrbitPoints, true);
+    const upperTubeGeom = new THREE.TubeGeometry(upperCurve, 100, 0.013, 8, true);
+    const upperTubeMesh = new THREE.Mesh(upperTubeGeom, orbitMat);
+    upperOrbitGroup.add(upperTubeMesh);
+
+    const sphere1 = new THREE.Mesh(new THREE.SphereGeometry(0.085, 20, 20), sphereMat);
+    const sphere2 = new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 20), sphereMat);
+    upperOrbitGroup.add(sphere1);
+    upperOrbitGroup.add(sphere2);
+
+    // Lower Orbit Ring
+    const lowerOrbitGroup = new THREE.Group();
+    lowerOrbitGroup.position.set(0, -0.55, 0);
+    lowerOrbitGroup.rotation.set(-0.35, 0.44, -0.16);
+    orbitGroup.add(lowerOrbitGroup);
+
+    const lowerOrbitPoints = [];
+    const lowerRx = 2.65;
+    const lowerRz = 1.45;
+    for (let i = 0; i <= 80; i++) {
+      const theta = (i / 80) * Math.PI * 2;
+      lowerOrbitPoints.push(
+        new THREE.Vector3(Math.cos(theta) * lowerRx, 0, Math.sin(theta) * lowerRz)
+      );
+    }
+    const lowerCurve = new THREE.CatmullRomCurve3(lowerOrbitPoints, true);
+    const lowerTubeGeom = new THREE.TubeGeometry(lowerCurve, 100, 0.013, 8, true);
+    const lowerTubeMesh = new THREE.Mesh(lowerTubeGeom, orbitMat);
+    lowerOrbitGroup.add(lowerTubeMesh);
+
+    const sphere3 = new THREE.Mesh(new THREE.SphereGeometry(0.09, 20, 20), sphereMat);
+    const sphere4 = new THREE.Mesh(new THREE.SphereGeometry(0.075, 20, 20), sphereMat);
+    lowerOrbitGroup.add(sphere3);
+    lowerOrbitGroup.add(sphere4);
+
+    // 7. Interactive Parallax & Raycasting Setup
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2(-999, -999);
+    let targetParallaxX = 0;
+    let targetParallaxY = 0;
+    let currentParallaxX = 0;
+    let currentParallaxY = 0;
+    let hoveredSlabCategory = null;
+
+    const interactiveSlabs = [frontendMesh, backendMesh, databaseMesh];
+
+    const handlePointerMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width;
+      const y = (e.clientY - rect.top) / rect.height;
+
+      mouse.x = x * 2 - 1;
+      mouse.y = -(y * 2 - 1);
+
+      // Smooth tilt target: max ~0.25 rad
+      targetParallaxX = (x - 0.5) * 0.28;
+      targetParallaxY = -(y - 0.5) * 0.2;
+    };
+
+    const handlePointerLeave = () => {
+      mouse.x = -999;
+      mouse.y = -999;
+      targetParallaxX = 0;
+      targetParallaxY = 0;
+      hoveredSlabCategory = null;
+      container.style.cursor = 'default';
+    };
+
+    const handleClick = () => {
+      if (hoveredSlabCategory && onSelectCategory) {
+        onSelectCategory(hoveredSlabCategory);
+      }
+    };
+
+    container.addEventListener('pointermove', handlePointerMove);
+    container.addEventListener('pointerleave', handlePointerLeave);
+    container.addEventListener('click', handleClick);
+
+    // 8. Animation & Render Loop
+    let animationFrameId;
+    let clock = new THREE.Clock();
+    let t1 = 0.2;
+    let t2 = 0.7;
+    let t3 = 0.15;
+    let t4 = 0.65;
+
+    const animate = () => {
+      animationFrameId = requestAnimationFrame(animate);
+
+      const delta = clock.getDelta();
+      const elapsed = clock.getElapsedTime();
+
+      // Check prefers-reduced-motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Mouse Parallax Lerping
+      currentParallaxX += (targetParallaxX - currentParallaxX) * 0.08;
+      currentParallaxY += (targetParallaxY - currentParallaxY) * 0.08;
+
+      // Base rotation + mouse parallax tilt
+      stackGroup.rotation.y = Math.PI / 4 + currentParallaxX;
+      stackGroup.rotation.x = currentParallaxY;
+      orbitGroup.rotation.y = currentParallaxX * 0.7;
+      orbitGroup.rotation.x = currentParallaxY * 0.7;
+
+      if (!prefersReducedMotion) {
+        // Floating Levitation Motion
+        stackGroup.position.y = Math.sin(elapsed * 1.4) * 0.05;
+        screenGroup.position.y = 1.38 + Math.sin(elapsed * 1.8 + 0.4) * 0.08;
+        screenGroup.rotation.z = -0.04 + Math.sin(elapsed * 1.2) * 0.02;
+
+        // Backend Luminous Pulse
+        backendMesh.material.emissiveIntensity = 0.82 + Math.sin(elapsed * 2.5) * 0.22;
+        backendCoreLight.intensity = 4.2 + Math.sin(elapsed * 2.5) * 1.2;
+
+        // Orbital Spheres Movement
+        t1 = (t1 + delta * 0.045) % 1;
+        t2 = (t2 + delta * 0.045) % 1;
+        t3 = (t3 + delta * 0.038) % 1;
+        t4 = (t4 + delta * 0.038) % 1;
+
+        upperCurve.getPointAt(t1, sphere1.position);
+        upperCurve.getPointAt(t2, sphere2.position);
+        lowerCurve.getPointAt(t3, sphere3.position);
+        lowerCurve.getPointAt(t4, sphere4.position);
+      }
+
+      // Raycasting for interactive hover lift
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(interactiveSlabs, false);
+
+      if (intersects.length > 0) {
+        hoveredSlabCategory = intersects[0].object.userData.category;
+        container.style.cursor = 'pointer';
+      } else {
+        hoveredSlabCategory = null;
+        container.style.cursor = 'default';
+      }
+
+      // Apply elevation based on hover or prop
+      interactiveSlabs.forEach((slab) => {
+        const cat = slab.userData.category;
+        const isLifted = hoveredSlabCategory === cat || hoveredCard === cat;
+        const targetY = slab.userData.baseY + (isLifted ? 0.18 : 0);
+        slab.position.y += (targetY - slab.position.y) * 0.15;
+      });
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+
+    // 9. Resize Handling via ResizeObserver
+    const resizeObserver = new ResizeObserver(() => {
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    });
+    resizeObserver.observe(container);
+
+    // 10. Complete Memory & GPU Resource Disposal
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      resizeObserver.disconnect();
+      container.removeEventListener('pointermove', handlePointerMove);
+      container.removeEventListener('pointerleave', handlePointerLeave);
+      container.removeEventListener('click', handleClick);
+
+      // Dispose Three.js objects
+      scene.traverse((obj) => {
+        if (obj.geometry) obj.geometry.dispose();
+        if (obj.material) {
+          if (Array.isArray(obj.material)) {
+            obj.material.forEach((m) => m.dispose());
+          } else {
+            obj.material.dispose();
+          }
+        }
+      });
+      renderer.dispose();
+      if (renderer.domElement && container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+    };
+  }, [hoveredCard, onSelectCategory]);
 
   return (
     <div
       ref={containerRef}
       className="iso-stack-container"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       role="region"
       aria-label="3D Technical Architecture Ecosystem - Frontend, Backend, Database"
-    >
-      <div
-        className="iso-stack-scene"
-        style={{
-          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-          transition: isHovered
-            ? 'transform 0.12s cubic-bezier(0.2, 0.8, 0.4, 1)'
-            : 'transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1)'
-        }}
-      >
-        <svg
-          className="iso-stack-svg"
-          viewBox="0 0 520 500"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            {/* --------------------------------------------------------------
-                1. NEON GLOW & DROP SHADOW FILTERS
-                -------------------------------------------------------------- */}
-            <filter id="emerald-glow-strong" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur1" />
-              <feGaussianBlur in="SourceGraphic" stdDeviation="16" result="blur2" />
-              <feMerge>
-                <feMergeNode in="blur2" />
-                <feMergeNode in="blur1" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            <filter id="emerald-glow-subtle" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            <filter id="backend-light-spill" x="-60%" y="-60%" width="220%" height="220%">
-              <feDropShadow dx="0" dy="0" stdDeviation="22" floodColor="#10b981" floodOpacity="0.48" />
-              <feDropShadow dx="0" dy="10" stdDeviation="14" floodColor="#000000" floodOpacity="0.55" />
-            </filter>
-
-            <filter id="slab-drop-shadow" x="-40%" y="-40%" width="180%" height="180%">
-              <feDropShadow dx="0" dy="14" stdDeviation="12" floodColor="#000000" floodOpacity="0.65" />
-            </filter>
-
-            <filter id="screen-glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="0" dy="8" stdDeviation="16" floodColor="#10b981" floodOpacity="0.32" />
-              <feDropShadow dx="0" dy="12" stdDeviation="18" floodColor="#000000" floodOpacity="0.45" />
-            </filter>
-
-            <filter id="sphere-glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#34d399" floodOpacity="0.8" />
-            </filter>
-
-            {/* --------------------------------------------------------------
-                2. COLOR GRADIENTS FOR SLABS (METALLIC OBSIDIAN & EMERALD GLASS)
-                -------------------------------------------------------------- */}
-            {/* Top Face: Smoked Obsidian Glass (Frontend & Base) */}
-            <linearGradient id="dark-top-grad" x1="140" y1="110" x2="380" y2="180" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#243447" stopOpacity="0.96" />
-              <stop offset="45%" stopColor="#172230" stopOpacity="0.96" />
-              <stop offset="100%" stopColor="#0d141e" stopOpacity="0.98" />
-            </linearGradient>
-
-            {/* Front-Left Face: Dark Smoked Glass */}
-            <linearGradient id="dark-left-face" x1="140" y1="140" x2="260" y2="200" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#0f1722" />
-              <stop offset="100%" stopColor="#070c12" />
-            </linearGradient>
-
-            {/* Front-Right Face: Smoked Glass catching subtle cyan reflection */}
-            <linearGradient id="dark-right-face" x1="260" y1="180" x2="380" y2="140" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#1a2736" />
-              <stop offset="100%" stopColor="#0f1822" />
-            </linearGradient>
-
-            {/* Database Top Face: Catches intense emerald sheen from Backend above */}
-            <linearGradient id="database-top-grad" x1="260" y1="280" x2="260" y2="350" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#1e3a2e" stopOpacity="0.98" />
-              <stop offset="25%" stopColor="#132720" stopOpacity="0.96" />
-              <stop offset="70%" stopColor="#0f1722" stopOpacity="0.98" />
-              <stop offset="100%" stopColor="#080d14" stopOpacity="0.98" />
-            </linearGradient>
-
-            {/* --------------------------------------------------------------
-                3. BACKEND CENTERPIECE GRADIENTS (LUMINOUS EMERALD VOLUMETRIC GLASS)
-                -------------------------------------------------------------- */}
-            <linearGradient id="backend-top-grad" x1="140" y1="190" x2="380" y2="270" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#6ee7b7" stopOpacity="0.95" />
-              <stop offset="35%" stopColor="#34d399" stopOpacity="0.92" />
-              <stop offset="75%" stopColor="#10b981" stopOpacity="0.94" />
-              <stop offset="100%" stopColor="#059669" stopOpacity="0.96" />
-            </linearGradient>
-
-            <linearGradient id="backend-right-face" x1="260" y1="270" x2="380" y2="220" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#34d399" />
-              <stop offset="45%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#059669" />
-            </linearGradient>
-
-            <linearGradient id="backend-left-face" x1="140" y1="230" x2="260" y2="270" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#059669" />
-              <stop offset="100%" stopColor="#047857" />
-            </linearGradient>
-
-            {/* --------------------------------------------------------------
-                4. FLOATING CODE SCREEN & SPHERE GRADIENTS
-                -------------------------------------------------------------- */}
-            <linearGradient id="code-screen-glass" x1="0" y1="0" x2="104" y2="88" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#1e293b" stopOpacity="0.92" />
-              <stop offset="40%" stopColor="#111c26" stopOpacity="0.88" />
-              <stop offset="100%" stopColor="#081018" stopOpacity="0.95" />
-            </linearGradient>
-
-            <linearGradient id="code-screen-border" x1="0" y1="0" x2="104" y2="88" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" />
-              <stop offset="50%" stopColor="#34d399" stopOpacity="0.75" />
-              <stop offset="100%" stopColor="#10b981" stopOpacity="0.3" />
-            </linearGradient>
-
-            {/* 3D Sphere Radial Highlight */}
-            <radialGradient id="sphere-grad" cx="35%" cy="32%" r="68%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="25%" stopColor="#6ee7b7" />
-              <stop offset="65%" stopColor="#10b981" />
-              <stop offset="100%" stopColor="#047857" />
-            </radialGradient>
-
-            {/* Base Shadow & Ambient Floor Reflection */}
-            <radialGradient id="floor-shadow-radial" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.28" />
-              <stop offset="35%" stopColor="#047857" stopOpacity="0.14" />
-              <stop offset="70%" stopColor="#000000" stopOpacity="0.45" />
-              <stop offset="100%" stopColor="#000000" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-
-          {/* ================================================================
-              LAYER 0: GROUND CONTACT SHADOW & AMBIENT FLOOR AURA
-              ================================================================ */}
-          <g className="iso-ground-shadows">
-            {/* Soft wide ambient floor shadow */}
-            <ellipse
-              cx={cx}
-              cy="436"
-              rx="185"
-              ry="48"
-              fill="#000000"
-              opacity="0.16"
-              filter="blur(22px)"
-            />
-            {/* Emerald ambient floor bounce */}
-            <ellipse
-              cx={cx}
-              cy="432"
-              rx="155"
-              ry="38"
-              fill="url(#floor-shadow-radial)"
-              filter="blur(18px)"
-            />
-            {/* Crisp contact shadow right under the base plate */}
-            <ellipse
-              cx={cx}
-              cy="428"
-              rx="132"
-              ry="32"
-              fill="#000000"
-              opacity="0.45"
-              filter="blur(8px)"
-            />
-          </g>
-
-          {/* ================================================================
-              LAYER 1: BACK SEGMENTS OF 3D ORBITAL RINGS (BEHIND STACK)
-              ================================================================ */}
-          <g className="iso-orbit-back" aria-hidden="true">
-            {/* Upper Orbital Ring - Back Half */}
-            <g transform={`translate(${cx}, 140) rotate(-18)`}>
-              <path
-                d="M -195 0 A 195 62 0 0 1 195 0"
-                className="iso-orbit-path iso-orbit-path--back"
-              />
-            </g>
-
-            {/* Lower Orbital Ring - Back Half */}
-            <g transform={`translate(${cx}, 305) rotate(18)`}>
-              <path
-                d="M -210 0 A 210 66 0 0 1 210 0"
-                className="iso-orbit-path iso-orbit-path--back"
-              />
-            </g>
-          </g>
-
-          {/* ================================================================
-              LAYER 2: BASE GROUNDING PLATFORM
-              ================================================================ */}
-          <g className="iso-base-platform">
-            {/* Base Plate: Left Face */}
-            <path
-              d={`M ${cx - 14} 433 Q ${cx} 437, ${cx + 14} 433 L ${cx + 116} 401 Q ${cx + 130} 395, ${cx + 130} 401 L ${cx + 130} 415 Q ${cx + 130} 409, ${cx + 116} 415 L ${cx + 14} 447 Q ${cx} 451, ${cx - 14} 447 Z`}
-              fill="#0c131c"
-            />
-            {/* Base Plate: Right Face with Glowing Mint-Teal Rim */}
-            <path
-              d={`M ${cx - 14} 433 Q ${cx} 437, ${cx - 14} 433 L ${cx - 116} 401 Q ${cx - 130} 395, ${cx - 130} 401 L ${cx - 130} 415 Q ${cx - 130} 409, ${cx - 116} 415 L ${cx - 14} 447 Q ${cx} 451, ${cx - 14} 447 Z`}
-              fill="#080c12"
-            />
-            {/* Base Plate: Top Face */}
-            <path
-              d={`M ${cx - 14} 363 Q ${cx} 359, ${cx + 14} 363 L ${cx + 116} 395 Q ${cx + 130} 401, ${cx + 116} 407 L ${cx + 14} 439 Q ${cx} 443, ${cx - 14} 439 L ${cx - 116} 407 Q ${cx - 130} 401, ${cx - 116} 395 Z`}
-              fill="url(#dark-top-grad)"
-              stroke="rgba(255, 255, 255, 0.15)"
-              strokeWidth="0.8"
-            />
-            {/* Glowing Mint-Teal Perimeter Stroke along Base Plate Bottom Edge */}
-            <path
-              d={`M ${cx - 130} 401 L ${cx - 116} 415 L ${cx} 451 L ${cx + 116} 415 L ${cx + 130} 401`}
-              stroke="#2dd4bf"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              fill="none"
-              filter="url(#emerald-glow-subtle)"
-            />
-          </g>
-
-          {/* ================================================================
-              LAYER 3: DATABASE SLAB (BOTTOM)
-              ================================================================ */}
-          <g
-            className={`iso-slab iso-slab--database ${
-              hoveredSlab === 'database' || hoveredCard === 'database' || activeCategory === 'database'
-                ? 'is-slab-lifted'
-                : ''
-            }`}
-            onMouseEnter={() => setHoveredSlab('database')}
-            onMouseLeave={() => setHoveredSlab(null)}
-            onClick={() => onSelectCategory && onSelectCategory('database')}
-            filter="url(#slab-drop-shadow)"
-          >
-            {/* Left Face */}
-            <path
-              d={`M ${cx - 14} 350 Q ${cx} 354, ${cx} 354 L ${cx - 106} 318 Q ${cx - 120} 312, ${cx - 120} 318 L ${cx - 120} 350 Q ${cx - 120} 344, ${cx - 106} 350 L ${cx - 14} 386 Q ${cx} 390, ${cx - 14} 386 Z`}
-              fill="url(#dark-left-face)"
-              stroke="rgba(255, 255, 255, 0.08)"
-              strokeWidth="0.8"
-            />
-
-            {/* Right Face (with Database Icon & Label) */}
-            <path
-              d={`M ${cx} 354 Q ${cx} 354, ${cx + 14} 350 L ${cx + 106} 318 Q ${cx + 120} 312, ${cx + 106} 318 L ${cx + 120} 346 Q ${cx + 120} 352, ${cx + 106} 352 L ${cx + 14} 384 Q ${cx} 390, ${cx} 390 Z`}
-              fill="url(#dark-right-face)"
-              stroke="rgba(255, 255, 255, 0.12)"
-              strokeWidth="0.8"
-            />
-
-            {/* Top Face (catching neon green reflection from Backend) */}
-            <path
-              d={`M ${cx - 14} 276 Q ${cx} 272, ${cx + 14} 276 L ${cx + 106} 312 Q ${cx + 120} 318, ${cx + 106} 324 L ${cx + 14} 356 Q ${cx} 360, ${cx - 14} 356 L ${cx - 106} 324 Q ${cx - 120} 318, ${cx - 106} 312 Z`}
-              fill="url(#database-top-grad)"
-              stroke="rgba(52, 211, 153, 0.4)"
-              strokeWidth="1.2"
-            />
-
-            {/* Specular Top Rim Highlight */}
-            <path
-              d={`M ${cx - 106} 324 L ${cx} 360 L ${cx + 106} 324`}
-              stroke="rgba(255, 255, 255, 0.35)"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              fill="none"
-            />
-
-            {/* Front-Right Face: Database Cylinder Icon + Text Label */}
-            <g transform={`rotate(-19.3 ${cx + 60} 355)`}>
-              {/* 3-Tier Database Cylinder Icon */}
-              <g transform={`translate(${cx + 18}, 346)`}>
-                {/* Top Disk */}
-                <ellipse cx="7" cy="3" rx="6.5" ry="2.2" stroke="#ffffff" strokeWidth="1.2" fill="rgba(45, 212, 191, 0.3)" />
-                {/* Middle Disk */}
-                <path d="M 0.5 6.5 A 6.5 2.2 0 0 0 13.5 6.5" stroke="#ffffff" strokeWidth="1.2" fill="none" />
-                {/* Bottom Disk */}
-                <path d="M 0.5 10 A 6.5 2.2 0 0 0 13.5 10" stroke="#ffffff" strokeWidth="1.2" fill="none" />
-                {/* Side Edges */}
-                <line x1="0.5" y1="3" x2="0.5" y2="10" stroke="#ffffff" strokeWidth="1.2" />
-                <line x1="13.5" y1="3" x2="13.5" y2="10" stroke="#ffffff" strokeWidth="1.2" />
-              </g>
-
-              {/* Text Label: Database */}
-              <text
-                x={cx + 38}
-                y="357"
-                fill="#FFFFFF"
-                fontSize="13.5"
-                fontWeight="700"
-                fontFamily="Inter, Outfit, sans-serif"
-                letterSpacing="0.03em"
-                className="iso-slab-label"
-              >
-                Database
-              </text>
-            </g>
-          </g>
-
-          {/* ================================================================
-              LAYER 4: BACKEND SLAB (MIDDLE - THE LUMINOUS HERO CENTERPIECE)
-              ================================================================ */}
-          <g
-            className={`iso-slab iso-slab--backend ${
-              hoveredSlab === 'backend' || hoveredCard === 'backend' || activeCategory === 'backend'
-                ? 'is-slab-lifted is-hero-focused'
-                : ''
-            }`}
-            onMouseEnter={() => setHoveredSlab('backend')}
-            onMouseLeave={() => setHoveredSlab(null)}
-            onClick={() => onSelectCategory && onSelectCategory('backend')}
-            filter="url(#backend-light-spill)"
-          >
-            {/* Volumetric downward emerald light bleed */}
-            <ellipse
-              cx={cx}
-              cy="295"
-              rx="120"
-              ry="42"
-              fill="#10b981"
-              opacity="0.38"
-              filter="blur(16px)"
-            />
-
-            {/* Left Face */}
-            <path
-              d={`M ${cx - 14} 264 Q ${cx} 268, ${cx} 268 L ${cx - 106} 232 Q ${cx - 120} 226, ${cx - 120} 232 L ${cx - 120} 264 Q ${cx - 120} 258, ${cx - 106} 264 L ${cx - 14} 300 Q ${cx} 304, ${cx - 14} 300 Z`}
-              fill="url(#backend-left-face)"
-              stroke="#047857"
-              strokeWidth="1"
-            />
-
-            {/* Right Face (Translucent Glowing Emerald Surface) */}
-            <path
-              d={`M ${cx} 268 Q ${cx} 268, ${cx + 14} 264 L ${cx + 106} 232 Q ${cx + 120} 226, ${cx + 106} 232 L ${cx + 120} 260 Q ${cx + 120} 266, ${cx + 106} 266 L ${cx + 14} 298 Q ${cx} 304, ${cx} 304 Z`}
-              fill="url(#backend-right-face)"
-              stroke="#6ee7b7"
-              strokeWidth="1.2"
-            />
-
-            {/* Top Face (Luminous Glass with Volumetric Glow) */}
-            <path
-              d={`M ${cx - 14} 190 Q ${cx} 186, ${cx + 14} 190 L ${cx + 106} 226 Q ${cx + 120} 232, ${cx + 106} 238 L ${cx + 14} 270 Q ${cx} 274, ${cx - 14} 270 L ${cx - 106} 238 Q ${cx - 120} 232, ${cx - 106} 226 Z`}
-              fill="url(#backend-top-grad)"
-              stroke="#a7f3d0"
-              strokeWidth="1.8"
-            />
-
-            {/* Specular Top Rim Neon Highlight */}
-            <path
-              d={`M ${cx - 106} 238 L ${cx} 274 L ${cx + 106} 238`}
-              stroke="#ffffff"
-              strokeWidth="1.8"
-              strokeOpacity="0.95"
-              strokeLinecap="round"
-              fill="none"
-              filter="url(#emerald-glow-subtle)"
-            />
-
-            {/* Front-Right Face: Server Stack Icon + Bold Text Label */}
-            <g transform={`rotate(-19.3 ${cx + 60} 269)`}>
-              {/* 3-Tier Server/Database Icon */}
-              <g transform={`translate(${cx + 18}, 260)`}>
-                {/* Top Disk */}
-                <ellipse cx="7" cy="3" rx="6.5" ry="2.2" stroke="#ffffff" strokeWidth="1.3" fill="rgba(255, 255, 255, 0.45)" />
-                {/* Middle Disk */}
-                <path d="M 0.5 6.5 A 6.5 2.2 0 0 0 13.5 6.5" stroke="#ffffff" strokeWidth="1.3" fill="none" />
-                {/* Bottom Disk */}
-                <path d="M 0.5 10 A 6.5 2.2 0 0 0 13.5 10" stroke="#ffffff" strokeWidth="1.3" fill="none" />
-                {/* Side Edges */}
-                <line x1="0.5" y1="3" x2="0.5" y2="10" stroke="#ffffff" strokeWidth="1.3" />
-                <line x1="13.5" y1="3" x2="13.5" y2="10" stroke="#ffffff" strokeWidth="1.3" />
-              </g>
-
-              {/* Bold Crisp White Label: Backend */}
-              <text
-                x={cx + 38}
-                y="271"
-                fill="#FFFFFF"
-                fontSize="14.5"
-                fontWeight="800"
-                fontFamily="Inter, Outfit, sans-serif"
-                letterSpacing="0.04em"
-                className="iso-slab-label iso-slab-label--backend"
-              >
-                Backend
-              </text>
-            </g>
-          </g>
-
-          {/* ================================================================
-              LAYER 5: FRONTEND SLAB (TOP)
-              ================================================================ */}
-          <g
-            className={`iso-slab iso-slab--frontend ${
-              hoveredSlab === 'frontend' || hoveredCard === 'frontend' || activeCategory === 'frontend'
-                ? 'is-slab-lifted'
-                : ''
-            }`}
-            onMouseEnter={() => setHoveredSlab('frontend')}
-            onMouseLeave={() => setHoveredSlab(null)}
-            onClick={() => onSelectCategory && onSelectCategory('frontend')}
-            filter="url(#slab-drop-shadow)"
-          >
-            {/* Left Face */}
-            <path
-              d={`M ${cx - 14} 178 Q ${cx} 182, ${cx} 182 L ${cx - 106} 146 Q ${cx - 120} 140, ${cx - 120} 146 L ${cx - 120} 178 Q ${cx - 120} 172, ${cx - 106} 178 L ${cx - 14} 214 Q ${cx} 218, ${cx - 14} 214 Z`}
-              fill="url(#dark-left-face)"
-              stroke="rgba(255, 255, 255, 0.08)"
-              strokeWidth="0.8"
-            />
-
-            {/* Right Face (with Frontend desktop icon & label) */}
-            <path
-              d={`M ${cx} 182 Q ${cx} 182, ${cx + 14} 178 L ${cx + 106} 146 Q ${cx + 120} 140, ${cx + 106} 146 L ${cx + 120} 174 Q ${cx + 120} 180, ${cx + 106} 180 L ${cx + 14} 212 Q ${cx} 218, ${cx} 218 Z`}
-              fill="url(#dark-right-face)"
-              stroke="rgba(255, 255, 255, 0.12)"
-              strokeWidth="0.8"
-            />
-
-            {/* Top Face */}
-            <path
-              d={`M ${cx - 14} 104 Q ${cx} 100, ${cx + 14} 104 L ${cx + 106} 140 Q ${cx + 120} 146, ${cx + 106} 152 L ${cx + 14} 184 Q ${cx} 188, ${cx - 14} 184 L ${cx - 106} 152 Q ${cx - 120} 146, ${cx - 106} 140 Z`}
-              fill="url(#dark-top-grad)"
-              stroke="rgba(255, 255, 255, 0.28)"
-              strokeWidth="1.2"
-            />
-
-            {/* Specular Top Rim Highlight */}
-            <path
-              d={`M ${cx - 106} 152 L ${cx} 188 L ${cx + 106} 152`}
-              stroke="rgba(255, 255, 255, 0.45)"
-              strokeWidth="1.4"
-              strokeLinecap="round"
-              fill="none"
-            />
-
-            {/* Front-Right Face: Desktop Monitor Icon + Text Label */}
-            <g transform={`rotate(-19.3 ${cx + 60} 183)`}>
-              {/* Desktop Monitor Icon with Stand */}
-              <g transform={`translate(${cx + 18}, 174)`}>
-                {/* Monitor Frame */}
-                <rect x="0" y="0" width="15" height="10" rx="1.8" stroke="#ffffff" strokeWidth="1.2" fill="rgba(255, 255, 255, 0.2)" />
-                {/* Neck */}
-                <line x1="7.5" y1="10" x2="7.5" y2="13" stroke="#ffffff" strokeWidth="1.2" />
-                {/* Base */}
-                <line x1="4" y1="13" x2="11" y2="13" stroke="#ffffff" strokeWidth="1.2" />
-              </g>
-
-              {/* Text Label: Frontend */}
-              <text
-                x={cx + 38}
-                y="185"
-                fill="#FFFFFF"
-                fontSize="13.5"
-                fontWeight="700"
-                fontFamily="Inter, Outfit, sans-serif"
-                letterSpacing="0.03em"
-                className="iso-slab-label"
-              >
-                Frontend
-              </text>
-            </g>
-          </g>
-
-          {/* ================================================================
-              LAYER 6: FLOATING TILTED GLASS CODE SCREEN (</>)
-              ================================================================ */}
-          <g className="iso-floating-screen-wrapper">
-            {/* Ambient soft shadow cast by floating screen onto top slab */}
-            <ellipse
-              cx={cx}
-              cy="104"
-              rx="46"
-              ry="14"
-              fill="#000000"
-              opacity="0.45"
-              filter="blur(6px)"
-            />
-
-            {/* Tilted Glass Screen Assembly */}
-            <g
-              className="iso-floating-screen"
-              transform={`translate(${cx}, 52) rotate(-12) skewX(-7)`}
-            >
-              {/* Glass Screen Plate */}
-              <rect
-                x="-52"
-                y="-44"
-                width="104"
-                height="88"
-                rx="18"
-                fill="url(#code-screen-glass)"
-                stroke="url(#code-screen-border)"
-                strokeWidth="1.8"
-                filter="url(#screen-glow)"
-              />
-
-              {/* Specular Top Rim Gloss Line */}
-              <path
-                d="M -44 -43 L 38 -43"
-                stroke="#ffffff"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeOpacity="0.85"
-              />
-
-              {/* Glowing Neon Emerald </> Code Bracket Glyph */}
-              <g filter="url(#emerald-glow-strong)">
-                {/* < bracket */}
-                <path
-                  d="M -16 -12 L -28 0 L -16 12"
-                  stroke="#34d399"
-                  strokeWidth="4.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-                {/* / slash */}
-                <line
-                  x1="7"
-                  y1="-16"
-                  x2="-3"
-                  y2="16"
-                  stroke="#34d399"
-                  strokeWidth="4"
-                  strokeLinecap="round"
-                />
-                {/* > bracket */}
-                <path
-                  d="M 16 -12 L 28 0 L 16 12"
-                  stroke="#34d399"
-                  strokeWidth="4.2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </g>
-
-              {/* 3D Tactile Bevel Highlight Overlay */}
-              <g opacity="0.65">
-                <path
-                  d="M -15 -11 L -27 0 L -15 11"
-                  stroke="#ffffff"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-                <line
-                  x1="7.5"
-                  y1="-15"
-                  x2="-2"
-                  y2="15"
-                  stroke="#ffffff"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M 17 -11 L 27 0 L 17 11"
-                  stroke="#ffffff"
-                  strokeWidth="1.2"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-              </g>
-            </g>
-          </g>
-
-          {/* ================================================================
-              LAYER 7: FRONT SEGMENTS OF 3D ORBITAL RINGS & GLOWING NODE SPHERES
-              Passing gracefully in front of the 3D stack
-              ================================================================ */}
-          <g className="iso-orbit-front" aria-hidden="true">
-            {/* Upper Orbital Ring - Front Half */}
-            <g transform={`translate(${cx}, 140) rotate(-18)`}>
-              <path
-                d="M 195 0 A 195 62 0 0 1 -195 0"
-                className="iso-orbit-path iso-orbit-path--front"
-              />
-            </g>
-
-            {/* Lower Orbital Ring - Front Half */}
-            <g transform={`translate(${cx}, 305) rotate(18)`}>
-              <path
-                d="M 210 0 A 210 66 0 0 1 -210 0"
-                className="iso-orbit-path iso-orbit-path--front"
-              />
-            </g>
-
-            {/* Glowing Emerald Spherical Nodes along the orbits */}
-            {/* Sphere 1: Upper orbit left */}
-            <g className="iso-orbit-sphere sphere--1" transform="translate(105, 125)">
-              <circle cx="0" cy="0" r="11" fill="#10b981" opacity="0.35" filter="blur(5px)" />
-              <circle cx="0" cy="0" r="7.5" fill="url(#sphere-grad)" />
-            </g>
-
-            {/* Sphere 2: Upper orbit right */}
-            <g className="iso-orbit-sphere sphere--2" transform="translate(415, 160)">
-              <circle cx="0" cy="0" r="10" fill="#10b981" opacity="0.35" filter="blur(5px)" />
-              <circle cx="0" cy="0" r="6.5" fill="url(#sphere-grad)" />
-            </g>
-
-            {/* Sphere 3: Lower orbit front-left */}
-            <g className="iso-orbit-sphere sphere--3" transform="translate(175, 360)">
-              <circle cx="0" cy="0" r="12" fill="#10b981" opacity="0.4" filter="blur(6px)" />
-              <circle cx="0" cy="0" r="8" fill="url(#sphere-grad)" />
-            </g>
-
-            {/* Sphere 4: Lower orbit right */}
-            <g className="iso-orbit-sphere sphere--4" transform="translate(405, 285)">
-              <circle cx="0" cy="0" r="10" fill="#10b981" opacity="0.35" filter="blur(5px)" />
-              <circle cx="0" cy="0" r="6.5" fill="url(#sphere-grad)" />
-            </g>
-          </g>
-        </svg>
-      </div>
-    </div>
+    />
   );
 }
