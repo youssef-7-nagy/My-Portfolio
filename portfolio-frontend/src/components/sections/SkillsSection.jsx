@@ -1,16 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import {
   Code,
-  Sparkles,
-  CheckCircle2,
-  Laptop,
   ArrowRight,
   ArrowDown
 } from 'lucide-react';
 import {
   technicalExpertise,
-  developerToolkit,
-  toolkitBanner
+  developerToolkit
 } from '../../data/skillsData';
 import './SkillsSection.css';
 
@@ -164,14 +160,6 @@ export default function SkillsSection() {
           {/* ----- Center Column: 3D Isometric Ecosystem Architecture Stack ----- */}
           <div className="skills-col skills-col--center">
             <div className="ecosystem-stack-wrapper">
-              {/* Floating Top Angled Glass Tablet with Code Bracket */}
-              <div className="stack-floating-badge" aria-hidden="true">
-                <div className="stack-floating-badge__inner">
-                  <span className="stack-floating-code">&lt; / &gt;</span>
-                  <div className="stack-floating-glow" />
-                </div>
-              </div>
-
               {/* Isometric Slabs Container */}
               <div className="stack-isometric-layers" role="region" aria-label="Architecture Stack">
                 {/* Slab 1: Frontend */}
@@ -194,10 +182,6 @@ export default function SkillsSection() {
                   className="stack-slab stack-slab--backend is-primary-core"
                 >
                   <div className="stack-slab__top">
-                    <div className="stack-slab__badge-pill">
-                      <Sparkles size={11} />
-                      <span>Primary Core</span>
-                    </div>
                     <span className="stack-slab__label">Backend</span>
                     <span className="stack-slab__tech-tag">Node.js • Express • REST APIs</span>
                   </div>
@@ -263,12 +247,6 @@ export default function SkillsSection() {
               onMouseEnter={() => setHoveredCard('backend')}
               onMouseLeave={() => setHoveredCard(null)}
             >
-              {/* Specialization Badge */}
-              <div className="skill-card__specialization-tag">
-                <Sparkles size={12} />
-                <span>Primary Specialization</span>
-              </div>
-
               <div className="skill-card__header">
                 <div className="skill-card__icon-box skill-card__icon-box--primary">
                   <technicalExpertise.backend.icon size={22} />
@@ -349,11 +327,6 @@ export default function SkillsSection() {
             ==================================================================== */}
         <div className="developer-toolkit-wrapper">
             <div className="skills-header toolkit-header">
-              <div className="skills-pill-badge skills-pill-badge--toolkit">
-                <Laptop size={14} className="skills-pill-badge__icon" />
-                <span>My Developer Toolkit</span>
-              </div>
-
               <h3 className="section-title toolkit-title">
                 Developer Toolkit & <span className="gradient-text">Engineering Workflow</span>
               </h3>
@@ -440,16 +413,6 @@ export default function SkillsSection() {
                   </div>
                 </div>
                 <div className="toolkit-laptop-base" />
-              </div>
-            </div>
-
-            {/* Bottom Proof Commitment Banner */}
-            <div className="toolkit-bottom-banner">
-              <div className="toolkit-banner-pill">
-                <CheckCircle2 size={18} className="toolkit-banner-check" />
-                <span className="toolkit-banner-quote">{toolkitBanner.quote}</span>
-                <span className="toolkit-banner-separator" aria-hidden="true">•</span>
-                <span className="toolkit-banner-subtext">{toolkitBanner.subtext}</span>
               </div>
             </div>
           </div>
