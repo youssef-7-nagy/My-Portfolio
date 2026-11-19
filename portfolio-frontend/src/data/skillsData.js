@@ -50,7 +50,6 @@ import {
   FolderTree,
   Repeat,
   Bug,
-  Sparkles,
   Code2,
   Workflow,
   GitPullRequest,
@@ -421,7 +420,6 @@ export const developerToolkit = [
     accent: '#F4D35E',
     tools: [
       { name: 'VS Code', icon: TbBrandVscode, color: '#007ACC' },
-      { name: 'Antigravity', icon: Sparkles, color: '#F4D35E' },
       { name: 'Postman', icon: SiPostman, color: '#FF6C37' },
       { name: 'MongoDB Compass', icon: SiMongodb, color: '#47A248' },
       { name: 'npm', icon: SiNpm, color: '#CB3837' },
