@@ -64,7 +64,7 @@
 .skills-container {
   position: relative;
   z-index: 1;
-  max-width: min(100% - 2rem, 1340px);
+  max-width: min(100% - 2rem, 1440px);
   margin: 0 auto;
 }
 
@@ -130,7 +130,7 @@
 
 .skills-ecosystem-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(340px, 28vw, 470px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.18fr) clamp(240px, 20vw, 310px) minmax(0, 1.18fr);
   gap: clamp(1rem, 2vw, 2.25rem);
   align-items: center;
   justify-content: center;
@@ -334,8 +334,8 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 5px;
-  padding: 8px 3px;
+  gap: 6px;
+  padding: 10px 6px;
   border-radius: var(--radius-md);
   background: rgba(var(--color-deep-steel-blue-rgb), 0.1);
   border: 1px solid rgba(var(--color-light-gray-rgb), 0.1);
@@ -345,7 +345,7 @@
   text-align: center;
   min-width: 0;
   width: 100%;
-  min-height: 64px;
+  min-height: 66px;
   box-sizing: border-box;
 }
 
@@ -392,9 +392,9 @@
 }
 
 .skill-item-pill__name {
-  font-size: clamp(0.66rem, 0.7vw, 0.73rem);
+  font-size: clamp(0.68rem, 0.74vw, 0.76rem);
   font-weight: 600;
-  line-height: 1.18;
+  line-height: 1.2;
   text-align: center;
   white-space: normal;
   word-break: normal;
@@ -943,7 +943,7 @@
 /* Large Screens & Desktops (1440px+) */
 @media (min-width: 1440px) {
   .skills-ecosystem-grid {
-    grid-template-columns: minmax(0, 1fr) 470px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.2fr) 300px minmax(0, 1.2fr);
     gap: 2.25rem;
   }
 }
@@ -951,7 +951,7 @@
 /* Medium Laptops & Small Desktops (1024px - 1240px) */
 @media (max-width: 1240px) {
   .skills-ecosystem-grid {
-    grid-template-columns: minmax(0, 1fr) 380px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) 250px minmax(0, 1.15fr);
     gap: 1.25rem;
   }
 
