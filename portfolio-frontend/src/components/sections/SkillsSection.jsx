@@ -8,6 +8,7 @@ import {
   technicalExpertise,
   developerToolkit
 } from '../../data/skillsData';
+import IsometricStack3D from '../ui/IsometricStack3D';
 import './SkillsSection.css';
 
 export default function SkillsSection() {
@@ -157,85 +158,16 @@ export default function SkillsSection() {
             </div>
           </div>
 
-          {/* ----- Center Column: 3D Isometric Ecosystem Architecture Stack ----- */}
+          {/* ----- Center Column: High-End 3D Isometric Stacked Architecture Model ----- */}
           <div className="skills-col skills-col--center">
-            <div className="ecosystem-stack-wrapper">
-              {/* Isometric Slabs Container */}
-              <div className="stack-isometric-layers" role="region" aria-label="Architecture Stack">
-                {/* Slab 1: Frontend */}
-                <div
-                  className="stack-slab stack-slab--frontend"
-                >
-                  <div className="stack-slab__top">
-                    <span className="stack-slab__label">Frontend</span>
-                    <span className="stack-slab__tech-tag">React • Next.js • UI</span>
-                  </div>
-                  <div className="stack-slab__front" />
-                  <div className="stack-slab__side" />
-                </div>
-
-                {/* Connecting Pulse Line Between Tiers */}
-                <div className="stack-connector-pulse stack-connector-pulse--top" />
-
-                {/* Slab 2: Backend (PRIMARY - Bright Glowing Core) */}
-                <div
-                  className="stack-slab stack-slab--backend is-primary-core"
-                >
-                  <div className="stack-slab__top">
-                    <span className="stack-slab__label">Backend</span>
-                    <span className="stack-slab__tech-tag">Node.js • Express • REST APIs</span>
-                  </div>
-                  <div className="stack-slab__front" />
-                  <div className="stack-slab__side" />
-                  <div className="stack-slab__glow-aura" />
-                </div>
-
-                {/* Connecting Pulse Line Between Tiers */}
-                <div className="stack-connector-pulse stack-connector-pulse--bottom" />
-
-                {/* Slab 3: Database */}
-                <div
-                  className="stack-slab stack-slab--database"
-                >
-                  <div className="stack-slab__top">
-                    <span className="stack-slab__label">Database</span>
-                    <span className="stack-slab__tech-tag">MongoDB • MySQL • SQL</span>
-                  </div>
-                  <div className="stack-slab__front" />
-                  <div className="stack-slab__side" />
-                </div>
-              </div>
-
-              {/* Circuit SVG Lines Radiating outward to cards */}
-              <svg
-                className="stack-circuit-wires"
-                viewBox="0 0 400 320"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                aria-hidden="true"
-              >
-                {/* Left wire to Frontend */}
-                <path
-                  d="M 120 70 C 50 70, 20 60, 0 50"
-                  className="wire-path wire-path--teal"
-                />
-                <circle cx="10" cy="52" r="3" className="wire-node" />
-
-                {/* Left wire to Databases */}
-                <path
-                  d="M 120 250 C 60 250, 20 260, 0 270"
-                  className="wire-path wire-path--teal"
-                />
-                <circle cx="10" cy="268" r="3" className="wire-node" />
-
-                {/* Right wires to Backend */}
-                <path
-                  d="M 280 155 C 330 155, 370 155, 400 155"
-                  className="wire-path wire-path--bright"
-                />
-                <circle cx="390" cy="155" r="4" className="wire-node wire-node--bright" />
-              </svg>
-            </div>
+            <IsometricStack3D
+              hoveredCard={hoveredCard}
+              onSelectCategory={(cat) => {
+                if (cat === 'frontend') setSelectedSkill(technicalExpertise.frontend.skills[0]);
+                if (cat === 'backend') setSelectedSkill(technicalExpertise.backend.skills[0]);
+                if (cat === 'database') setSelectedSkill(technicalExpertise.databases.skills[0]);
+              }}
+            />
           </div>
 
           {/* ----- Right Column: Backend Development (Primary Specialization) ----- */}
