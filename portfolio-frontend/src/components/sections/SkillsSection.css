@@ -45,7 +45,7 @@
 .skills-bg-grid {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(var(--color-light-gray-rgb), 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(var(--color-light-gray-rgb), 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
@@ -56,7 +56,7 @@
 }
 
 [data-theme='light'] .skills-bg-grid {
-  background-image: 
+  background-image:
     linear-gradient(to right, rgba(var(--color-ocean-teal-rgb), 0.04) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(var(--color-ocean-teal-rgb), 0.04) 1px, transparent 1px);
 }
@@ -180,19 +180,15 @@
 .skill-card--primary-highlight {
   border-color: rgba(var(--color-ocean-teal-rgb), 0.5);
   box-shadow: 0 8px 36px rgba(var(--color-ocean-teal-rgb), 0.18);
-  background: linear-gradient(
-    145deg,
-    rgba(var(--color-deep-steel-blue-rgb), 0.22) 0%,
-    rgba(var(--color-deep-steel-blue-rgb), 0.1) 100%
-  );
+  background: linear-gradient(145deg,
+      rgba(var(--color-deep-steel-blue-rgb), 0.22) 0%,
+      rgba(var(--color-deep-steel-blue-rgb), 0.1) 100%);
 }
 
 [data-theme='light'] .skill-card--primary-highlight {
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.98) 0%,
-    rgba(245, 248, 250, 0.95) 100%
-  );
+  background: linear-gradient(145deg,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(245, 248, 250, 0.95) 100%);
   border-color: rgba(54, 93, 107, 0.45);
   box-shadow: 0 10px 35px rgba(54, 93, 107, 0.1);
 }
@@ -418,6 +414,30 @@
   min-width: 0;
 }
 
+.skills-center-stack-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 330px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+.skills-center-stack-img {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.45));
+}
+
+[data-theme='light'] .skills-center-stack-img {
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.12));
+}
+
 /* ==========================================================================
    INTERACTIVE SKILL SPOTLIGHT BAR
    Appears below the ecosystem grid on hover or selection
@@ -447,8 +467,15 @@
 }
 
 @keyframes spotlightFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .skill-spotlight-bar__left {
@@ -804,9 +831,12 @@
 }
 
 @keyframes goldenChevronFlow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateX(0);
   }
+
   50% {
     transform: translateX(3px);
   }
@@ -845,9 +875,17 @@
   border-radius: 50%;
 }
 
-.laptop-dot--red { background: #FF5F56; }
-.laptop-dot--yellow { background: #FFBD2E; }
-.laptop-dot--green { background: #27C93F; }
+.laptop-dot--red {
+  background: #FF5F56;
+}
+
+.laptop-dot--yellow {
+  background: #FFBD2E;
+}
+
+.laptop-dot--green {
+  background: #27C93F;
+}
 
 .laptop-screen-title {
   font-family: monospace;
@@ -1095,6 +1133,7 @@
 
 /* Accessibility: Respect Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
+
   .skills-bg-glow,
   .toolkit-flow-pulse,
   .skill-card,

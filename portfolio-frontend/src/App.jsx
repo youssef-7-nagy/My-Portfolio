@@ -18,7 +18,7 @@ function HomePage() {
 
   // Robust scroll tracker for active navbar section
   useEffect(() => {
-    const validNavIds = ['home', 'about', 'skills', 'services', 'projects', 'contact'];
+    const validNavIds = ['home', 'about', 'skills', 'projects', 'contact'];
 
     const handleScroll = () => {
       // Don't override activeSection while smooth-scrolling from click
@@ -69,13 +69,6 @@ function HomePage() {
 
       {/* Redesigned Technical Expertise & Developer Toolkit Ecosystem */}
       <SkillsSection />
-
-      <section id="services" className="section">
-        <div className="container">
-          <h2 className="section-title">My <span className="gradient-text">Services</span></h2>
-          <p className="section-subtitle">Coming soon — service offering cards.</p>
-        </div>
-      </section>
 
       {/* Projects Section */}
       <Projects />

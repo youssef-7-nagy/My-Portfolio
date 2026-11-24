@@ -4,7 +4,7 @@ import {
   technicalExpertise,
   developerToolkit
 } from '../../data/skillsData';
-import IsometricStack3D from '../ui/IsometricStack3D';
+import dbStackImg from '../../assets/logos/DB.png';
 import './SkillsSection.css';
 
 export default function SkillsSection() {
@@ -67,9 +67,8 @@ export default function SkillsSection() {
           <div className="skills-col skills-col--left">
             {/* Frontend Development Card */}
             <div
-              className={`skill-card skill-card--frontend ${
-                hoveredCard === 'frontend' ? 'is-card-hovered' : ''
-              }`}
+              className={`skill-card skill-card--frontend ${hoveredCard === 'frontend' ? 'is-card-hovered' : ''
+                }`}
               onMouseEnter={() => setHoveredCard('frontend')}
               onMouseLeave={() => setHoveredCard(null)}
             >
@@ -111,9 +110,8 @@ export default function SkillsSection() {
 
             {/* Databases Card */}
             <div
-              className={`skill-card skill-card--database ${
-                hoveredCard === 'database' ? 'is-card-hovered' : ''
-              }`}
+              className={`skill-card skill-card--database ${hoveredCard === 'database' ? 'is-card-hovered' : ''
+                }`}
               onMouseEnter={() => setHoveredCard('database')}
               onMouseLeave={() => setHoveredCard(null)}
             >
@@ -154,24 +152,23 @@ export default function SkillsSection() {
             </div>
           </div>
 
-          {/* ----- Center Column: High-End 3D Isometric Stacked Architecture Model ----- */}
+          {/* ----- Center Column: 3D Stack Architecture Visual (DB.png) ----- */}
           <div className="skills-col skills-col--center">
-            <IsometricStack3D
-              hoveredCard={hoveredCard}
-              onSelectCategory={(cat) => {
-                if (cat === 'frontend') setSelectedSkill(technicalExpertise.frontend.skills[0]);
-                if (cat === 'backend') setSelectedSkill(technicalExpertise.backend.skills[0]);
-                if (cat === 'database') setSelectedSkill(technicalExpertise.databases.skills[0]);
-              }}
-            />
+            <div className="skills-center-stack-wrapper">
+              <img
+                src={dbStackImg}
+                alt="3D Stacked Architecture Model (Frontend, Backend, Database)"
+                className="skills-center-stack-img"
+                draggable={false}
+              />
+            </div>
           </div>
 
           {/* ----- Right Column: Backend Development (Primary Specialization) ----- */}
           <div className="skills-col skills-col--right">
             <div
-              className={`skill-card skill-card--backend skill-card--primary-highlight ${
-                hoveredCard === 'backend' ? 'is-card-hovered' : ''
-              }`}
+              className={`skill-card skill-card--backend skill-card--primary-highlight ${hoveredCard === 'backend' ? 'is-card-hovered' : ''
+                }`}
               onMouseEnter={() => setHoveredCard('backend')}
               onMouseLeave={() => setHoveredCard(null)}
             >
@@ -254,109 +251,109 @@ export default function SkillsSection() {
             PART 2: DEVELOPER TOOLKIT & ENGINEERING WORKFLOW
             ==================================================================== */}
         <div className="developer-toolkit-wrapper">
-            <div className="skills-header toolkit-header">
-              <h3 className="section-title toolkit-title">
-                Developer Toolkit & <span className="gradient-text">Engineering Workflow</span>
-              </h3>
-              <p className="section-subtitle toolkit-subtitle">
-                The tools, containerization pipelines, and architectural standards I use to build, deploy, and scale applications.
-              </p>
-            </div>
+          <div className="skills-header toolkit-header">
+            <h3 className="section-title toolkit-title">
+              Developer Toolkit & <span className="gradient-text">Engineering Workflow</span>
+            </h3>
+            <p className="section-subtitle toolkit-subtitle">
+              The tools, containerization pipelines, and architectural standards I use to build, deploy, and scale applications.
+            </p>
+          </div>
 
-            {/* 4 Connected Cards Pipeline + Laptop Perspective Display */}
-            <div className="toolkit-workflow-container">
-              <div className="toolkit-cards-flow">
-                {developerToolkit.map((step, index) => {
-                  const StepIcon = step.icon;
-                  const isLast = index === developerToolkit.length - 1;
+          {/* 4 Connected Cards Pipeline + Laptop Perspective Display */}
+          <div className="toolkit-workflow-container">
+            <div className="toolkit-cards-flow">
+              {developerToolkit.map((step, index) => {
+                const StepIcon = step.icon;
+                const isLast = index === developerToolkit.length - 1;
 
-                  return (
-                    <div key={step.id} className="toolkit-step-item">
-                      <div className="toolkit-card" style={{ '--step-accent': step.accent }}>
-                        <div className="toolkit-card__top">
-                          <div className="toolkit-card__icon-box">
-                            <StepIcon size={20} />
-                          </div>
-                          <span className="toolkit-card__number">{step.stepNumber}</span>
+                return (
+                  <div key={step.id} className="toolkit-step-item">
+                    <div className="toolkit-card" style={{ '--step-accent': step.accent }}>
+                      <div className="toolkit-card__top">
+                        <div className="toolkit-card__icon-box">
+                          <StepIcon size={20} />
                         </div>
-
-                        <h4 className="toolkit-card__title">{step.title}</h4>
-                        <p className="toolkit-card__subtitle">{step.subtitle}</p>
-
-                        <div className="toolkit-card__tools-list">
-                          {step.tools.map((tool) => {
-                            const ToolIcon = tool.icon;
-                            return (
-                              <span key={tool.name} className="toolkit-tool-tag">
-                                <ToolIcon size={14} style={{ color: tool.color }} />
-                                <span>{tool.name}</span>
-                              </span>
-                            );
-                          })}
-                        </div>
-
-                        <p className="toolkit-card__desc">{step.desc}</p>
+                        <span className="toolkit-card__number">{step.stepNumber}</span>
                       </div>
 
-                      {/* Animated Golden Multi-Chevron Arrows Between Workflow Steps */}
-                      {!isLast && (
-                        <div className="toolkit-flow-connector" aria-hidden="true">
-                          <svg
-                            className="golden-more-arrows"
-                            viewBox="0 0 66 76"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <polygon
-                              className="golden-arrow golden-arrow-top"
-                              points="27.9,37.6 1.3,1.8 0,3.3 25.3,37.6 0,71.9 1.3,73.7"
-                            />
-                            <polygon
-                              className="golden-arrow golden-arrow-middle"
-                              points="45.8,37.6 18.7,0.8 16.4,4.4 41.2,37.6 16.4,71.2 18.7,74.5"
-                            />
-                            <polygon
-                              className="golden-arrow golden-arrow-bottom"
-                              points="64,37.6 36.1,0 32.8,5.1 56.8,37.6 32.8,70.4 36.1,75.5"
-                            />
-                          </svg>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+                      <h4 className="toolkit-card__title">{step.title}</h4>
+                      <p className="toolkit-card__subtitle">{step.subtitle}</p>
 
-              {/* Integrated Code Terminal & Laptop Display Visual */}
-              <div className="toolkit-laptop-display" aria-hidden="true">
-                <div className="toolkit-laptop-screen">
-                  <div className="laptop-screen-header">
-                    <span className="laptop-dot laptop-dot--red" />
-                    <span className="laptop-dot laptop-dot--yellow" />
-                    <span className="laptop-dot laptop-dot--green" />
-                    <span className="laptop-screen-title">terminal — youssef@dev: ~/portfolio</span>
-                  </div>
-                  <div className="laptop-screen-body">
-                    <p className="laptop-code-line">
-                      <span className="laptop-code-prompt">&gt;</span> git status
-                    </p>
-                    <p className="laptop-code-output">On branch main. Ready to ship to production.</p>
-                    <p className="laptop-code-line">
-                      <span className="laptop-code-prompt">&gt;</span> docker compose up -d
-                    </p>
-                    <p className="laptop-code-success">
-                      ✔ Container api-cluster [Running on port 5000]
-                    </p>
-                    <p className="laptop-code-success">✔ MongoDB Replica [Health: OK]</p>
-                    <div className="laptop-screen-brackets">
-                      <span>&lt; / &gt;</span>
+                      <div className="toolkit-card__tools-list">
+                        {step.tools.map((tool) => {
+                          const ToolIcon = tool.icon;
+                          return (
+                            <span key={tool.name} className="toolkit-tool-tag">
+                              <ToolIcon size={14} style={{ color: tool.color }} />
+                              <span>{tool.name}</span>
+                            </span>
+                          );
+                        })}
+                      </div>
+
+                      <p className="toolkit-card__desc">{step.desc}</p>
                     </div>
+
+                    {/* Animated Golden Multi-Chevron Arrows Between Workflow Steps */}
+                    {!isLast && (
+                      <div className="toolkit-flow-connector" aria-hidden="true">
+                        <svg
+                          className="golden-more-arrows"
+                          viewBox="0 0 66 76"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <polygon
+                            className="golden-arrow golden-arrow-top"
+                            points="27.9,37.6 1.3,1.8 0,3.3 25.3,37.6 0,71.9 1.3,73.7"
+                          />
+                          <polygon
+                            className="golden-arrow golden-arrow-middle"
+                            points="45.8,37.6 18.7,0.8 16.4,4.4 41.2,37.6 16.4,71.2 18.7,74.5"
+                          />
+                          <polygon
+                            className="golden-arrow golden-arrow-bottom"
+                            points="64,37.6 36.1,0 32.8,5.1 56.8,37.6 32.8,70.4 36.1,75.5"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Integrated Code Terminal & Laptop Display Visual */}
+            <div className="toolkit-laptop-display" aria-hidden="true">
+              <div className="toolkit-laptop-screen">
+                <div className="laptop-screen-header">
+                  <span className="laptop-dot laptop-dot--red" />
+                  <span className="laptop-dot laptop-dot--yellow" />
+                  <span className="laptop-dot laptop-dot--green" />
+                  <span className="laptop-screen-title">terminal — youssef@dev: ~/portfolio</span>
+                </div>
+                <div className="laptop-screen-body">
+                  <p className="laptop-code-line">
+                    <span className="laptop-code-prompt">&gt;</span> git status
+                  </p>
+                  <p className="laptop-code-output">On branch main. Ready to ship to production.</p>
+                  <p className="laptop-code-line">
+                    <span className="laptop-code-prompt">&gt;</span> docker compose up -d
+                  </p>
+                  <p className="laptop-code-success">
+                    ✔ Container api-cluster [Running on port 5000]
+                  </p>
+                  <p className="laptop-code-success">✔ MongoDB Replica [Health: OK]</p>
+                  <div className="laptop-screen-brackets">
+                    <span>&lt; / &gt;</span>
                   </div>
                 </div>
-                <div className="toolkit-laptop-base" />
               </div>
+              <div className="toolkit-laptop-base" />
             </div>
           </div>
+        </div>
       </div>
     </section>
   );

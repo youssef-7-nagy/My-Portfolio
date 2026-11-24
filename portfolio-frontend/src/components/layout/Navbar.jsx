@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { usePortfolio } from '../../context/PortfolioContext';
 import { navLinks, developer } from '../../data/portfolioData';
-import { Moon, Sun, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { FaGithub, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import yLogoBlack from '../../assets/logos/y.png';
 import yLogoWhite from '../../assets/logos/y-white.png';
+import ThemeSwitch from '../ui/ThemeSwitch';
 import './Navbar.css';
 
 const editorialNavLinks = [
   { id: 'home', label: 'Home', href: '#home' },
   { id: 'about', label: 'About', href: '#about' },
   { id: 'skills', label: 'Skills', href: '#skills' },
-  { id: 'services', label: 'Services', href: '#services' },
   { id: 'projects', label: 'Projects', href: '#projects' },
   { id: 'contact', label: 'Contact', href: '#contact' },
 ];
@@ -19,7 +19,6 @@ const editorialNavLinks = [
 export default function Navbar({ splashActive = false }) {
   const {
     theme,
-    toggleTheme,
     activeSection,
     navigateToSection,
     mobileMenuOpen,
@@ -145,14 +144,7 @@ export default function Navbar({ splashActive = false }) {
 
           {/* Right: Quick Theme Toggle & Minimalist Hamburger Menu */}
           <div className="navbar__right-actions">
-            <button
-              className="navbar__quick-theme-toggle"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-              title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-            >
-              {theme === 'dark' ? <Sun size={17} /> : <Moon size={17} />}
-            </button>
+            <ThemeSwitch />
 
             <button
               className={`navbar__minimal-menu-btn ${mobileMenuOpen ? 'navbar__minimal-menu-btn--open' : ''}`}

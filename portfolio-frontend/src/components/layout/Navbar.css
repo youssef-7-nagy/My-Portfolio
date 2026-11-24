@@ -358,45 +358,6 @@
   z-index: 2;
 }
 
-.navbar__quick-theme-toggle {
-  width: 36px;
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-}
-
-[data-theme='light'] .navbar__quick-theme-toggle {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.15);
-  color: var(--color-black);
-}
-
-[data-theme='dark'] .navbar__quick-theme-toggle {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-}
-
-.navbar__quick-theme-toggle:hover {
-  background: rgba(255, 255, 255, 0.18);
-  transform: rotate(15deg);
-  border-color: var(--color-warm-yellow);
-  color: var(--color-warm-yellow);
-}
-
-[data-theme='light'] .navbar__quick-theme-toggle:hover {
-  background: rgba(60, 110, 113, 0.12);
-  border-color: var(--color-ocean-teal);
-  color: var(--color-ocean-teal);
-}
-
 /* The Minimalist 2-line Hamburger Button */
 .navbar__minimal-menu-btn {
   display: flex;
