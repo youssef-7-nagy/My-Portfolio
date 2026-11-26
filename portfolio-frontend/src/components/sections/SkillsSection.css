@@ -128,6 +128,104 @@
    Left: Frontend & Databases | Center: 3D Stack | Right: Backend (Primary)
    ========================================================================== */
 
+.skills-composition-viewport {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-composition-canvas {
+  width: 100%;
+}
+
+/* Scaled desktop-proportion mode (< 960px): preserves wide 5-column cards & exact desktop geometry */
+.skills-composition-canvas.is-scaled {
+  will-change: transform;
+}
+
+.skills-composition-canvas.is-scaled .skills-ecosystem-grid {
+  grid-template-columns: minmax(0, 1.35fr) 155px minmax(0, 1.35fr);
+  gap: 0.75rem;
+  margin-top: 0;
+}
+
+.skills-composition-canvas.is-scaled .skills-col {
+  gap: 0.9rem;
+}
+
+.skills-composition-canvas.is-scaled .skills-center-stack-wrapper {
+  max-width: 155px;
+}
+
+.skills-composition-canvas.is-scaled .skills-center-stack-img {
+  max-height: 240px;
+}
+
+.skills-composition-canvas.is-scaled .skill-card {
+  padding: 0.9rem 0.8rem;
+  border-radius: var(--radius-xl);
+}
+
+.skills-composition-canvas.is-scaled .skill-card--backend {
+  padding: 1.05rem 0.8rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-card__header {
+  gap: 9px;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.6rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-card__icon-box {
+  width: 38px;
+  height: 38px;
+}
+
+.skills-composition-canvas.is-scaled .skill-card__title {
+  font-size: 1.12rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-card__subtitle {
+  font-size: 0.82rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-card__items-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.skills-composition-canvas.is-scaled .skill-item-pill {
+  min-height: 60px;
+  padding: 7px 3px;
+  gap: 4px;
+}
+
+.skills-composition-canvas.is-scaled .skill-item-pill__name {
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.skills-composition-canvas.is-scaled .skill-spotlight-bar {
+  padding: 0.95rem 1.25rem;
+  margin-top: 1rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-spotlight-bar__name {
+  font-size: 1.18rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-spotlight-bar__desc {
+  font-size: 0.92rem;
+}
+
+.skills-composition-canvas.is-scaled .skill-spotlight-bar__right {
+  align-items: flex-end;
+}
+
 .skills-ecosystem-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.18fr) clamp(240px, 20vw, 310px) minmax(0, 1.18fr);
@@ -482,8 +580,8 @@
   display: flex;
   align-items: center;
   gap: 16px;
-  flex: 1;
-  min-width: 280px;
+  flex: 1 1 240px;
+  min-width: 0;
 }
 
 .skill-spotlight-bar__icon-wrapper {
@@ -1029,17 +1127,16 @@
 /* Tablets (768px - 1023px) */
 @media (max-width: 1023px) {
   .skills-ecosystem-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 1.25fr) 210px minmax(0, 1.25fr);
+    gap: 1.25rem;
   }
 
-  .skills-col--center {
-    order: -1;
-    margin-bottom: 0.5rem;
+  .skills-center-stack-wrapper {
+    max-width: 210px;
   }
 
   .skill-card__items-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
   .toolkit-cards-flow {
@@ -1055,54 +1152,21 @@
   .toolkit-flow-connector {
     display: none;
   }
-
-  .skill-spotlight-bar__right {
-    align-items: flex-start;
-  }
 }
 
 /* Mobile Devices (Under 768px down to 320px) */
 @media (max-width: 767px) {
   .skills-section {
-    padding: 3.5rem 0;
+    padding: 3rem 0;
+  }
+
+  .skills-container {
+    max-width: 100%;
+    padding-inline: 6px;
   }
 
   .skills-header {
-    margin-bottom: 2rem;
-  }
-
-  .skills-ecosystem-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .skill-card {
-    padding: 1.15rem 1rem;
-    border-radius: var(--radius-lg);
-  }
-
-  .skill-card__items-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  .skill-item-pill {
-    padding: 8px 4px;
-  }
-
-  .skill-item-pill__name {
-    font-size: 0.68rem;
-  }
-
-  .skill-spotlight-bar {
-    padding: 1rem;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .skill-spotlight-bar__left {
-    min-width: 100%;
+    margin-bottom: 1.5rem;
   }
 
   .toolkit-cards-flow {
@@ -1121,13 +1185,6 @@
 
   .toolkit-banner-subtext {
     width: 100%;
-  }
-}
-
-/* Ultra Small Phones (Under 380px) */
-@media (max-width: 380px) {
-  .skill-card__items-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 }
 

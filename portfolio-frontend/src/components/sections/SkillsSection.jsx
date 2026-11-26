@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Code } from 'lucide-react';
 import {
   technicalExpertise,
@@ -7,11 +7,72 @@ import {
 import dbStackImg from '../../assets/logos/DB.png';
 import './SkillsSection.css';
 
+const BASE_COMPOSITION_WIDTH = 820;
+
 export default function SkillsSection() {
   const sectionRef = useRef(null);
+  const compositionViewportRef = useRef(null);
+  const compositionCanvasRef = useRef(null);
+
   const [isVisible, setIsVisible] = useState(false);
   const [selectedSkill, setSelectedSkill] = useState(() => technicalExpertise.backend.skills[0]); // Default to Node.js
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [compositionScale, setCompositionScale] = useState(1);
+  const [scaledHeight, setScaledHeight] = useState(null);
+
+  // Measure available width & canvas height to scale the desktop composition proportionally below 960px
+  const updateCompositionScale = useCallback(() => {
+    const viewportEl = compositionViewportRef.current;
+    const canvasEl = compositionCanvasRef.current;
+    if (!viewportEl || !canvasEl) return;
+
+    const availableWidth = viewportEl.clientWidth;
+    if (availableWidth <= 0) return;
+
+    if (availableWidth < BASE_COMPOSITION_WIDTH) {
+      const nextScale = availableWidth / BASE_COMPOSITION_WIDTH;
+      const canvasHeight = canvasEl.offsetHeight;
+      setCompositionScale(nextScale);
+      setScaledHeight(Math.ceil(canvasHeight * nextScale));
+    } else {
+      setCompositionScale(1);
+      setScaledHeight(null);
+    }
+  }, []);
+
+  useEffect(() => {
+    const viewportEl = compositionViewportRef.current;
+    const canvasEl = compositionCanvasRef.current;
+    if (!viewportEl || !canvasEl) return;
+
+    let rafId = window.requestAnimationFrame(updateCompositionScale);
+
+    const handleResize = () => {
+      window.cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(updateCompositionScale);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    let resizeObserver;
+    if (window.ResizeObserver) {
+      resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(viewportEl);
+      resizeObserver.observe(canvasEl);
+    }
+
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('resize', handleResize);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+  }, [updateCompositionScale]);
+
+  // Re-measure scaled height when selectedSkill changes (e.g. description length changes)
+  useEffect(() => {
+    const rafId = window.requestAnimationFrame(updateCompositionScale);
+    return () => window.cancelAnimationFrame(rafId);
+  }, [selectedSkill, updateCompositionScale]);
 
   // Intersection Observer for scroll entrance
   useEffect(() => {
@@ -61,8 +122,27 @@ export default function SkillsSection() {
           </p>
         </div>
 
-        {/* 3-Column Interactive Architecture Layout: Left Cards + Center 3D Stack + Right Primary Backend */}
-        <div className="skills-ecosystem-grid">
+        {/* Responsive Composition Viewport: scales the desktop wide-box layout proportionally below 960px */}
+        <div
+          className="skills-composition-viewport"
+          ref={compositionViewportRef}
+          style={scaledHeight !== null ? { height: `${scaledHeight}px` } : undefined}
+        >
+          <div
+            className={`skills-composition-canvas ${compositionScale < 1 ? 'is-scaled' : ''}`}
+            ref={compositionCanvasRef}
+            style={
+              compositionScale < 1
+                ? {
+                    width: `${BASE_COMPOSITION_WIDTH}px`,
+                    transform: `scale(${compositionScale})`,
+                    transformOrigin: 'top left',
+                  }
+                : undefined
+            }
+          >
+            {/* 3-Column Interactive Architecture Layout: Left Cards + Center 3D Stack + Right Primary Backend */}
+            <div className="skills-ecosystem-grid">
           {/* ----- Left Column: Frontend & Databases Cards ----- */}
           <div className="skills-col skills-col--left">
             {/* Frontend Development Card */}
@@ -160,6 +240,7 @@ export default function SkillsSection() {
                 alt="3D Stacked Architecture Model (Frontend, Backend, Database)"
                 className="skills-center-stack-img"
                 draggable={false}
+                onLoad={updateCompositionScale}
               />
             </div>
           </div>
@@ -246,6 +327,8 @@ export default function SkillsSection() {
             )}
           </div>
         )}
+          </div>
+        </div>
 
         {/* ====================================================================
             PART 2: DEVELOPER TOOLKIT & ENGINEERING WORKFLOW
